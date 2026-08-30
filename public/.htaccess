@@ -1,28 +1,125 @@
 <IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    RewriteCond %{HTTP_HOST} ^misutech\.haiphongtech\.vn$ [NC]
+    RewriteRule ^(.*)$ https://misutech.vn/$1 [L,R=301]
+    
+    # Chặn bot không có header User-Agent
+    <IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} ^-?$
+    RewriteRule ^ - [F,L]
+    </IfModule>
+    
+    <IfModule LiteSpeed>
+    RewriteEngine On
+    # Bật tính năng bot verification
+    RewriteRule .* - [E=verifybot:1]
+    </IfModule>
+    
+    # Giới hạn query string quá dài (chặn DDoS qua URL dài bất thường)
+    <IfModule mod_rewrite.c>
+    RewriteCond %{QUERY_STRING} ^.{2000,}$ [NC]
+    RewriteRule ^ - [F,L]
+    </IfModule>
+    
+    # Chặn user agent xấu (bot DDoS phổ biến)
+    BrowserMatchNoCase "ApacheBench" bad_bot
+    BrowserMatchNoCase "wget" bad_bot
+    BrowserMatchNoCase "curl" bad_bot
+    <IfModule mod_authz_core.c>
+        <RequireAll>
+            Require all granted
+            Require not env bad_bot
+        </RequireAll>
+    </IfModule>
+
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-
-    RewriteEngine On
-
-    # Handle Authorization Header
+    
+    # --- Ép HTTPS ---
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    RewriteCond %{HTTP_HOST} ^www\.misutech\.vn$ [NC]
+    RewriteRule ^ https://misutech.vn%{REQUEST_URI} [R=301,L]
+    
+    # --- Gộp nhiều "//" trong path ---
+    RewriteCond %{REQUEST_URI} ^(.*)//+(.*)$
+    RewriteRule ^ %1/%2 [R=301,L]
+    
+    # --- Bỏ dấu "/" cuối nếu không phải thư mục thật ---
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [R=301,L]
+    
+    # --- Redirect /index.php về trang chủ ---
+    RewriteCond %{THE_REQUEST} \s/index\.php[?\s] [NC]
+    RewriteRule ^index\.php$ https://misutech.vn/ [R=301,L]
+    
+    # Redirect public về /
+    RewriteCond %{THE_REQUEST} \s/public[?\s] [NC]
+    RewriteRule ^public$ https://misutech.vn/ [R=301,L]
+    
+    # --- Redirect /index.php/something về /something ---
+    RewriteCond %{THE_REQUEST} \s/index\.php/([^\s?]*) [NC]
+    RewriteRule ^index\.php/(.*)$ https://misutech.vn/%1 [R=301,L]
+    
+    # --- Giữ Authorization / Token ---
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Handle X-XSRF-Token Header
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Send Requests To Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # --- QUAN TRỌNG: route vào index.php ---
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [L]
 </IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive on
+ExpiresByType application/pdf A31557600
+ExpiresByType image/x-icon A31557600
+ExpiresByType image/vnd.microsoft.icon A31557600
+ExpiresByType image/svg+xml A31557600
+
+ExpiresByType image/jpg A31557600
+ExpiresByType image/jpeg A31557600
+ExpiresByType image/png A31557600
+ExpiresByType image/gif A31557600
+ExpiresByType image/webp A31557600
+ExpiresByType image/avif A31557600
+
+ExpiresByType video/ogg A31557600
+ExpiresByType audio/ogg A31557600
+ExpiresByType video/mp4 A31557600
+ExpiresByType video/webm A31557600
+
+ExpiresByType text/css A31557600
+ExpiresByType text/javascript A31557600
+ExpiresByType application/javascript A31557600
+ExpiresByType application/x-javascript A31557600
+
+ExpiresByType application/x-font-ttf A31557600
+ExpiresByType application/x-font-woff A31557600
+ExpiresByType application/font-woff A31557600
+ExpiresByType application/font-woff2 A31557600
+ExpiresByType application/vnd.ms-fontobject A31557600
+ExpiresByType font/ttf A31557600
+ExpiresByType font/otf A31557600
+ExpiresByType font/woff A31557600
+ExpiresByType font/woff2 A31557600
+
+</IfModule>
+### marker BROWSER CACHE end
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php82” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
 
 php_value upload_max_filesize 512M
 php_value post_max_size 512M

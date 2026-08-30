@@ -12,7 +12,7 @@
 /.phpunit.cache
 /.vscode
 /.zed
-/.agent
+/.agents
 /auth.json
 /node_modules
 /public/build
