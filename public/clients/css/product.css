@@ -1,0 +1,3351 @@
+/* * removed */
+
+/* html removed */
+
+/* body removed */
+
+body.misutech_product_no_scroll {
+    overflow: hidden;
+}
+
+/* form tags removed */
+
+/* interactives removed */
+
+/* button removed */
+
+/* a removed */
+
+/* img removed */
+
+[hidden] {
+    display: none !important;
+}
+
+.misutech_product_container {
+    width: min(1200px, calc(100% - 48px));
+    margin-inline: auto;
+}
+
+.misutech_product_icon {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.misutech_product_header {
+    position: relative;
+    z-index: 20;
+    color: var(--misutech_product_white);
+    background: var(--misutech_product_primary);
+}
+
+.misutech_product_header_main {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.misutech_product_header_inner {
+    display: grid;
+    grid-template-columns: 220px minmax(340px, 505px) 220px;
+    min-height: 104px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.misutech_product_logo {
+    width: max-content;
+        font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -1.2px;
+}
+
+.misutech_product_search {
+    position: relative;
+    display: flex;
+    height: 39px;
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--misutech_product_white);
+}
+
+.misutech_product_search_input {
+    width: 100%;
+    height: 100%;
+    padding: 0 52px 0 21px;
+    color: var(--misutech_product_text);
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 1rem;
+}
+
+.misutech_product_search_input::placeholder {
+    color: #aeb4b9;
+}
+
+.misutech_product_search_submit {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    place-items: center;
+    color: var(--misutech_product_primary);
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.misutech_product_search_submit .misutech_product_icon {
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.8;
+}
+
+.misutech_product_header_actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.misutech_product_header_button {
+    position: relative;
+    display: grid;
+    width: 30px;
+    height: 35px;
+    padding: 0;
+    place-items: center;
+    color: var(--misutech_product_white);
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.misutech_product_header_button:hover {
+    color: var(--misutech_product_accent);
+    transform: translateY(-1px);
+}
+
+.misutech_product_header_button .misutech_product_icon {
+    width: 21px;
+    height: 21px;
+}
+
+.misutech_product_cart_count {
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    display: grid;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    place-items: center;
+    border-radius: 10px;
+    background: var(--misutech_product_accent);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.misutech_product_nav {
+    min-height: 55px;
+    background: var(--misutech_product_primary);
+}
+
+.misutech_product_nav_inner {
+    min-height: 55px;
+}
+
+.misutech_product_nav_links {
+    display: flex;
+    height: 55px;
+    align-items: center;
+    justify-content: center;
+    gap: 52px;
+}
+
+.misutech_product_nav_link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+        font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.misutech_product_nav_link span {
+    font-size: 1.3rem;
+}
+
+.misutech_product_nav_link:hover {
+    color: var(--misutech_product_accent);
+}
+
+.misutech_product_mobile_menu {
+    display: none;
+    width: 100%;
+    height: 48px;
+    padding: 0;
+    color: var(--misutech_product_white);
+    border: 0;
+    background: transparent;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.misutech_product_breadcrumb {
+    min-height: 40px;
+    border-bottom: 1px solid #edf0f2;
+    background: #ffffff;
+    padding: 8px 0;
+}
+
+.misutech_product_breadcrumb_inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.misutech_product_breadcrumb_link {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.misutech_product_breadcrumb_link:hover {
+    color: var(--misutech_product_primary);
+}
+
+.misutech_product_breadcrumb_separator {
+    color: #94a3b8;
+    font-size: 9px;
+    display: inline-flex;
+    align-items: center;
+}
+
+#misutech_breadcrumb_current {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.misutech_product_product {
+    height: fit-content;
+    padding: 30px 0 0;
+}
+
+.misutech_product_product_grid {
+    display: grid;
+    grid-template-columns: minmax(0, 510px) minmax(0, 600px);
+    align-items: start;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.misutech_product_gallery {
+    min-width: 0;
+    position: sticky;
+    top: 130px;
+}
+
+.misutech_product_main_image_button {
+    position: relative;
+    display: grid;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--misutech_product_white);
+    border: 1px solid var(--misutech_product_border);
+    border-radius: 12px;
+    overflow: hidden;
+    place-items: center;
+    cursor: zoom-in;
+    padding: 0;
+}
+
+.misutech_product_main_image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition:
+        opacity 0.2s ease,
+        transform 0.35s ease;
+}
+
+.misutech_product_main_image_button:hover .misutech_product_main_image {
+    transform: scale(1.025);
+}
+
+.misutech_product_main_image.misutech_product_image_changing {
+    opacity: 0;
+}
+
+.misutech_product_zoom_hint {
+    position: absolute;
+    right: 22px;
+    bottom: 22px;
+
+    width: 46px;
+    height: 46px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+    background: var(--misutech_product_primary);
+    color: var(--misutech_product_white);
+
+    font-size: 1.6rem;
+    line-height: 1;
+
+    opacity: 0;
+    transition: all 0.2s ease;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.misutech_product_main_image_button:hover .misutech_product_zoom_hint {
+    opacity: 1;
+}
+
+.misutech_product_thumbnails {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin-top: 35px;
+    gap: 16px;
+}
+
+.misutech_product_thumbnail {
+    display: grid;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 3px;
+    overflow: hidden;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: var(--misutech_product_white);
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.misutech_product_thumbnail:not(.misutech_product_active) {
+    opacity: 0.72;
+}
+
+.misutech_product_thumbnail:hover,
+.misutech_product_thumbnail.misutech_product_active {
+    opacity: 1;
+    border-color: var(--misutech_product_primary);
+}
+
+.misutech_product_thumbnail_image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
+
+.misutech_product_share {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 6px;
+}
+
+.misutech_product_share_title {
+    font-size: 1rem;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.misutech_product_share_list {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.misutech_product_share_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: #ffffff !important;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+    padding: 0;
+}
+
+.misutech_product_share_btn svg {
+    display: block;
+}
+
+.misutech_product_share_btn:hover {
+    transform: translateY(-2px) scale(1.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+    opacity: 0.95;
+}
+
+.misutech_product_share_btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.misutech_product_share_fb {
+    background: #1877f2;
+}
+
+.misutech_product_share_messenger {
+    background: #0084ff;
+}
+
+.misutech_product_share_twitter {
+    background: #1da1f2;
+}
+
+.misutech_product_share_pinterest {
+    background: #bd081c;
+}
+
+.misutech_product_share_copylink {
+    background: #0284c7;
+}
+
+.misutech_product_share_btn.copied {
+    background: #10b981 !important;
+}
+
+.misutech_product_product_info {
+    position: sticky;
+    top: 120px;
+    padding-top: 0;
+}
+
+.misutech_product_title {
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.misutech_product_direction {
+    display: flex;
+    padding-top: 2px;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.misutech_product_direction_button {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    place-items: center;
+    color: #94a3b8;
+    border: 0;
+    background: transparent;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.misutech_product_direction_button:hover {
+    color: var(--misutech_product_primary);
+}
+
+.misutech_product_rating_row {
+    display: flex;
+    min-height: 28px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.misutech_product_stars {
+    color: #ffb000;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.misutech_product_review_count {
+    margin-left: 6px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.misutech_product_view_reviews {
+    margin-left: 10px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.misutech_product_view_reviews:hover {
+    color: var(--misutech_product_primary);
+}
+
+.misutech_product_price {
+    margin: 8px 0 16px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.misutech_product_price_sale {
+    color: #e5422b;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.misutech_product_price_original {
+    text-decoration: line-through;
+    font-size: 0.95rem;
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+.misutech_product_price_badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #e5422b;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.misutech_product_summary {
+    margin: 0 0 16px;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.misutech_product_series_box {
+    /* margin: 0 0 16px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px; */
+}
+
+.misutech_product_series_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.misutech_product_series_title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.misutech_product_series_badge {
+    font-size: 11px;
+    background: #e2e8f0;
+    color: #475569;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.misutech_product_series_models {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.misutech_product_model_btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.misutech_product_model_btn:hover {
+    border-color: var(--misutech_product_primary);
+    color: var(--misutech_product_primary);
+    background: #f0f4f8;
+}
+
+.misutech_product_model_btn.misutech_product_model_active {
+    border-color: var(--misutech_product_primary);
+    background: var(--misutech_product_primary);
+    color: #ffffff;
+}
+
+.misutech_product_series_desc {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.misutech_product_meta {
+    margin: 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.misutech_product_meta_row {
+    display: grid;
+    grid-template-columns: 105px 1fr;
+    align-items: baseline;
+    font-size: 13px;
+}
+
+.misutech_product_meta_row dt {
+    color: #334155;
+    font-weight: 600;
+    margin: 0;
+}
+
+.misutech_product_meta_row dd {
+    margin: 0;
+    color: #64748b;
+}
+
+.misutech_product_meta_row dd a {
+    color: var(--misutech_product_primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.misutech_product_meta_row dd a:hover {
+    text-decoration: underline;
+}
+
+.misutech_product_meta_row:first-child dd {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.misutech_product_stock_dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background: #16a34a;
+    vertical-align: middle;
+}
+
+.misutech_product_option_group {
+    min-width: 0;
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+}
+
+.misutech_product_option_label {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.misutech_product_option_label strong {
+    font-weight: 600;
+}
+
+.misutech_product_purchase {
+    margin-bottom: 18px;
+}
+
+.misutech_product_purchase_row {
+    display: grid;
+    grid-template-columns: 95px minmax(0, 1fr) 42px;
+    gap: 8px;
+}
+
+.misutech_product_quantity {
+    display: grid;
+    grid-template-columns: 28px 1fr 28px;
+    height: 40px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.misutech_product_quantity_button {
+    padding: 0;
+    color: #64748b;
+    border: 0;
+    background: #f8fafc;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.misutech_product_quantity_button:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.misutech_product_quantity_input {
+    width: 100%;
+    padding: 0;
+    color: #1e293b;
+    border: 0;
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    outline: 0;
+    appearance: textfield;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.misutech_product_quantity_input::-webkit-inner-spin-button,
+.misutech_product_quantity_input::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+}
+
+.misutech_product_add_button,
+.misutech_product_buy_now,
+.misutech_product_modal_submit,
+.misutech_product_review_submit {
+    border: 1px solid var(--misutech_product_primary);
+    border-radius: 4px;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+.misutech_product_add_button {
+    height: 40px;
+    color: var(--misutech_product_white);
+    background: var(--misutech_product_primary);
+}
+
+.misutech_product_add_button:hover,
+.misutech_product_modal_submit:hover,
+.misutech_product_review_submit:hover {
+    background: #002d57;
+    border-color: #002d57;
+}
+
+.misutech_product_wishlist_button {
+    display: grid;
+    width: 42px;
+    height: 40px;
+    padding: 0;
+    place-items: center;
+    color: #64748b;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.misutech_product_wishlist_button:hover,
+.misutech_product_wishlist_button.misutech_product_active {
+    color: #e5422b;
+    border-color: #fecaca;
+    background: #fef2f2;
+}
+
+.misutech_product_buy_now {
+    width: 100%;
+    height: 40px;
+    margin-top: 8px;
+    color: #003b70;
+    border-color: #003b70;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.misutech_product_buy_now:hover {
+    color: #ffffff;
+    border-color: #002d57;
+    background: #002d57;
+}
+
+.misutech_product_extra_actions {
+    display: flex;
+    margin: 14px 0 18px;
+    gap: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #edf0f2;
+}
+
+.misutech_product_extra_button {
+    display: flex;
+    padding: 0;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    border: 0;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.misutech_product_extra_button span {
+    font-size: 13px;
+}
+
+.misutech_product_extra_button:hover {
+    color: var(--misutech_product_primary);
+}
+
+.misutech_product_shipping_notes {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.misutech_product_shipping_notes p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.4;
+}
+
+.misutech_product_shipping_icon {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.misutech_product_payment_box {
+    position: relative;
+    min-height: 103px;
+    padding: 27px 34px 22px;
+    border: 1px solid #eef0f1;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.misutech_product_payment_title {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    padding: 0 16px;
+    background: var(--misutech_product_white);
+        font-size: 0.9rem;
+    font-weight: 700;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.misutech_product_payment_image {
+    width: 100%;
+    max-width: 421px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.misutech_product_shipping_notes {
+    margin-top: 42px;
+    color: var(--misutech_product_secondary);
+    font-size: 1.05rem;
+}
+
+.misutech_product_shipping_notes p {
+    display: flex;
+    margin: 0 0 10px;
+    align-items: center;
+    gap: 12px;
+}
+
+.misutech_product_shipping_icon {
+    color: #9da3a8;
+    font-size: 1.5rem;
+}
+
+.misutech_product_tabs_section {
+    padding: 50px 0 20px;
+}
+
+.misutech_product_tabs {
+    position: sticky;
+    top: 106px;
+    z-index: 15;
+    display: flex;
+    margin-bottom: 20px;
+    gap: 22px;
+    background: #ffffff;
+    padding: 10px 0 6px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.misutech_product_tab_button {
+    position: relative;
+    padding: 0 0 8px;
+    color: #475569;
+    border: 0;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.misutech_product_tab_button:hover,
+.misutech_product_tab_button.misutech_product_active {
+    color: var(--misutech_product_primary);
+}
+
+.misutech_product_tab_button::after {
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    left: 50%;
+    height: 2px;
+    content: "";
+    background: var(--misutech_product_primary);
+    transition:
+        right 0.2s ease,
+        left 0.2s ease;
+}
+
+.misutech_product_tab_button.misutech_product_active::after {
+    right: 0;
+    left: 0;
+}
+
+@keyframes misutech_fade_in {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.misutech_product_tab_panel {
+    height: fit-content;
+    color: #475569;
+    line-height: 1.75;
+}
+
+.misutech_product_tab_panel.misutech_product_active {
+    animation: misutech_fade_in 0.3s ease forwards;
+}
+
+.misutech_product_tab_panel p {
+    margin: 0 0 18px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.misutech_product_content_body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #334155;
+}
+
+.misutech_product_content_body h2,
+.misutech_product_content_body h3 {
+    color: #0f172a;
+    font-weight: 700;
+    margin: 0 0 16px;
+    font-size: 18px;
+}
+
+.misutech_product_content_body table,
+.misutech_product_tab_panel table {
+    width: 100% !important;
+    border-spacing: 0 !important;
+    margin: 16px 0 24px !important;
+    border: 0 solid #e2e8f0 !important;
+    overflow: hidden !important;
+    font-size: 13.5px !important;
+}
+
+.misutech_product_content_body table th,
+.misutech_product_tab_panel table th {
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    padding: 12px 18px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-right: 1px solid #e2e8f0 !important;
+}
+
+.misutech_product_content_body table th:last-child,
+.misutech_product_tab_panel table th:last-child {
+    border-right: 0 !important;
+}
+
+.misutech_product_content_body table td,
+.misutech_product_tab_panel table td {
+    padding: 11px 18px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-right: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+    line-height: 1.5 !important;
+}
+
+.misutech_product_content_body table td:first-child,
+.misutech_product_tab_panel table td:first-child {
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    width: 35% !important;
+    background: #fbfcfd !important;
+}
+
+.misutech_product_content_body table td:last-child,
+.misutech_product_tab_panel table td:last-child {
+    border-right: 0 !important;
+}
+
+.misutech_product_content_body table tr:last-child td,
+.misutech_product_tab_panel table tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+.misutech_product_content_body table tr:hover td,
+.misutech_product_tab_panel table tr:hover td {
+    background: #f4f8fb !important;
+}
+
+/* Layout 70/30 cho Tabs và Sidebar */
+.misutech_product_tabs_layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 32px;
+    align-items: start;
+}
+
+.misutech_product_tabs_main {
+    min-width: 0;
+}
+
+.misutech_product_tabs_sidebar {
+    position: sticky;
+    top: 120px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.misutech_product_side_card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.misutech_product_side_support {
+    border-top: 2px solid var(--misutech_product_primary);
+    background: #f8fafc;
+}
+
+.misutech_product_side_card_header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.misutech_product_side_icon {
+    width: 32px;
+    height: 32px;
+    background: #e2e8f0;
+    color: var(--misutech_product_primary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.misutech_product_side_title {
+    margin: 0 0 2px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
+}
+
+.misutech_product_side_subtitle {
+    margin: 0;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.misutech_product_side_actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.misutech_product_side_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.misutech_product_side_btn_call {
+    background: var(--misutech_product_primary);
+    color: #ffffff;
+}
+
+.misutech_product_side_btn_call:hover {
+    background: #002d57;
+    color: #ffffff;
+}
+
+.misutech_product_side_btn_zalo {
+    background: #0284c7;
+    color: #ffffff;
+}
+
+.misutech_product_side_btn_zalo:hover {
+    background: #0369a1;
+    color: #ffffff;
+}
+
+.misutech_product_side_btn_quote {
+    background: #ffffff;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+.misutech_product_side_btn_quote:hover {
+    background: #f1f5f9;
+    color: var(--misutech_product_primary);
+    border-color: #94a3b8;
+}
+
+.misutech_product_side_heading {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 6px;
+}
+
+.misutech_product_trust_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.misutech_product_trust_list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+}
+
+.misutech_product_trust_check {
+    width: 17px;
+    height: 17px;
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9.5px;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.misutech_product_trust_list strong {
+    display: block;
+    font-size: 12px;
+    color: #334155;
+    margin-bottom: 1px;
+}
+
+.misutech_product_trust_list p {
+    margin: 0;
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.3;
+}
+
+.misutech_product_side_products {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.misutech_product_side_pitem {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 5px;
+    border-radius: 5px;
+    transition: background 0.15s ease;
+}
+
+.misutech_product_side_pitem:hover {
+    background: #f8fafc;
+}
+
+.misutech_product_side_pimg {
+    width: 48px;
+    height: 48px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+.misutech_product_side_pimg img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.misutech_product_side_pinfo {
+    min-width: 0;
+}
+
+.misutech_product_side_pname {
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.misutech_product_side_pitem:hover .misutech_product_side_pname {
+    color: var(--misutech_product_primary);
+}
+
+.misutech_product_side_pprice strong {
+    color: #e5422b;
+    font-size: 11.5px;
+}
+
+.misutech_product_side_pprice del {
+    color: #94a3b8;
+    font-size: 10px;
+    margin-left: 3px;
+}
+
+.misutech_product_policy_box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 18px 22px;
+}
+
+.misutech_product_policy_heading {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.misutech_product_policy_list {
+    margin: 0;
+    padding-left: 18px;
+    color: #475569;
+    line-height: 1.7;
+    font-size: 13px;
+}
+
+.misutech_product_policy_list li {
+    margin-bottom: 6px;
+}
+
+@media (max-width: 991px) {
+    .misutech_product_tabs_layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .misutech_product_tabs_sidebar {
+        position: static;
+        margin-top: 10px;
+    }
+}
+
+.misutech_product_benefits {
+    padding: 30px 0;
+    border-top: 1px solid #e1e2e3;
+    border-bottom: 1px solid #eef0f1;
+}
+
+.misutech_product_benefit_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 72px;
+}
+
+.misutech_product_benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.misutech_product_benefit_icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0, 59, 112, 0.06);
+    color: var(--misutech_product_primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.misutech_product_benefit_icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.misutech_product_benefit_title {
+    margin: 0 0 6px;
+    color: var(--misutech_product_primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.misutech_product_benefit_text {
+    margin: 0;
+    color: var(--misutech_product_secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.misutech_product_reviews {
+    padding: 30px 0;
+}
+
+.misutech_product_review_layout {
+    display: grid;
+    grid-template-columns: 330px minmax(0, 1fr);
+    align-items: start;
+    gap: 17px;
+}
+
+.misutech_product_review_summary {
+    min-height: 650px;
+    padding: 24px 18px 22px;
+    border: 1px solid #e7e9eb;
+}
+
+.misutech_product_review_heading {
+    margin: 0 0 18px;
+        font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.misutech_product_review_score,
+.misutech_product_review_bars,
+.misutech_product_review_prompt {
+    border: 1px solid #edf0f1;
+}
+
+.misutech_product_review_score {
+    display: flex;
+    height: 150px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.misutech_product_review_gold {
+    color: #f3ae2d;
+    font-size: 1.5rem;
+}
+
+.misutech_product_score_value {
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.misutech_product_score_side {
+    color: #6b7379;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.misutech_product_score_side b {
+    color: #222;
+}
+
+.misutech_product_review_bars {
+    display: flex;
+    height: 300px;
+    margin-top: 18px;
+    padding: 35px 55px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.misutech_product_review_bar {
+    display: grid;
+    grid-template-columns: 42px 1fr 18px;
+    align-items: center;
+    gap: 12px;
+    color: #333;
+    font-size: 1.05rem;
+}
+
+.misutech_product_review_bar i {
+    height: 6px;
+    border-radius: 5px;
+    background: #eceeef;
+}
+
+.misutech_product_review_bar b {
+    font-weight: 400;
+}
+
+.misutech_product_review_prompt {
+    display: flex;
+    height: 125px;
+    margin-top: 18px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.05rem;
+}
+
+.misutech_product_review_stars {
+    display: flex;
+}
+
+.misutech_product_review_star {
+    padding: 0 3px;
+    color: #5e666c;
+    border: 0;
+    background: transparent;
+    font-size: 3.2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.misutech_product_review_star:hover,
+.misutech_product_review_star.misutech_product_active {
+    color: #f3ae2d;
+}
+
+.misutech_product_review_content {
+    min-height: 650px;
+}
+
+.misutech_product_review_empty {
+    display: flex;
+    min-height: 82px;
+    align-items: center;
+    justify-content: center;
+    color: #7c848b;
+    border: 1px solid #e7e9eb;
+    font-size: 1.05rem;
+    text-align: center;
+}
+
+.misutech_product_review_form,
+.misutech_product_submitted_review {
+    margin-top: 18px;
+    padding: 28px;
+    border: 1px solid #e7e9eb;
+}
+
+.misutech_product_review_form_title {
+    margin: 0 0 20px;
+        font-size: 1.8rem;
+}
+
+.misutech_product_review_input,
+.misutech_product_review_textarea,
+.misutech_product_modal_input,
+.misutech_product_modal_textarea {
+    width: 100%;
+    margin-bottom: 14px;
+    padding: 13px 15px;
+    color: var(--misutech_product_text);
+    border: 1px solid #dfe2e4;
+    border-radius: 3px;
+    outline: none;
+    resize: vertical;
+}
+
+.misutech_product_review_input:focus,
+.misutech_product_review_textarea:focus,
+.misutech_product_modal_input:focus,
+.misutech_product_modal_textarea:focus {
+    border-color: var(--misutech_product_primary);
+}
+
+.misutech_product_review_submit,
+.misutech_product_modal_submit {
+    min-width: 150px;
+    height: 43px;
+    padding: 0 24px;
+    color: var(--misutech_product_white);
+    background: var(--misutech_product_primary);
+}
+
+.misutech_product_submitted_stars {
+    color: #f3ae2d;
+    font-size: 1.8rem;
+}
+
+.misutech_product_submitted_name {
+    margin: 10px 0;
+        font-size: 1.6rem;
+}
+
+.misutech_product_submitted_text {
+    margin: 0;
+    color: var(--misutech_product_secondary);
+}
+
+.misutech_product_section_title {
+    margin: 0 0 10px;
+    font-size: 1.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.misutech_product_related {
+    padding: 10px 0;
+    border-top: 1px solid #edf0f1;
+}
+
+.misutech_product_related_grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px 16px;
+    margin-top: 20px;
+}
+
+.misutech_product_related_card {
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #edf0f1;
+    border-radius: 6px;
+    padding: 14px 12px;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.misutech_product_related_card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transform: translateY(-3px);
+}
+
+.misutech_product_related_link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.misutech_product_related_media {
+    position: relative;
+    display: grid;
+    height: 190px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    place-items: center;
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.misutech_product_related_image {
+    width: 100%;
+    height: 170px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    transition: transform 0.35s ease;
+}
+
+.misutech_product_related_card:hover .misutech_product_related_image {
+    transform: scale(1.05);
+}
+
+.misutech_product_card_actions {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    opacity: 0;
+    gap: 8px;
+    transform: translate(-50%, -35%);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.misutech_product_related_card:hover .misutech_product_card_actions {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+.misutech_product_card_action {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    place-items: center;
+    color: #ffffff;
+    border: 0;
+    border-radius: 50%;
+    background: #0f172a;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.misutech_product_card_action:hover {
+    background: #3b82f6;
+    transform: scale(1.1);
+}
+
+.misutech_product_card_action.added {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    transform: scale(1.15) !important;
+}
+
+.misutech_product_related_name {
+    overflow: hidden;
+    margin: 0 0 6px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #1e293b;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    height: 38px;
+    line-height: 19px;
+}
+
+.misutech_product_related_stars {
+    margin-bottom: 6px;
+    color: #f59e0b;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.misutech_product_related_price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: auto;
+}
+
+.misutech_product_price_sale_tag {
+    color: #ef4444;
+}
+
+@media (max-width: 1200px) {
+    .misutech_product_related_grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .misutech_product_related_grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .misutech_product_related_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px 8px;
+    }
+
+    .misutech_product_related_media {
+        height: 150px;
+    }
+
+    .misutech_product_related_image {
+        height: 135px;
+    }
+}
+
+/* =========================================================================
+   MISUTECH PRODUCT REVIEWS (Modern UI & Rating System)
+   ========================================================================= */
+.misutech_product_reviews {
+    padding: 40px 0 50px;
+    border-top: 1px solid #edf0f2;
+    background: #ffffff;
+}
+
+.misutech_reviews_section_header {
+    margin-bottom: 24px;
+}
+
+.misutech_reviews_section_subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.misutech_product_review_layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.misutech_product_review_summary {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.misutech_product_review_score_box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px 16px;
+    text-align: center;
+}
+
+.misutech_product_score_big {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.misutech_product_score_value {
+    font-size: 38px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.misutech_product_score_star {
+    font-size: 26px;
+    color: #ffb000;
+}
+
+.misutech_product_stars_visual {
+    color: #ffb000;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.misutech_product_stars_visual .star-item {
+    color: #cbd5e1;
+}
+
+.misutech_product_stars_visual .star-item.filled {
+    color: #ffb000;
+}
+
+.misutech_product_score_count {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.misutech_product_review_bars {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.misutech_product_review_bar_row {
+    display: grid;
+    grid-template-columns: 38px 1fr 24px;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+}
+
+.bar_star_label {
+    color: #475569;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.bar_star_label .star_icon {
+    color: #ffb000;
+    font-size: 11px;
+}
+
+.bar_track {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.bar_fill {
+    height: 100%;
+    background: #ffb000;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.bar_count {
+    color: #94a3b8;
+    text-align: right;
+    font-weight: 500;
+}
+
+.misutech_product_review_prompt {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.prompt_title {
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.prompt_desc {
+    margin: 0 0 12px;
+    font-size: 11.5px;
+    color: #64748b;
+    line-height: 1.35;
+}
+
+.misutech_btn_open_review_form {
+    display: inline-block;
+    width: 100%;
+    padding: 9px 14px;
+    background: #ffffff;
+    color: #003b70;
+    border: 1px solid #003b70;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.misutech_btn_open_review_form:hover {
+    background: #003b70;
+    color: #ffffff;
+}
+
+.misutech_product_review_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.misutech_product_review_form_card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.misutech_product_review_form .form_header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.misutech_product_review_form .form_title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.rating_picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.picker_label {
+    font-size: 12px;
+    color: #475569;
+}
+
+.misutech_star_picker {
+    display: flex;
+    gap: 3px;
+}
+
+.misutech_star_picker .star_btn {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 20px;
+    color: #cbd5e1;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.1s, transform 0.1s;
+}
+
+.misutech_star_picker .star_btn:hover {
+    transform: scale(1.15);
+}
+
+.misutech_star_picker .star_btn.active {
+    color: #ffb000;
+}
+
+.star_rating_text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ff9800;
+}
+
+.form_grid_fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.field_group {
+    margin-bottom: 12px;
+}
+
+.field_label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.field_label .req {
+    color: #dc2626;
+}
+
+.field_label .opt {
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.misutech_product_review_input,
+.misutech_product_review_textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #1e293b;
+    background: #ffffff;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+
+.misutech_product_review_input {
+    height: 38px;
+    padding: 0 12px;
+}
+
+.misutech_product_review_textarea {
+    padding: 8px 12px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.misutech_product_review_input:focus,
+.misutech_product_review_textarea:focus {
+    border-color: #003b70;
+    box-shadow: 0 0 0 3px rgba(0, 59, 112, 0.08);
+}
+
+.review_form_error {
+    color: #dc2626;
+    font-size: 12.5px;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 4px;
+}
+
+.form_actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.misutech_product_review_submit {
+    height: 38px;
+    padding: 0 24px;
+    background: #003b70;
+    color: #ffffff;
+    border: 0;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.misutech_product_review_submit:hover {
+    background: #002547;
+}
+
+.misutech_product_review_submit:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Danh sách reviews */
+.misutech_reviews_list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.misutech_product_submitted_review {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 14px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.review_avatar {
+    width: 42px;
+    height: 42px;
+    background: #003b70;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.review_body {
+    min-width: 0;
+}
+
+.review_header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.review_author_name {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.review_verified_badge {
+    font-size: 11px;
+    color: #16a34a;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.review_time {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-left: auto;
+}
+
+.review_stars {
+    color: #cbd5e1;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.review_stars .star-item.filled {
+    color: #ffb000;
+}
+
+.review_comment_text {
+    margin: 0;
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.55;
+}
+
+.misutech_product_review_empty {
+    padding: 30px;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    color: #64748b;
+}
+
+.misutech_product_review_empty .empty_icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.misutech_product_review_empty p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .misutech_product_review_layout {
+        grid-template-columns: 1fr;
+    }
+    .form_grid_fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+.misutech_product_recent {
+    min-height: 300px;
+    padding-top: 87px;
+    border-top: 1px solid #edf0f1;
+}
+
+.misutech_product_recent_inner {
+    text-align: center;
+}
+
+.misutech_product_recent_title {
+    margin: 0 0 10px;
+        font-size: 2.35rem;
+    font-weight: 600;
+}
+
+.misutech_product_recent_subtitle {
+    margin: 0;
+    color: var(--misutech_product_secondary);
+    font-size: 1rem;
+}
+
+.misutech_product_newsletter {
+    min-height: 94px;
+    color: var(--misutech_product_white);
+    background: var(--misutech_product_primary);
+}
+
+.misutech_product_newsletter_inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    min-height: 94px;
+    align-items: center;
+    gap: 70px;
+}
+
+.misutech_product_socials {
+    display: flex;
+    gap: 20px;
+}
+
+.misutech_product_social {
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.misutech_product_social:hover {
+    color: var(--misutech_product_accent);
+}
+
+.misutech_product_newsletter_form {
+    display: grid;
+    grid-template-columns: 150px minmax(270px, 1fr);
+    align-items: center;
+    gap: 24px;
+}
+
+.misutech_product_newsletter_title {
+        font-size: 1.15rem;
+}
+
+.misutech_product_newsletter_control {
+    position: relative;
+    height: 40px;
+}
+
+.misutech_product_newsletter_input {
+    width: 100%;
+    height: 100%;
+    padding: 0 125px 0 21px;
+    color: var(--misutech_product_text);
+    border: 0;
+    border-radius: 22px;
+    outline: 0;
+    font-size: 0.95rem;
+}
+
+.misutech_product_newsletter_submit {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    height: 34px;
+    padding: 0 21px;
+    color: var(--misutech_product_white);
+    border: 0;
+    border-radius: 18px;
+    background: var(--misutech_product_primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.misutech_product_newsletter_submit:hover {
+    background: var(--misutech_product_secondary);
+}
+
+.misutech_product_footer {
+    color: #737b82;
+    background: var(--misutech_product_white);
+}
+
+.misutech_product_footer_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    min-height: 260px;
+    padding-top: 58px;
+    gap: 70px;
+}
+
+.misutech_product_footer_column {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.misutech_product_footer_title {
+    margin: 0 0 14px;
+    color: #222;
+        font-size: 1rem;
+    font-weight: 700;
+}
+
+.misutech_product_footer_link,
+.misutech_product_footer_contact {
+    font-size: 0.95rem;
+}
+
+.misutech_product_footer_link:hover {
+    color: var(--misutech_product_primary);
+}
+
+.misutech_product_footer_bottom {
+    min-height: 70px;
+    background: #f1f2f2;
+}
+
+.misutech_product_footer_bottom_inner {
+    display: flex;
+    min-height: 70px;
+    align-items: center;
+    justify-content: space-between;
+    color: #606970;
+    font-size: 0.85rem;
+}
+
+.misutech_product_footer_payments {
+    width: 240px;
+    height: auto;
+}
+
+.misutech_product_help {
+    position: fixed;
+    z-index: 35;
+    top: 38%;
+    right: 0;
+    display: grid;
+    width: 39px;
+    height: 39px;
+    padding: 0;
+    place-items: center;
+    color: #8c50ef;
+    border: 0;
+    border-radius: 20px 0 0 20px;
+    background: var(--misutech_product_white);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+}
+
+.misutech_product_back_top {
+    position: fixed;
+    z-index: 34;
+    right: 20px;
+    bottom: 15px;
+    display: grid;
+    width: 41px;
+    height: 41px;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    place-items: center;
+    border: 1px solid #222;
+    border-radius: 50%;
+    background: var(--misutech_product_white);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.misutech_product_back_top.misutech_product_visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.misutech_product_cart_drawer {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    right: 0;
+    display: flex;
+    width: min(390px, 92vw);
+    height: 100vh;
+    padding: 24px;
+    flex-direction: column;
+    background: var(--misutech_product_white);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    transform: translateX(105%);
+    transition: transform 0.3s ease;
+}
+
+.misutech_product_cart_drawer.misutech_product_open {
+    transform: translateX(0);
+}
+
+.misutech_product_cart_drawer_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--misutech_product_border);
+}
+
+.misutech_product_cart_drawer_title {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.misutech_product_cart_close,
+.misutech_product_modal_close {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: #f0f1f2;
+    font-size: 2.2rem;
+    cursor: pointer;
+}
+
+.misutech_product_cart_items {
+    flex: 1;
+    padding: 24px 0;
+}
+
+.misutech_product_cart_empty {
+    color: var(--misutech_product_secondary);
+}
+
+.misutech_product_cart_item {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    align-items: center;
+    gap: 16px;
+}
+
+.misutech_product_cart_item_image {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+}
+
+.misutech_product_cart_item_title {
+    margin: 0 0 5px;
+    font-size: 1.2rem;
+}
+
+.misutech_product_cart_item_meta {
+    margin: 0;
+    color: var(--misutech_product_secondary);
+    font-size: 1rem;
+}
+
+.misutech_product_cart_footer {
+    display: flex;
+    padding-top: 20px;
+    justify-content: space-between;
+    border-top: 1px solid var(--misutech_product_border);
+    font-size: 1.5rem;
+}
+
+.misutech_product_drawer_overlay {
+    position: fixed;
+    z-index: 99998;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.misutech_product_modal {
+    position: fixed;
+    z-index: 100000;
+    inset: 0;
+    display: grid;
+    padding: 20px;
+    overflow: auto;
+    place-items: center;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.misutech_product_modal_dialog {
+    position: relative;
+    width: min(520px, 100%);
+    padding: 24px 28px;
+    border-radius: 8px;
+    background: var(--misutech_product_white);
+    box-shadow: 0 20px 45px rgba(0, 35, 67, 0.2);
+    border: 1px solid #e2e8f0;
+}
+
+.misutech_product_modal_close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: grid;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.misutech_product_modal_close:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.misutech_modal_header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.misutech_modal_icon {
+    width: 38px;
+    height: 38px;
+    background: #e0e8f0;
+    color: var(--misutech_product_primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.misutech_product_modal_title {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.misutech_product_modal_text {
+    margin: 0;
+    color: #64748b;
+    font-size: 12.5px;
+    line-height: 1.4;
+}
+
+.misutech_modal_product_preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.misutech_modal_product_preview img {
+    width: 44px;
+    height: 44px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.misutech_modal_pname {
+    margin: 0 0 2px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.35;
+}
+
+.misutech_modal_psku {
+    margin: 0;
+    font-size: 11.5px;
+    color: #64748b;
+    display: flex;
+    gap: 12px;
+}
+
+.misutech_modal_form_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.misutech_modal_form_group {
+    margin-bottom: 12px;
+}
+
+.misutech_modal_label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.misutech_modal_label .required {
+    color: #dc2626;
+}
+
+.misutech_product_modal_input,
+.misutech_product_modal_textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #1e293b;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.15s;
+    box-sizing: border-box;
+}
+
+.misutech_product_modal_input {
+    height: 38px;
+    padding: 0 12px;
+}
+
+.misutech_product_modal_textarea {
+    padding: 8px 12px;
+    line-height: 1.45;
+    resize: vertical;
+}
+
+.misutech_product_modal_input:focus,
+.misutech_product_modal_textarea:focus {
+    border-color: var(--misutech_product_primary);
+    box-shadow: 0 0 0 3px rgba(0, 59, 112, 0.08);
+}
+
+.misutech_product_modal_submit {
+    width: 100%;
+    height: 42px;
+    background: var(--misutech_product_primary);
+    color: #ffffff;
+    border: 0;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    margin-top: 4px;
+}
+
+.misutech_product_modal_submit:hover {
+    background: #002d57;
+}
+
+.misutech_product_modal_submit:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.misutech_product_faq_list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.misutech_product_faq_item {
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #f8fafc;
+}
+
+.misutech_product_faq_item summary {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    outline: none;
+}
+
+.misutech_product_faq_item p {
+    margin: 8px 0 0;
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.misutech_product_copy_control {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.misutech_product_copy_input {
+    min-width: 0;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #475569;
+    background: #f8fafc;
+}
+
+.misutech_product_copy_button {
+    color: var(--misutech_product_white);
+    border: 0;
+    border-radius: 4px;
+    background: var(--misutech_product_primary);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.misutech_product_copy_button:hover {
+    background: #002d57;
+}
+
+.misutech_product_image_dialog {
+    width: min(850px, 96vw);
+    padding: 26px;
+}
+
+.misutech_product_modal_image {
+    width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+}
+
+.misutech_product_quick_dialog {
+    display: grid;
+    width: min(780px, 100%);
+    grid-template-columns: 330px 1fr;
+    align-items: center;
+    gap: 34px;
+}
+
+.misutech_product_quick_image {
+    width: 330px;
+    height: 330px;
+    object-fit: contain;
+}
+
+.misutech_product_quick_price {
+    display: block;
+    margin: 16px 0 24px;
+    font-size: 2rem;
+}
+
+.misutech_product_quick_add {
+    width: 180px;
+}
+
+.misutech_product_toast {
+    position: fixed;
+    z-index: 100;
+    right: 24px;
+    bottom: 24px;
+    max-width: 340px;
+    padding: 14px 20px;
+    color: var(--misutech_product_white);
+    border-radius: 4px;
+    background: var(--misutech_product_primary);
+    box-shadow: 0 9px 26px rgba(0, 59, 112, 0.28);
+    font-size: 1.1rem;
+}
+
+@media (max-width: 1120px) {
+    .misutech_product_header_inner {
+        grid-template-columns: 180px minmax(300px, 480px) 185px;
+        gap: 20px;
+    }
+
+    .misutech_product_product_grid {
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+        gap: 35px;
+    }
+
+    .misutech_product_extra_actions {
+        gap: 17px;
+    }
+}
+
+@media (max-width: 900px) {
+    .misutech_product_header_inner {
+        grid-template-columns: 150px minmax(250px, 1fr) 165px;
+    }
+
+    .misutech_product_nav_links {
+        gap: 30px;
+    }
+
+    .misutech_product_product {
+        min-height: auto;
+    }
+
+    .misutech_product_product_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .misutech_product_gallery {
+        max-width: 650px;
+        margin-inline: auto;
+    }
+
+    .misutech_product_product_info {
+        position: static;
+        max-width: 650px;
+        margin-inline: auto;
+    }
+
+    .misutech_product_tabs {
+        overflow: auto hidden;
+        gap: 38px;
+        scrollbar-width: none;
+    }
+
+    .misutech_product_tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .misutech_product_benefit_grid {
+        gap: 30px;
+    }
+
+    .misutech_product_review_layout {
+        grid-template-columns: 300px minmax(0, 1fr);
+    }
+
+    .misutech_product_review_bars {
+        padding-inline: 35px;
+    }
+
+    .misutech_product_related_card {
+        flex-basis: 50%;
+    }
+
+    .misutech_product_newsletter_inner {
+        gap: 25px;
+    }
+
+    .misutech_product_newsletter_form {
+        grid-template-columns: 115px minmax(220px, 1fr);
+        gap: 12px;
+    }
+
+    .misutech_product_footer_grid {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 720px) {
+    .misutech_product_hide_on_mobile {
+        display: none !important;
+    }
+
+    .misutech_product_container {
+        width: min(100% - 30px, 620px);
+    }
+
+    .misutech_product_header_inner {
+        grid-template-columns: 1fr auto;
+        min-height: 124px;
+        padding: 15px 0;
+        gap: 12px;
+    }
+
+    .misutech_product_logo {
+        font-size: 2.2rem;
+    }
+
+    .misutech_product_search {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .misutech_product_header_actions {
+        gap: 4px;
+    }
+
+    .misutech_product_header_button {
+        width: 31px;
+    }
+
+    .misutech_product_mobile_menu {
+        display: block;
+    }
+
+    .misutech_product_nav,
+    .misutech_product_nav_inner {
+        min-height: 48px;
+    }
+
+    .misutech_product_nav_links {
+        display: none;
+        height: auto;
+        padding-bottom: 18px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .misutech_product_nav.misutech_product_nav_open
+        .misutech_product_nav_links {
+        display: flex;
+    }
+
+    .misutech_product_nav_link {
+        width: 100%;
+        padding: 11px 0;
+    }
+
+    .misutech_product_breadcrumb_inner {
+        overflow: auto hidden;
+        white-space: nowrap;
+    }
+
+    .misutech_product_product {
+        padding-bottom: 70px;
+    }
+
+    .misutech_product_gallery {
+        padding-top: 10px;
+    }
+
+    .misutech_product_thumbnails {
+        margin-top: 15px;
+        gap: 6px;
+    }
+
+    .misutech_product_title_row {
+        margin-top: 35px;
+    }
+
+    .misutech_product_tab_button {
+        font-size: 1.7rem;
+    }
+
+    .misutech_product_benefit_grid {
+        grid-template-columns: 1fr;
+        gap: 34px;
+    }
+
+    .misutech_product_benefits {
+        padding: 56px 0;
+    }
+
+    .misutech_product_reviews {
+        padding: 65px 0;
+    }
+
+    .misutech_product_review_layout {
+        grid-template-columns: 1fr;
+    }
+
+    .misutech_product_review_summary {
+        min-height: auto;
+    }
+
+    .misutech_product_review_content {
+        min-height: 220px;
+    }
+
+    .misutech_product_related {
+        min-height: 620px;
+    }
+
+    .misutech_product_related_media {
+        height: 235px;
+    }
+
+    .misutech_product_related_image {
+        width: 220px;
+        height: 220px;
+    }
+
+    .misutech_product_newsletter_inner {
+        grid-template-columns: 1fr;
+        padding: 25px 0;
+    }
+
+    .misutech_product_socials {
+        justify-content: center;
+    }
+
+    .misutech_product_newsletter_form {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .misutech_product_footer_grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding-bottom: 45px;
+    }
+
+    .misutech_product_quick_dialog {
+        grid-template-columns: 1fr;
+    }
+
+    .misutech_product_quick_image {
+        width: 260px;
+        height: 260px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .misutech_product_header_button:first-child,
+    .misutech_product_header_button:last-child {
+        display: none;
+    }
+
+    .misutech_product_title {
+        font-size: 2rem;
+    }
+
+    .misutech_product_direction {
+        gap: 3px;
+    }
+
+    .misutech_product_meta_row {
+        grid-template-columns: 95px 1fr;
+    }
+
+    .misutech_product_size_options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .misutech_product_size_button {
+        width: 100%;
+    }
+
+    .misutech_product_purchase_row {
+        grid-template-columns: 100px 1fr 46px;
+    }
+
+    .misutech_product_extra_actions {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .misutech_product_payment_box {
+        padding-inline: 15px;
+    }
+
+    .misutech_product_tabs {
+        gap: 28px;
+    }
+
+    .misutech_product_footer_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .misutech_product_footer_bottom_inner {
+        padding: 15px 0;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .misutech_product_modal_dialog {
+        padding: 30px 20px;
+    }
+
+    .misutech_product_copy_control {
+        grid-template-columns: 1fr;
+    }
+
+    .misutech_product_copy_button {
+        height: 42px;
+    }
+}
+
+/* ==========================================================================
+   SERIES & MODEL SWITCHER (Clean, Industrial, Professional)
+   ========================================================================== */
+.misutech_product_series_box {
+    margin-bottom: 20px;
+}
+
+.misutech_product_series_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.misutech_product_series_title {
+    font-size: 13px;
+    color: #475569;
+    font-weight: 500;
+    margin: 0;
+}
+
+.misutech_product_series_title strong {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.misutech_product_series_badge {
+    font-size: 11.5px;
+    color: #64748b;
+    background: #e2e8f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.misutech_product_series_models {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.misutech_product_model_btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 18px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 3px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.misutech_product_model_btn:hover {
+    border-color: #000000;
+    color: #000000;
+}
+
+.misutech_product_model_btn.misutech_product_model_active {
+    border: 1.5px solid #000000;
+    background: #ffffff;
+    color: #000000;
+    font-weight: 600;
+    cursor: default;
+}
+
+/* Tam giác góc trên bên phải */
+.misutech_product_model_btn.misutech_product_model_active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 15px 15px 0;
+    border-color: transparent #000000 transparent transparent;
+    z-index: 1;
+}
+
+/* Dấu tích trắng nhỏ trong tam giác góc */
+.misutech_product_model_btn.misutech_product_model_active::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 5px;
+    height: 3px;
+    border-left: 1.5px solid #ffffff;
+    border-bottom: 1.5px solid #ffffff;
+    transform: rotate(-45deg);
+    z-index: 2;
+}
+
+.misutech_product_model_btn .model_icon_check {
+    display: none;
+}
+
+.misutech_product_series_desc {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* Embedded Catalog PDF Viewers (Stacked vertically) */
+.misutech_product_catalog_viewers_list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 15px;
+}
+
+.misutech_product_catalog_item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.misutech_product_catalog_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.misutech_product_catalog_title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.misutech_product_catalog_badge {
+    background: #fee2e2;
+    color: #dc2626;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.misutech_product_catalog_actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.misutech_product_catalog_btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #334155;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.misutech_product_catalog_btn:hover {
+    border-color: #0f172a;
+    color: #0f172a;
+    background: #f1f5f9;
+}
+
+.misutech_product_catalog_btn_primary {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #ffffff;
+}
+
+.misutech_product_catalog_btn_primary:hover {
+    background: #1e293b;
+    border-color: #1e293b;
+    color: #ffffff;
+}
+
+.misutech_product_catalog_frame_wrap {
+    width: 100%;
+    background: #525659;
+    position: relative;
+    max-height: 1500px;
+    overflow-y: auto;
+}
+
+.misutech_product_pdf_iframe {
+    width: 100%;
+    height: 800px;
+    max-height: 1500px;
+    border: none;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .misutech_product_catalog_frame_wrap {
+        max-height: 600px;
+    }
+    
+    .misutech_product_pdf_iframe {
+        height: 550px;
+        max-height: 600px;
+    }
+    
+    .misutech_product_catalog_header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
