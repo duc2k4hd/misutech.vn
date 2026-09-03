@@ -48,20 +48,51 @@ class AuthController extends Controller
     }
 
     /**
-     * Xóa toàn bộ cache hệ thống (View, Route, Config, Database Query Cache).
+     * Xóa cache ứng dụng (page caches).
+     * Global data (categories, settings) được query thẳng từ DB mỗi request nên không cần warmup.
      */
     public function clearCache()
     {
         try {
+            // 1. Xóa cache compiled files
             Artisan::call('view:clear');
             Artisan::call('route:clear');
             Artisan::call('config:clear');
-            Artisan::call('cache:clear');
-            Cache::flush();
+
+            // 2. Xóa các cache dữ liệu trang theo từng key (KHÔNG flush toàn bộ)
+            $appCacheKeys = [
+                'home_flash_sale_product_ids',
+                'home_featured_product_ids',
+                'home_category_sections_map',
+                'home_blog_sections_map',
+                'home_banners_grouped',
+                'shop_sidebar_categories',
+                'shop_filter_brands',
+                'shop_max_price',
+                'quote_popular_products',
+                'blog_sidebar_categories',
+                'blog_popular_post_ids',
+                'blog_recent_post_ids',
+                'all_brands_page',
+                'document_filter_brands',
+                'document_filter_categories',
+                'document_total_count',
+                'category_descendants_map_product',
+                'category_descendants_map_post',
+                'all_categories_hierarchy_product',
+                // Legacy keys (nếu còn tồn tại từ version cũ)
+                'global_categories_tree',
+                'global_settings',
+                'global_banners',
+                'global_support_contacts',
+            ];
+            foreach ($appCacheKeys as $key) {
+                Cache::forget($key);
+            }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Đã làm mới toàn bộ bộ nhớ cache hệ thống thành công!'
+                'message' => 'Đã làm mới cache hệ thống thành công!'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -70,6 +101,8 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+
 
     /**
      * Đổi mật khẩu tài khoản Admin.

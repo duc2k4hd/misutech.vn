@@ -26,24 +26,28 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         \Illuminate\Pagination\Paginator::useBootstrapFive();
 
-        // Chia sẻ dữ liệu toàn cục cho View bằng View Composer (Chỉ kích hoạt khi View được render, giúp Artisan CLI & API chạy với tốc độ tối đa và không bao giờ lỗi thiếu bảng)
+        // Chia sẻ dữ liệu toàn cục cho View bằng View Composer
+        // QUAN TRỌNG: KHÔNG dùng Cache::rememberForever ở đây vì:
+        // 1. Eloquent Collection 200KB+ khi serialize/unserialize sẽ mất relationships
+        // 2. static $sharedData đã handle per-request caching hiệu quả (chỉ query 1 lần/request)
+        // 3. Các queries này rất nhanh (<5ms) với index đầy đủ
         View::composer('*', function ($view) {
             static $sharedData = null;
             if ($sharedData === null) {
                 try {
-                    $allCategories = Cache::rememberForever('global_categories_tree', function () {
-                        if (!Schema::hasTable('categories')) return collect();
-                        return Category::whereNull('parent_id')
+                    // Query thẳng từ DB (không qua cache) — an toàn, nhanh, không bao giờ lỗi serialization
+                    $allCategories = Schema::hasTable('categories')
+                        ? Category::whereNull('parent_id')
                             ->with('children.children')
                             ->orderBy('id', 'asc')
-                            ->get();
-                    });
+                            ->get()
+                        : collect();
+
                     $mainCategories = $allCategories->take(9);
 
-                    $settingsArray = Cache::rememberForever('global_settings', function () {
-                        if (!Schema::hasTable('settings')) return [];
-                        return \App\Models\Setting::all()->pluck('value', 'key')->toArray();
-                    });
+                    $settingsArray = Schema::hasTable('settings')
+                        ? \App\Models\Setting::all()->pluck('value', 'key')->toArray()
+                        : [];
                     $settings = (object) $settingsArray;
 
                     // Xử lý định dạng Hotline
@@ -56,25 +60,16 @@ class AppServiceProvider extends ServiceProvider
                         $settings->hotline = $settings->hotline ?? '0866.555.212';
                     }
 
-                    $global_banners_array = Cache::rememberForever('global_banners', function () {
-                        if (!Schema::hasTable('banners')) return [];
-                        return \App\Models\Banner::where('status', 'active')->get()->toArray();
-                    });
-                    $global_banners = collect($global_banners_array)->map(function ($item) {
-                        return (object) $item;
-                    });
+                    $global_banners = Schema::hasTable('banners')
+                        ? \App\Models\Banner::where('status', 'active')->get()
+                        : collect();
 
-                    $global_support_contacts_array = Cache::rememberForever('global_support_contacts', function () {
-                        if (!Schema::hasTable('support_contacts')) return [];
-                        return \App\Models\SupportContact::where('is_active', true)
+                    $supportContacts = Schema::hasTable('support_contacts')
+                        ? \App\Models\SupportContact::where('is_active', true)
                             ->where('show_in_popup', true)
                             ->orderBy('sort_order', 'asc')
                             ->get()
-                            ->toArray();
-                    });
-                    $supportContacts = collect($global_support_contacts_array)->map(function ($item) {
-                        return (object) $item;
-                    });
+                        : collect();
 
                     $sharedData = compact('allCategories', 'mainCategories', 'settings', 'global_banners', 'supportContacts');
                 } catch (\Throwable $e) {
@@ -90,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with($sharedData);
         });
+
 
         // Tự động xóa cache khi có thay đổi dữ liệu trong Admin
         \App\Models\Product::saved(function ($product) {
