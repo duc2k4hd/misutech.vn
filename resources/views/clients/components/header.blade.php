@@ -57,7 +57,7 @@
 <header class="misutech_home_header">
     <div class="misutech_home_container misutech_home_header_inner">
         <a class="misutech_home_logo" href="/" aria-label="Trang chủ MISUTECH">
-            <img src="{{ asset('storage/clients/imgs/settings/' . $settings->site_logo) }}" alt="Logo MISUTECH">
+            <img src="{{ !empty($settings->site_logo) ? asset('storage/clients/imgs/settings/' . $settings->site_logo) : asset('clients/imgs/no-image.png') }}" alt="{{ !empty($settings->name) ? $settings->name : 'Logo MISUTECH' }}">
         </a>
         <form class="misutech_home_search" role="search" action="{{ route('shop.index') }}" method="GET">
             <input class="misutech_home_search_input" name="tim-kiem" type="search" placeholder="Bạn cần tìm sản phẩm gì?"

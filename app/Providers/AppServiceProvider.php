@@ -26,54 +26,70 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         \Illuminate\Pagination\Paginator::useBootstrapFive();
 
-        // Share category data cho tất cả các view (để dùng ở master layout hoặc home)
-        $allCategories = Category::whereNull('parent_id')
-            ->with('children.children')
-            ->orderBy('id', 'asc')
-            ->get();
-        $mainCategories = $allCategories->take(9);
-        
-        // Lấy tất cả Settings, Cache dạng mảng vĩnh viễn (xóa cache khi có update), sau đó ép sang object
-        $settingsArray = Cache::rememberForever('global_settings', function () {
-            return \App\Models\Setting::all()->pluck('value', 'key')->toArray();
-        });
-        $settings = (object) $settingsArray;
+        // Chia sẻ dữ liệu toàn cục cho View bằng View Composer (Chỉ kích hoạt khi View được render, giúp Artisan CLI & API chạy với tốc độ tối đa và không bao giờ lỗi thiếu bảng)
+        View::composer('*', function ($view) {
+            static $sharedData = null;
+            if ($sharedData === null) {
+                try {
+                    $allCategories = Cache::rememberForever('global_categories_tree', function () {
+                        if (!Schema::hasTable('categories')) return collect();
+                        return Category::whereNull('parent_id')
+                            ->with('children.children')
+                            ->orderBy('id', 'asc')
+                            ->get();
+                    });
+                    $mainCategories = $allCategories->take(9);
 
-        // Xử lý định dạng Hotline
-        $rawHotline = preg_replace('/[^0-9]/', '', $settings->hotline ?? '0866555212');
-        if (strlen($rawHotline) == 10) {
-            $settings->hotline = preg_replace('/(\d{4})(\d{3})(\d{3})/', '$1.$2.$3', $rawHotline);
-        } elseif (strlen($rawHotline) == 11) {
-            $settings->hotline = preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1.$2.$3', $rawHotline);
-        } else {
-            $settings->hotline = $settings->hotline ?? '0866.555.212';
-        }
+                    $settingsArray = Cache::rememberForever('global_settings', function () {
+                        if (!Schema::hasTable('settings')) return [];
+                        return \App\Models\Setting::all()->pluck('value', 'key')->toArray();
+                    });
+                    $settings = (object) $settingsArray;
 
-        // Lấy tất cả Banner đang hiển thị (status = 'active') và Cache vĩnh viễn (xóa cache khi có update)
-        $global_banners_array = Cache::rememberForever('global_banners', function () {
-            return \App\Models\Banner::where('status', 'active')->get()->toArray();
-        });
-        $global_banners = collect($global_banners_array)->map(function ($item) {
-            return (object) $item;
-        });
-        
-        // Lấy danh sách Hotline & Nhân viên tư vấn hỗ trợ
-        $global_support_contacts_array = Cache::rememberForever('global_support_contacts', function () {
-            return \App\Models\SupportContact::where('is_active', true)
-                ->where('show_in_popup', true)
-                ->orderBy('sort_order', 'asc')
-                ->get()
-                ->toArray();
-        });
-        $supportContacts = collect($global_support_contacts_array)->map(function ($item) {
-            return (object) $item;
-        });
+                    // Xử lý định dạng Hotline
+                    $rawHotline = preg_replace('/[^0-9]/', '', $settings->hotline ?? '0866555212');
+                    if (strlen($rawHotline) == 10) {
+                        $settings->hotline = preg_replace('/(\d{4})(\d{3})(\d{3})/', '$1.$2.$3', $rawHotline);
+                    } elseif (strlen($rawHotline) == 11) {
+                        $settings->hotline = preg_replace('/(\d{4})(\d{3})(\d{4})/', '$1.$2.$3', $rawHotline);
+                    } else {
+                        $settings->hotline = $settings->hotline ?? '0866.555.212';
+                    }
 
-        View::share('allCategories', $allCategories);
-        View::share('mainCategories', $mainCategories);
-        View::share('settings', $settings);
-        View::share('global_banners', $global_banners);
-        View::share('supportContacts', $supportContacts);
+                    $global_banners_array = Cache::rememberForever('global_banners', function () {
+                        if (!Schema::hasTable('banners')) return [];
+                        return \App\Models\Banner::where('status', 'active')->get()->toArray();
+                    });
+                    $global_banners = collect($global_banners_array)->map(function ($item) {
+                        return (object) $item;
+                    });
+
+                    $global_support_contacts_array = Cache::rememberForever('global_support_contacts', function () {
+                        if (!Schema::hasTable('support_contacts')) return [];
+                        return \App\Models\SupportContact::where('is_active', true)
+                            ->where('show_in_popup', true)
+                            ->orderBy('sort_order', 'asc')
+                            ->get()
+                            ->toArray();
+                    });
+                    $supportContacts = collect($global_support_contacts_array)->map(function ($item) {
+                        return (object) $item;
+                    });
+
+                    $sharedData = compact('allCategories', 'mainCategories', 'settings', 'global_banners', 'supportContacts');
+                } catch (\Throwable $e) {
+                    $sharedData = [
+                        'allCategories'   => collect(),
+                        'mainCategories'  => collect(),
+                        'settings'        => (object) [],
+                        'global_banners'  => collect(),
+                        'supportContacts' => collect(),
+                    ];
+                }
+            }
+
+            $view->with($sharedData);
+        });
 
         // Tự động xóa cache khi có thay đổi dữ liệu trong Admin
         \App\Models\Product::saved(function ($product) {

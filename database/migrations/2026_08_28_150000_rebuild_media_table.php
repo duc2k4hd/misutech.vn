@@ -11,8 +11,9 @@ return new class extends Migration
         // Drop the old images table (0 records, safe to drop)
         Schema::dropIfExists('images');
 
-        // Create the new media table
-        Schema::create('media', function (Blueprint $table) {
+        // Create the new media table if not exists
+        if (!Schema::hasTable('media')) {
+            Schema::create('media', function (Blueprint $table) {
             $table->id();
 
             // Storage identifier (future-proof for multi-disk)
@@ -51,6 +52,7 @@ return new class extends Migration
             // Composite index for folder browsing queries
             $table->index(['folder', 'status', 'created_at'], 'idx_media_folder_status_date');
         });
+        }
     }
 
     public function down(): void

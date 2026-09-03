@@ -137,8 +137,8 @@
             <div class="misutech_home_footer_bottom">
                 <div class="misutech_home_container misutech_home_footer_bottom_wrap">
                     <div class="misutech_home_footer_copy">
-                        <img width="40" height="auto" src="{{ asset('storage/clients/imgs/settings/'. ($settings->site_favicon ?? 'favicon-misutech.png')) }}" alt="DMCA">
-                        {!! Blade::render($settings->copyright) !!}
+                        <img width="40" height="auto" src="{{ asset('storage/clients/imgs/settings/'. (!empty($settings->site_favicon) ? $settings->site_favicon : 'favicon-misutech.png')) }}" alt="DMCA">
+                        {!! !empty($settings->copyright) ? Blade::render($settings->copyright) : ('© ' . date('Y') . ' ' . (!empty($settings->name) ? $settings->name : 'MISUTECH') . '. Bảo lưu mọi quyền.') !!}
                     </div>
                     <div class="misutech_home_footer_trust">
                         <img src="{{ asset('storage/clients/imgs/others/TRUSTe.avif') }}" alt="TRUSTe">
