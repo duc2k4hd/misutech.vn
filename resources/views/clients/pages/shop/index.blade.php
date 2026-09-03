@@ -572,7 +572,7 @@
                 <h2 class="misutech_home_recent_title" style="margin-bottom: 40px;">Sản Phẩm Đã Xem</h2>
                 <div class="misutech_home_product_grid" style="grid-template-columns: repeat(4, 1fr);">
                     @foreach ($viewedProducts as $product)
-                        @include('clients.pages.shop.partials.product_card', ['product' => $product])
+                        @includeFirst(['clients.pages.shop.partials.product_card', 'clients.components.product_card'], ['product' => $product])
                     @endforeach
                 </div>
             </div>

@@ -1395,21 +1395,26 @@ a {
         font-size: 12px;
         gap: 12px;
     }
+
     .misutech_home_topbar_left {
         gap: 14px;
     }
+
     .misutech_home_topbar_item {
         gap: 5px;
         font-size: 11.5px;
         white-space: nowrap;
     }
+
     .misutech_home_topbar_right {
         gap: 5px;
     }
+
     .misutech_home_topbar_social {
         width: 24px;
         height: 24px;
     }
+
     .misutech_home_topbar_social svg {
         width: 11px;
         height: 11px;
@@ -1420,40 +1425,49 @@ a {
         min-height: 58px;
         gap: 14px;
     }
+
     .misutech_home_logo img {
         height: 40px;
         max-height: 40px;
     }
+
     .misutech_home_search {
         height: 40px;
         max-width: none;
         flex: 1;
     }
+
     .misutech_home_search_input {
         padding: 0 12px;
         font-size: 13px;
     }
+
     .misutech_home_search_button {
         width: 44px;
         font-size: 17px;
     }
+
     .misutech_home_header_actions {
         gap: 10px;
     }
+
     .misutech_home_header_action {
         padding: 4px;
         gap: 6px;
     }
+
     .misutech_home_header_action_icon {
         width: 32px;
         height: 32px;
         font-size: 14px;
         flex: 0 0 32px;
     }
+
     .misutech_home_header_action_copy {
         font-size: 11px;
         line-height: 1.3;
     }
+
     .misutech_home_header_action_copy strong {
         font-size: 11.5px;
     }
@@ -1462,17 +1476,20 @@ a {
     .misutech_home_nav {
         top: 58px;
     }
+
     .misutech_home_nav_inner {
         min-height: 42px;
         gap: 12px;
         overflow: visible !important;
     }
+
     .misutech_home_nav_categories {
         width: 220px;
         padding: 0 14px;
         font-size: 12px;
         flex-shrink: 0;
     }
+
     .misutech_home_nav_links {
         gap: 8px;
         overflow-x: auto;
@@ -1480,17 +1497,21 @@ a {
         -webkit-overflow-scrolling: touch;
         white-space: nowrap;
     }
+
     .misutech_home_nav_links::-webkit-scrollbar {
         display: none;
     }
+
     .misutech_home_nav_link {
         padding: 11px 8px;
         font-size: 12.5px;
         flex-shrink: 0;
     }
+
     .misutech_home_dropdown_wrapper .misutech_home_category_menu {
         width: 220px !important;
     }
+
     .misutech_home_mega_menu {
         left: 100% !important;
         right: auto !important;
@@ -1500,6 +1521,7 @@ a {
         max-height: 100% !important;
         overflow: hidden !important;
     }
+
     .misutech_home_mega_grid {
         grid-template-columns: repeat(2, 1fr);
         column-gap: 20px;
@@ -1512,36 +1534,45 @@ a {
         grid-template-columns: repeat(3, 1fr);
         gap: 24px;
     }
+
     .misutech_home_footer_col_hours {
         grid-column: span 1;
     }
+
     .misutech_home_footer_col_contact {
         grid-column: span 2;
     }
+
     .misutech_home_footer_newsletter_wrap {
         flex-direction: column;
         align-items: stretch;
         gap: 18px;
     }
+
     .misutech_home_footer_payments {
         justify-content: center;
         flex-wrap: wrap;
     }
+
     .misutech_home_footer_newsletter {
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
     }
+
     .misutech_home_footer_newsletter_form {
         max-width: 100%;
     }
+
     .misutech_home_footer_middle_2 {
         padding: 20px 0;
     }
+
     .misutech_home_footer_tags_wrap {
         flex-direction: column;
         gap: 14px;
     }
+
     .misutech_home_footer_bottom_wrap {
         flex-direction: column;
         text-align: center;
@@ -1746,6 +1777,7 @@ a {
 .misutech_drawer_panel::-webkit-scrollbar {
     width: 4px;
 }
+
 .misutech_drawer_panel::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 4px;
@@ -1807,7 +1839,7 @@ a {
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.misutech_drawer_item.is-expanded > .misutech_drawer_item_head .misutech_drawer_toggle {
+.misutech_drawer_item.is-expanded>.misutech_drawer_item_head .misutech_drawer_toggle {
     transform: rotate(90deg);
     color: var(--misutech_home_primary);
 }
@@ -1857,7 +1889,7 @@ a {
     transition: transform 0.2s ease;
 }
 
-.misutech_drawer_subitem.is-expanded > .misutech_drawer_subhead .misutech_drawer_grandtoggle {
+.misutech_drawer_subitem.is-expanded>.misutech_drawer_subhead .misutech_drawer_grandtoggle {
     transform: rotate(90deg);
     color: var(--misutech_home_primary);
 }
@@ -1971,6 +2003,7 @@ a {
         z-index: 1000;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     }
+
     .misutech_home_header_inner {
         min-height: 52px;
         padding: 8px 0;
@@ -1991,6 +2024,7 @@ a {
         justify-content: flex-start;
         padding-left: 6px;
     }
+
     .misutech_home_logo img {
         height: 36px;
         max-height: 36px;
@@ -2003,13 +2037,16 @@ a {
         align-items: center;
         gap: 6px;
     }
+
     .misutech_home_header_action {
         padding: 4px;
         gap: 0;
     }
+
     .misutech_home_header_action_copy {
         display: none;
     }
+
     .misutech_home_header_action_icon {
         width: 32px;
         height: 32px;
@@ -2032,15 +2069,18 @@ a {
         margin-bottom: 18px;
         text-align: center;
     }
+
     .misutech_home_footer_logo_img {
         max-height: 40px;
         margin: 0 auto;
         display: inline-block;
     }
+
     .misutech_home_footer_top_grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px 14px;
     }
+
     .misutech_home_footer_col_title {
         margin-bottom: 8px;
         font-size: 12.5px;
@@ -2048,6 +2088,7 @@ a {
         color: #0f172a;
         letter-spacing: 0.2px;
     }
+
     .misutech_home_footer_col_list {
         display: flex;
         flex-direction: column;
@@ -2056,6 +2097,7 @@ a {
         padding: 0;
         margin: 0;
     }
+
     .misutech_home_footer_col_list a {
         font-size: 12px;
         line-height: 1.35;
@@ -2063,9 +2105,11 @@ a {
         text-decoration: none;
         transition: color 0.15s;
     }
+
     .misutech_home_footer_col_list a:hover {
         color: var(--misutech_home_primary);
     }
+
     .misutech_home_footer_col_hours {
         grid-column: span 2;
         background: #f8fafc;
@@ -2073,11 +2117,13 @@ a {
         border-radius: 6px;
         border: 1px solid #e2e8f0;
     }
+
     .misutech_home_footer_col_hours .misutech_home_footer_text {
         font-size: 11.5px;
         line-height: 1.5;
         margin-bottom: 6px;
     }
+
     .misutech_home_footer_col_contact {
         grid-column: span 2;
         background: #f8fafc;
@@ -2085,6 +2131,7 @@ a {
         border-radius: 6px;
         border: 1px solid #e2e8f0;
     }
+
     .misutech_home_footer_contact_item {
         margin-bottom: 8px;
         font-size: 11.5px;
@@ -2093,62 +2140,76 @@ a {
         align-items: flex-start;
         gap: 8px;
     }
+
     .misutech_home_footer_socials {
         margin-top: 10px;
         justify-content: flex-start;
         gap: 8px;
     }
+
     .misutech_home_footer_newsletter_wrap {
         padding: 16px 0;
         gap: 16px;
     }
+
     .misutech_home_footer_payments {
         justify-content: center;
         gap: 6px;
     }
+
     .misutech_home_payment_icon {
         font-size: 10px;
         padding: 4px 8px;
     }
+
     .misutech_home_footer_newsletter {
         text-align: center;
     }
+
     .misutech_home_footer_newsletter_text h3 {
         font-size: 14px;
         margin-bottom: 4px;
     }
+
     .misutech_home_footer_newsletter_text p {
         font-size: 11.5px;
         margin-bottom: 10px;
     }
+
     .misutech_home_footer_newsletter_form {
         display: flex;
         flex-direction: column;
         gap: 8px;
         width: 100%;
     }
+
     .misutech_home_footer_newsletter_form input {
         height: 38px;
         font-size: 12px;
         padding: 0 12px;
         border-radius: 4px;
     }
+
     .misutech_home_footer_newsletter_form button {
         height: 38px;
         font-size: 12.5px;
         font-weight: 700;
         border-radius: 4px;
     }
+
     .misutech_home_footer_middle_2 {
         padding: 14px 0;
     }
+
     .misutech_home_footer_tags {
         font-size: 11px;
         line-height: 1.6;
     }
+
     .misutech_home_footer_bottom {
         padding: 14px 0;
     }
+
     .misutech_home_footer_copy {
         font-size: 11.5px;
         text-align: center;

@@ -20,11 +20,15 @@ class ProductService
         return DB::transaction(function () use ($data, $id) {
             $productData = collect($data)->except(['thumbnail_id', 'gallery_ids', 'catalog_ids'])->toArray();
 
-            // 1. Chuẩn hóa các trường rỗng chuỗi "" thành null
+            // 1. Chuẩn hóa các trường rỗng chuỗi "" thành null & cắt name tối đa 100 ký tự
             foreach ($productData as $key => $value) {
                 if (is_string($value) && trim($value) === '') {
                     $productData[$key] = null;
                 }
+            }
+
+            if (!empty($productData['name'])) {
+                $productData['name'] = mb_substr(trim((string)$productData['name']), 0, 100);
             }
 
             // 2. Set default slug nếu để trống
@@ -73,15 +77,28 @@ class ProductService
                         $productData['brand_id'] = (int)$brandVal;
                     } else {
                         $brandName = trim((string)$brandVal);
-                        $existingBrand = Brand::whereRaw('LOWER(name) = ?', [mb_strtolower($brandName)])->first();
+                        $brandSlug = Str::slug($brandName);
+                        $existingBrand = Brand::withTrashed()
+                            ->where('slug', $brandSlug)
+                            ->orWhere('name', $brandName)
+                            ->orWhereRaw('LOWER(name) = ?', [mb_strtolower($brandName)])
+                            ->first();
+
                         if ($existingBrand) {
+                            if ($existingBrand->trashed()) {
+                                $existingBrand->restore();
+                            }
                             $productData['brand_id'] = $existingBrand->id;
                         } else {
-                            $newBrand = Brand::create([
-                                'name' => $brandName,
-                                'slug' => Str::slug($brandName),
-                            ]);
-                            $productData['brand_id'] = $newBrand->id;
+                            try {
+                                $newBrand = Brand::create([
+                                    'name' => $brandName,
+                                    'slug' => $brandSlug,
+                                ]);
+                                $productData['brand_id'] = $newBrand->id;
+                            } catch (\Exception $e) {
+                                $productData['brand_id'] = Brand::withTrashed()->where('slug', $brandSlug)->value('id');
+                            }
                         }
                     }
                 } else {
@@ -95,18 +112,31 @@ class ProductService
                         $productData['series_id'] = (int)$seriesVal;
                     } else {
                         $seriesName = trim((string)$seriesVal);
-                        $existingSeries = Series::whereRaw('LOWER(name) = ?', [mb_strtolower($seriesName)])->first();
+                        $seriesSlug = Str::slug($seriesName);
+                        $existingSeries = Series::withTrashed()
+                            ->where('slug', $seriesSlug)
+                            ->orWhere('name', $seriesName)
+                            ->orWhereRaw('LOWER(name) = ?', [mb_strtolower($seriesName)])
+                            ->first();
+
                         if ($existingSeries) {
+                            if ($existingSeries->trashed()) {
+                                $existingSeries->restore();
+                            }
                             $productData['series_id'] = $existingSeries->id;
                         } else {
-                            $newSeries = Series::create([
-                                'name' => $seriesName,
-                                'slug' => Str::slug($seriesName),
-                                'brand_id' => $productData['brand_id'] ?? null,
-                                'category_id' => $productData['category_id'] ?? null,
-                                'status' => 'active',
-                            ]);
-                            $productData['series_id'] = $newSeries->id;
+                            try {
+                                $newSeries = Series::create([
+                                    'name' => $seriesName,
+                                    'slug' => $seriesSlug,
+                                    'brand_id' => $productData['brand_id'] ?? null,
+                                    'category_id' => $productData['category_id'] ?? null,
+                                    'status' => 'active',
+                                ]);
+                                $productData['series_id'] = $newSeries->id;
+                            } catch (\Exception $e) {
+                                $productData['series_id'] = Series::withTrashed()->where('slug', $seriesSlug)->value('id');
+                            }
                         }
                     }
                 } else {

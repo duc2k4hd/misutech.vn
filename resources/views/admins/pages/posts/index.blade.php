@@ -862,6 +862,7 @@
         // ================= TINYMCE =================
         function initTinyMCE() {
             tinymce.init({
+                license_key: 'gpl',
                 selector: '.tinymce',
                 min_height: 700,
                 height: 700,

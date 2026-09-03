@@ -83,4 +83,12 @@ class Product extends Model
             ->whereNotNull('published_at')
             ->where('published_at', '<=', \Carbon\Carbon::now('Asia/Ho_Chi_Minh'));
     }
+
+    /**
+     * Tự động cắt tên sản phẩm nếu dài hơn 100 ký tự (cắt bỏ phần đuôi).
+     */
+    public function setNameAttribute($value): void
+    {
+        $this->attributes['name'] = $value !== null ? mb_substr(trim((string)$value), 0, 100) : null;
+    }
 }

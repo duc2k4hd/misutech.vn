@@ -679,6 +679,80 @@
             let currentTrashFilter = 'all';
             window.currentTrashFilter = currentTrashFilter;
 
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+            window.escapeHtml = escapeHtml;
+
+            window.updateCheckAllState = function() {
+                let totalOnPage = $('.product-checkbox').length;
+                let checkedOnPage = $('.product-checkbox:checked').length;
+                let totalSelected = selectedProducts.size;
+
+                if (totalOnPage > 0 && checkedOnPage === totalOnPage) {
+                    $('#checkAll').prop('checked', true).prop('indeterminate', false);
+                } else if (checkedOnPage > 0) {
+                    $('#checkAll').prop('checked', false).prop('indeterminate', true);
+                } else {
+                    $('#checkAll').prop('checked', false).prop('indeterminate', false);
+                }
+
+                $('.selectedCount').text(totalSelected);
+
+                if (totalSelected > 0) {
+                    if (window.currentTrashFilter === 'trashed') {
+                        $('#btnBulkRestore').show();
+                        $('#btnBulkForceDelete').show();
+                        $('#btnBulkDelete').hide();
+                    } else {
+                        $('#btnBulkRestore').hide();
+                        $('#btnBulkForceDelete').hide();
+                        $('#btnBulkDelete').show();
+                    }
+                    $('#selectAllBanner').removeClass('d-none').addClass('d-flex');
+                    $('#selectedPageCount').text(totalSelected);
+                } else {
+                    $('#btnBulkRestore').hide();
+                    $('#btnBulkForceDelete').hide();
+                    $('#btnBulkDelete').hide();
+                    $('#selectAllBanner').removeClass('d-flex').addClass('d-none');
+                }
+            };
+
+            window.setTrashFilter = function(status, el) {
+                window.currentTrashFilter = status;
+                $('#filterStatusGroup button').removeClass('active');
+                if (el) $(el).addClass('active');
+
+                selectedProducts.clear();
+                window.updateCheckAllState();
+                if (table) {
+                    table.ajax.reload();
+                }
+            };
+
+            window.clearAllSelections = function() {
+                selectedProducts.clear();
+                $('.product-checkbox').prop('checked', false);
+                window.updateCheckAllState();
+            };
+
+            window.selectAllAcrossSystem = function() {
+                toastr.info('Đã chọn tất cả sản phẩm đang hiển thị');
+                $('.product-checkbox').each(function() {
+                    $(this).prop('checked', true);
+                    let val = parseInt($(this).val());
+                    if (!isNaN(val)) selectedProducts.add(val);
+                });
+                window.updateCheckAllState();
+            };
+
             if ($.fn && $.fn.dataTable) {
                 $.fn.dataTable.ext.errMode = 'none';
             }
@@ -689,6 +763,10 @@
                 lengthMenu: [[10, 50, 200, 500, 2000, 5000], [10, 50, 200, 500, 2000, 5000]],
                 ajax: {
                     url: '{{ route("admin.api.products.list") }}',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
                     data: function(d) {
                         d.trash_status = window.currentTrashFilter;
                     },
@@ -725,8 +803,8 @@
                     { 
                         data: 'thumbnail_media',
                         render: function(data, type, row) {
-                            if(data && data.length > 0) {
-                                return `<div class="thumbnail-wrapper"><img src="${data[0].url}" class="thumbnail-img" alt="${row.name}"></div>`;
+                            if(Array.isArray(data) && data.length > 0 && data[0] && data[0].url) {
+                                return `<div class="thumbnail-wrapper"><img src="${data[0].url}" class="thumbnail-img" alt="${escapeHtml(row.name)}"></div>`;
                             }
                             return `<div class="thumbnail-wrapper"><i class="fa fa-image no-image-icon"></i></div>`;
                         }
@@ -734,9 +812,11 @@
                     { 
                         data: 'name',
                         render: function(data, type, row) {
+                            let nameTxt = escapeHtml(data || '');
+                            let skuTxt = escapeHtml(row.sku || 'N/A');
                             return `
-                                <div class="product-name-txt">${data}</div>
-                                <div class="product-sku-txt">Mã: ${row.sku || 'N/A'}</div>
+                                <div class="product-name-txt">${nameTxt}</div>
+                                <div class="product-sku-txt">Mã: ${skuTxt}</div>
                             `;
                         }
                     },
@@ -747,20 +827,21 @@
                     { 
                         data: 'price',
                         render: function(data) {
-                            let priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data);
+                            let num = parseFloat(data) || 0;
+                            let priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
                             return `<span class="price-txt">${priceFormatted}</span>`;
                         }
                     },
                     { 
                         data: 'category',
                         render: function(data) {
-                            return data ? `<span style="color:#475569; font-size:13px; font-weight:500;">${data.name}</span>` : '<span class="text-muted">-</span>';
+                            return data && data.name ? `<span style="color:#475569; font-size:13px; font-weight:500;">${escapeHtml(data.name)}</span>` : '<span class="text-muted">-</span>';
                         }
                     },
                     { 
                         data: 'series',
                         render: function(data) {
-                            return data ? `<span class="badge badge-light" style="font-size:12px; font-weight:600; color:#593bdb; background:#f0effb;">${data.name}</span>` : '<span class="text-muted">-</span>';
+                            return data && data.name ? `<span class="badge badge-light" style="font-size:12px; font-weight:600; color:#593bdb; background:#f0effb;">${escapeHtml(data.name)}</span>` : '<span class="text-muted">-</span>';
                         }
                     },
                     { 
@@ -822,7 +903,7 @@
                         selectedProducts.delete(val);
                     }
                 });
-                updateCheckAllState();
+                window.updateCheckAllState();
             };
 
             window.toggleProductCheck = function(el, id, e) {
@@ -834,7 +915,7 @@
                 } else if (!isNaN(val)) {
                     selectedProducts.delete(val);
                 }
-                updateCheckAllState();
+                window.updateCheckAllState();
             };
 
             table.on('draw', function() {
@@ -844,7 +925,7 @@
                         $(this).prop('checked', true);
                     }
                 });
-                updateCheckAllState();
+                window.updateCheckAllState();
             });
             
             $('#productModal').on('hidden.bs.modal', function () {
@@ -1035,6 +1116,7 @@
 
         function initTinyMCE() {
             tinymce.init({
+                license_key: 'gpl',
                 selector: '.tinymce',
                 min_height: 700,
                 height: 700,

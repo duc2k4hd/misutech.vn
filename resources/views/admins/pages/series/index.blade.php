@@ -249,6 +249,7 @@
 
         function initTinyMCE() {
             tinymce.init({
+                license_key: 'gpl',
                 selector: '#content',
                 height: 250,
                 menubar: false,

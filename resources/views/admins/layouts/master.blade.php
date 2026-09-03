@@ -340,6 +340,11 @@
 
     <!-- Global Admin Utility Scripts -->
     <script>
+        $(document).ready(function() {
+            $('#preloader').fadeOut(300);
+            $('#main-wrapper').addClass('show');
+        });
+
         // Thiết lập cấu hình AJAX mặc định cho toàn bộ Admin (CSRF + Headers)
         $.ajaxSetup({
             headers: {

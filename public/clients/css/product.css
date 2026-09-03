@@ -59,7 +59,7 @@ body.misutech_product_no_scroll {
 
 .misutech_product_logo {
     width: max-content;
-        font-size: 2.5rem;
+    font-size: 2.5rem;
     font-weight: 700;
     letter-spacing: -1.2px;
 }
@@ -180,7 +180,7 @@ body.misutech_product_no_scroll {
     display: flex;
     align-items: center;
     gap: 4px;
-        font-size: 0.95rem;
+    font-size: 0.95rem;
     font-weight: 600;
     transition: color 0.2s ease;
 }
@@ -881,7 +881,7 @@ body.misutech_product_no_scroll {
     left: 50%;
     padding: 0 16px;
     background: var(--misutech_product_white);
-        font-size: 0.9rem;
+    font-size: 0.9rem;
     font-weight: 700;
     transform: translateX(-50%);
     white-space: nowrap;
@@ -965,14 +965,28 @@ body.misutech_product_no_scroll {
 }
 
 @keyframes misutech_fade_in {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .misutech_product_tab_panel {
     height: fit-content;
     color: #475569;
     line-height: 1.75;
+}
+
+.misutech_product_tab_panel img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
 }
 
 .misutech_product_tab_panel.misutech_product_active {
@@ -1067,6 +1081,11 @@ body.misutech_product_no_scroll {
 
 .misutech_product_tabs_main {
     min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .misutech_product_tabs_sidebar {
@@ -1342,6 +1361,7 @@ body.misutech_product_no_scroll {
         grid-template-columns: 1fr;
         gap: 24px;
     }
+
     .misutech_product_tabs_sidebar {
         position: static;
         margin-top: 10px;
@@ -1416,7 +1436,7 @@ body.misutech_product_no_scroll {
 
 .misutech_product_review_heading {
     margin: 0 0 18px;
-        font-size: 1.8rem;
+    font-size: 1.8rem;
     font-weight: 600;
 }
 
@@ -1538,7 +1558,7 @@ body.misutech_product_no_scroll {
 
 .misutech_product_review_form_title {
     margin: 0 0 20px;
-        font-size: 1.8rem;
+    font-size: 1.8rem;
 }
 
 .misutech_product_review_input,
@@ -1578,7 +1598,7 @@ body.misutech_product_no_scroll {
 
 .misutech_product_submitted_name {
     margin: 10px 0;
-        font-size: 1.6rem;
+    font-size: 1.6rem;
 }
 
 .misutech_product_submitted_text {
@@ -2207,6 +2227,7 @@ body.misutech_product_no_scroll {
     .misutech_product_review_layout {
         grid-template-columns: 1fr;
     }
+
     .form_grid_fields {
         grid-template-columns: 1fr;
     }
@@ -2224,7 +2245,7 @@ body.misutech_product_no_scroll {
 
 .misutech_product_recent_title {
     margin: 0 0 10px;
-        font-size: 2.35rem;
+    font-size: 2.35rem;
     font-weight: 600;
 }
 
@@ -2274,7 +2295,7 @@ body.misutech_product_no_scroll {
 }
 
 .misutech_product_newsletter_title {
-        font-size: 1.15rem;
+    font-size: 1.15rem;
 }
 
 .misutech_product_newsletter_control {
@@ -2335,7 +2356,7 @@ body.misutech_product_no_scroll {
 .misutech_product_footer_title {
     margin: 0 0 14px;
     color: #222;
-        font-size: 1rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
@@ -2894,6 +2915,7 @@ body.misutech_product_no_scroll {
         white-space: nowrap;
         scrollbar-width: none;
     }
+
     .misutech_product_breadcrumb_inner::-webkit-scrollbar {
         display: none;
     }
@@ -2925,6 +2947,7 @@ body.misutech_product_no_scroll {
         overflow-x: auto;
         scrollbar-width: none;
     }
+
     .misutech_product_thumbnails::-webkit-scrollbar {
         display: none;
     }
@@ -3064,6 +3087,7 @@ body.misutech_product_no_scroll {
         gap: 14px;
         padding: 8px 0 4px;
     }
+
     .misutech_product_tabs::-webkit-scrollbar {
         display: none;
     }
@@ -3388,15 +3412,14 @@ body.misutech_product_no_scroll {
     .misutech_product_catalog_frame_wrap {
         max-height: 600px;
     }
-    
+
     .misutech_product_pdf_iframe {
         height: 550px;
         max-height: 600px;
     }
-    
+
     .misutech_product_catalog_header {
         flex-direction: column;
         align-items: flex-start;
     }
 }
-

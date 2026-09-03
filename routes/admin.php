@@ -67,8 +67,10 @@ Route::middleware('auth')->group(function () {
     
     // Products
     Route::get('products', [\App\Http\Controllers\Admins\ProductController::class, 'index'])->name('products.index');
-    Route::get('api/products', [\App\Http\Controllers\Admins\ProductController::class, 'apiList'])->name('api.products.list');
+    Route::match(['get', 'post'], 'api/products-list', [\App\Http\Controllers\Admins\ProductController::class, 'apiList'])->name('api.products.list');
+    Route::get('api/products', [\App\Http\Controllers\Admins\ProductController::class, 'apiList']);
     Route::post('api/products', [\App\Http\Controllers\Admins\ProductController::class, 'apiStore'])->name('api.products.store');
+    Route::post('api/products/store', [\App\Http\Controllers\Admins\ProductController::class, 'apiStore']);
     Route::get('api/products/{id}', [\App\Http\Controllers\Admins\ProductController::class, 'apiShow'])->name('api.products.show');
     Route::put('api/products/{id}', [\App\Http\Controllers\Admins\ProductController::class, 'apiUpdate'])->name('api.products.update');
     Route::delete('api/products/{id}', [\App\Http\Controllers\Admins\ProductController::class, 'apiDestroy'])->name('api.products.destroy');

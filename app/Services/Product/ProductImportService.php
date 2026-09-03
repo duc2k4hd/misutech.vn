@@ -150,16 +150,17 @@ class ProductImportService
         $hasGalleryCol  = in_array('gallery', $passedKeys);
         $hasCatalogCol  = in_array('catalog', $passedKeys);
 
-        // 1. Tải trước Map dữ liệu Category, Brand, Series
+        // 1. Tải trước Map dữ liệu Category, Brand, Series (Bao gồm cả slug và soft-deleted)
         $categoryMap = [];
         $brandMap    = [];
         $seriesMap   = [];
 
         if ($hasCategoryCol) {
-            $categories = Category::all(['id', 'name', 'slug']);
+            $categories = Category::withTrashed()->get(['id', 'name', 'slug', 'deleted_at']);
             foreach ($categories as $c) {
                 $categoryMap[$c->id] = $c->id;
                 $categoryMap[mb_strtolower(trim($c->name))] = $c->id;
+                $categoryMap[Str::slug($c->name)] = $c->id;
                 $categoryMap[$c->slug] = $c->id;
             }
         }
@@ -169,15 +170,17 @@ class ProductImportService
             foreach ($brands as $b) {
                 $brandMap[$b->id] = $b->id;
                 $brandMap[mb_strtolower(trim($b->name))] = $b->id;
+                $brandMap[Str::slug($b->name)] = $b->id;
                 $brandMap[$b->slug] = $b->id;
             }
         }
 
         if ($hasSeriesCol) {
-            $seriesList = Series::all(['id', 'name', 'slug']);
+            $seriesList = Series::withTrashed()->get(['id', 'name', 'slug', 'deleted_at']);
             foreach ($seriesList as $s) {
                 $seriesMap[$s->id] = $s->id;
                 $seriesMap[mb_strtolower(trim($s->name))] = $s->id;
+                $seriesMap[Str::slug($s->name)] = $s->id;
                 $seriesMap[$s->slug] = $s->id;
             }
         }
@@ -258,21 +261,21 @@ class ProductImportService
                 continue;
             }
 
-            $sku = trim($row['sku']);
+            $sku = mb_substr(trim($row['sku']), 0, 191);
             $isNew = !$existingProducts->has($sku);
 
             $cleanRow = ['sku' => $sku];
 
-            // Tên
+            // Tên: tự động cắt nếu dài hơn 100 ký tự (cắt bỏ phần đuôi)
             if (array_key_exists('name', $row)) {
-                $cleanRow['name'] = trim((string)$row['name']);
+                $cleanRow['name'] = mb_substr(trim((string)$row['name']), 0, 100);
             }
 
             // Slug
             if (array_key_exists('slug', $row) && !empty($row['slug'])) {
-                $cleanRow['slug'] = Str::slug($row['slug']);
+                $cleanRow['slug'] = mb_substr(Str::slug($row['slug']), 0, 191);
             } elseif (isset($cleanRow['name'])) {
-                $cleanRow['slug'] = Str::slug($cleanRow['name']);
+                $cleanRow['slug'] = mb_substr(Str::slug($cleanRow['name']), 0, 191);
             }
 
             // Giá
@@ -293,7 +296,7 @@ class ProductImportService
 
             // SEO Meta
             if (array_key_exists('meta_title', $row)) {
-                $cleanRow['meta_title'] = $row['meta_title'] !== '' ? $row['meta_title'] : null;
+                $cleanRow['meta_title'] = $row['meta_title'] !== '' ? mb_substr(trim((string)$row['meta_title']), 0, 500) : null;
             }
             if (array_key_exists('meta_description', $row)) {
                 $cleanRow['meta_description'] = $row['meta_description'] !== '' ? $row['meta_description'] : null;
@@ -335,21 +338,49 @@ class ProductImportService
                 $catVal = $row['category'] ?? $row['category_id'] ?? null;
                 if (!empty($catVal)) {
                     $catName = trim((string)$catVal);
+                    $catSlug = Str::slug($catName);
                     $lookup = is_numeric($catVal) ? (int)$catVal : mb_strtolower($catName);
 
                     if (isset($categoryMap[$lookup])) {
                         $cleanRow['category_id'] = $categoryMap[$lookup];
+                    } elseif (isset($categoryMap[$catSlug])) {
+                        $cleanRow['category_id'] = $categoryMap[$catSlug];
                     } elseif (!is_numeric($catVal)) {
-                        // Tự động tạo Danh mục mới nếu chưa có trong hệ thống
-                        $newCat = Category::create([
-                            'name'   => $catName,
-                            'slug'   => Str::slug($catName),
-                            'status' => 'active',
-                        ]);
-                        $categoryMap[$newCat->id] = $newCat->id;
-                        $categoryMap[mb_strtolower($catName)] = $newCat->id;
-                        $categoryMap[$newCat->slug] = $newCat->id;
-                        $cleanRow['category_id'] = $newCat->id;
+                        // Tìm trong DB (kể cả đã bị soft-deleted hoặc lệch Unicode normalization)
+                        $existingCat = Category::withTrashed()
+                            ->where('slug', $catSlug)
+                            ->orWhere('name', $catName)
+                            ->orWhereRaw('LOWER(name) = ?', [mb_strtolower($catName)])
+                            ->first();
+
+                        if ($existingCat) {
+                            if ($existingCat->trashed()) {
+                                $existingCat->restore();
+                            }
+                            $catId = $existingCat->id;
+                        } else {
+                            try {
+                                $newCat = Category::create([
+                                    'name'   => $catName,
+                                    'slug'   => $catSlug,
+                                    'status' => 'active',
+                                ]);
+                                $catId = $newCat->id;
+                            } catch (\Exception $e) {
+                                // Nếu bị lỗi trùng slug do race condition hoặc alias
+                                $catId = Category::withTrashed()->where('slug', $catSlug)->value('id');
+                            }
+                        }
+
+                        if ($catId) {
+                            $categoryMap[$catId] = $catId;
+                            $categoryMap[$lookup] = $catId;
+                            $categoryMap[$catSlug] = $catId;
+                            $categoryMap[mb_strtolower($catName)] = $catId;
+                            $cleanRow['category_id'] = $catId;
+                        } else {
+                            $cleanRow['category_id'] = null;
+                        }
                     } else {
                         $cleanRow['category_id'] = null;
                     }
@@ -363,20 +394,43 @@ class ProductImportService
                 $brandVal = $row['brand'] ?? $row['brand_id'] ?? null;
                 if (!empty($brandVal)) {
                     $brandName = trim((string)$brandVal);
+                    $brandSlug = Str::slug($brandName);
                     $lookup = is_numeric($brandVal) ? (int)$brandVal : mb_strtolower($brandName);
 
                     if (isset($brandMap[$lookup])) {
                         $cleanRow['brand_id'] = $brandMap[$lookup];
+                    } elseif (isset($brandMap[$brandSlug])) {
+                        $cleanRow['brand_id'] = $brandMap[$brandSlug];
                     } elseif (!is_numeric($brandVal)) {
-                        // Tự động tạo Hãng (Brand) mới nếu chưa có trong hệ thống
-                        $newBrand = Brand::create([
-                            'name' => $brandName,
-                            'slug' => Str::slug($brandName),
-                        ]);
-                        $brandMap[$newBrand->id] = $newBrand->id;
-                        $brandMap[mb_strtolower($brandName)] = $newBrand->id;
-                        $brandMap[$newBrand->slug] = $newBrand->id;
-                        $cleanRow['brand_id'] = $newBrand->id;
+                        // Tìm trong DB
+                        $existingBrand = Brand::where('slug', $brandSlug)
+                            ->orWhere('name', $brandName)
+                            ->orWhereRaw('LOWER(name) = ?', [mb_strtolower($brandName)])
+                            ->first();
+
+                        if ($existingBrand) {
+                            $brandId = $existingBrand->id;
+                        } else {
+                            try {
+                                $newBrand = Brand::create([
+                                    'name' => $brandName,
+                                    'slug' => $brandSlug,
+                                ]);
+                                $brandId = $newBrand->id;
+                            } catch (\Exception $e) {
+                                $brandId = Brand::where('slug', $brandSlug)->value('id');
+                            }
+                        }
+
+                        if ($brandId) {
+                            $brandMap[$brandId] = $brandId;
+                            $brandMap[$lookup] = $brandId;
+                            $brandMap[$brandSlug] = $brandId;
+                            $brandMap[mb_strtolower($brandName)] = $brandId;
+                            $cleanRow['brand_id'] = $brandId;
+                        } else {
+                            $cleanRow['brand_id'] = null;
+                        }
                     } else {
                         $cleanRow['brand_id'] = null;
                     }
@@ -390,23 +444,50 @@ class ProductImportService
                 $seriesVal = $row['series'] ?? $row['series_id'] ?? null;
                 if (!empty($seriesVal)) {
                     $seriesName = trim((string)$seriesVal);
+                    $seriesSlug = Str::slug($seriesName);
                     $lookup = is_numeric($seriesVal) ? (int)$seriesVal : mb_strtolower($seriesName);
 
                     if (isset($seriesMap[$lookup])) {
                         $cleanRow['series_id'] = $seriesMap[$lookup];
+                    } elseif (isset($seriesMap[$seriesSlug])) {
+                        $cleanRow['series_id'] = $seriesMap[$seriesSlug];
                     } elseif (!is_numeric($seriesVal)) {
-                        // Tự động tạo Series mới nếu chưa có trong hệ thống
-                        $newSeries = Series::create([
-                            'name'        => $seriesName,
-                            'slug'        => Str::slug($seriesName),
-                            'status'      => 'active',
-                            'brand_id'    => $cleanRow['brand_id'] ?? null,
-                            'category_id' => $cleanRow['category_id'] ?? null,
-                        ]);
-                        $seriesMap[$newSeries->id] = $newSeries->id;
-                        $seriesMap[mb_strtolower($seriesName)] = $newSeries->id;
-                        $seriesMap[$newSeries->slug] = $newSeries->id;
-                        $cleanRow['series_id'] = $newSeries->id;
+                        // Tìm trong DB
+                        $existingSeries = Series::withTrashed()
+                            ->where('slug', $seriesSlug)
+                            ->orWhere('name', $seriesName)
+                            ->orWhereRaw('LOWER(name) = ?', [mb_strtolower($seriesName)])
+                            ->first();
+
+                        if ($existingSeries) {
+                            if ($existingSeries->trashed()) {
+                                $existingSeries->restore();
+                            }
+                            $seriesId = $existingSeries->id;
+                        } else {
+                            try {
+                                $newSeries = Series::create([
+                                    'name'        => $seriesName,
+                                    'slug'        => $seriesSlug,
+                                    'status'      => 'active',
+                                    'brand_id'    => $cleanRow['brand_id'] ?? null,
+                                    'category_id' => $cleanRow['category_id'] ?? null,
+                                ]);
+                                $seriesId = $newSeries->id;
+                            } catch (\Exception $e) {
+                                $seriesId = Series::withTrashed()->where('slug', $seriesSlug)->value('id');
+                            }
+                        }
+
+                        if ($seriesId) {
+                            $seriesMap[$seriesId] = $seriesId;
+                            $seriesMap[$lookup] = $seriesId;
+                            $seriesMap[$seriesSlug] = $seriesId;
+                            $seriesMap[mb_strtolower($seriesName)] = $seriesId;
+                            $cleanRow['series_id'] = $seriesId;
+                        } else {
+                            $cleanRow['series_id'] = null;
+                        }
                     } else {
                         $cleanRow['series_id'] = null;
                     }
