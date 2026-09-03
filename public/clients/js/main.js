@@ -233,4 +233,130 @@
             }
         });
     }
+
+    /* ═══════════════════════════════════════════════════════════════════════════
+       MOBILE OFF-CANVAS DRAWER MENU HANDLERS
+       ═══════════════════════════════════════════════════════════════════════════ */
+    const btnOpenDrawer = document.getElementById("btnOpenMobileDrawer");
+    const btnCloseDrawer = document.getElementById("btnCloseMobileDrawer");
+    const mobileDrawer = document.getElementById("mobileDrawer");
+    const drawerBackdrop = document.getElementById("mobileDrawerBackdrop");
+
+    function openMobileDrawer() {
+        if (mobileDrawer && drawerBackdrop) {
+            mobileDrawer.classList.add("is-open");
+            mobileDrawer.setAttribute("aria-hidden", "false");
+            drawerBackdrop.classList.add("is-active");
+            drawerBackdrop.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+        }
+    }
+
+    function closeMobileDrawer() {
+        if (mobileDrawer && drawerBackdrop) {
+            mobileDrawer.classList.remove("is-open");
+            mobileDrawer.setAttribute("aria-hidden", "true");
+            drawerBackdrop.classList.remove("is-active");
+            drawerBackdrop.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+        }
+    }
+
+    if (btnOpenDrawer) {
+        btnOpenDrawer.addEventListener("click", (e) => {
+            e.preventDefault();
+            openMobileDrawer();
+        });
+    }
+
+    if (btnCloseDrawer) {
+        btnCloseDrawer.addEventListener("click", (e) => {
+            e.preventDefault();
+            closeMobileDrawer();
+        });
+    }
+
+    if (drawerBackdrop) {
+        drawerBackdrop.addEventListener("click", () => {
+            closeMobileDrawer();
+        });
+    }
+
+    // Drawer Tabs Switcher
+    const drawerTabs = document.querySelectorAll(".misutech_drawer_tab");
+    const panelCategories = document.getElementById("drawerPanelCategories");
+    const panelMenu = document.getElementById("drawerPanelMenu");
+
+    drawerTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            drawerTabs.forEach((t) => t.classList.remove("is-active"));
+            tab.classList.add("is-active");
+
+            const tabType = tab.dataset.drawerTab;
+            if (tabType === "categories") {
+                if (panelCategories) {
+                    panelCategories.classList.add("is-active");
+                    panelCategories.removeAttribute("hidden");
+                }
+                if (panelMenu) {
+                    panelMenu.classList.remove("is-active");
+                    panelMenu.setAttribute("hidden", "true");
+                }
+            } else {
+                if (panelCategories) {
+                    panelCategories.classList.remove("is-active");
+                    panelCategories.setAttribute("hidden", "true");
+                }
+                if (panelMenu) {
+                    panelMenu.classList.add("is-active");
+                    panelMenu.removeAttribute("hidden");
+                }
+            }
+        });
+    });
+
+    // Drawer Tree Accordion - Level 1 Categories
+    document.querySelectorAll(".misutech_drawer_toggle").forEach((toggleBtn) => {
+        toggleBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const parentItem = toggleBtn.closest(".misutech_drawer_item");
+            const subMenu = parentItem ? parentItem.querySelector(".misutech_drawer_submenu") : null;
+            if (subMenu) {
+                const isExpanded = parentItem.classList.contains("is-expanded");
+                if (isExpanded) {
+                    parentItem.classList.remove("is-expanded");
+                    subMenu.hidden = true;
+                } else {
+                    parentItem.classList.add("is-expanded");
+                    subMenu.hidden = false;
+                }
+            }
+        });
+    });
+
+    // Drawer Tree Accordion - Level 2 Grandchild Categories
+    document.querySelectorAll(".misutech_drawer_grandtoggle").forEach((grandBtn) => {
+        grandBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const parentSubItem = grandBtn.closest(".misutech_drawer_subitem");
+            const grandMenu = parentSubItem ? parentSubItem.querySelector(".misutech_drawer_grandmenu") : null;
+            if (grandMenu) {
+                const isExpanded = parentSubItem.classList.contains("is-expanded");
+                if (isExpanded) {
+                    parentSubItem.classList.remove("is-expanded");
+                    grandMenu.hidden = true;
+                } else {
+                    parentSubItem.classList.add("is-expanded");
+                    grandMenu.hidden = false;
+                }
+            }
+        });
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileDrawer && mobileDrawer.classList.contains("is-open")) {
+            closeMobileDrawer();
+        }
+    });
 })();
+

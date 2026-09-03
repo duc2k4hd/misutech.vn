@@ -56,6 +56,13 @@
 
 <header class="misutech_home_header">
     <div class="misutech_home_container misutech_home_header_inner">
+        {{-- Mobile Hamburger Button --}}
+        <button class="misutech_mobile_hamburger" id="btnOpenMobileDrawer" type="button" aria-label="Mở menu điều hướng di động">
+            <span class="hamburger_line"></span>
+            <span class="hamburger_line"></span>
+            <span class="hamburger_line"></span>
+        </button>
+
         <a class="misutech_home_logo" href="/" aria-label="Trang chủ MISUTECH">
             <img src="{{ !empty($settings->site_logo) ? asset('storage/clients/imgs/settings/' . $settings->site_logo) : asset('clients/imgs/no-image.png') }}" alt="{{ !empty($settings->name) ? $settings->name : 'Logo MISUTECH' }}">
         </a>
@@ -166,5 +173,152 @@
     </div>
 </nav>
 
-{{-- Lớp bóng mờ (Overlay Backdrop) khi mở Menu Danh mục sản phẩm --}}
+{{-- Lớp bóng mờ (Overlay Backdrop) khi mở Menu Danh mục sản phẩm trên Desktop/Tablet --}}
 <div class="misutech_menu_backdrop" id="menuBackdrop"></div>
+
+{{-- ═══════════════════════════════════════════════════════════════════════════
+   OFF-CANVAS MOBILE DRAWER NAVIGATION (MENU MỞ NGANG MOBILE)
+   ═══════════════════════════════════════════════════════════════════════════ --}}
+<div class="misutech_drawer_backdrop" id="mobileDrawerBackdrop" aria-hidden="true"></div>
+
+<aside class="misutech_mobile_drawer" id="mobileDrawer" aria-label="Menu điều hướng di động" aria-hidden="true">
+    {{-- Drawer Top Header --}}
+    <div class="misutech_drawer_header">
+        <a href="/" class="misutech_drawer_logo" aria-label="Trang chủ MISUTECH">
+            <img src="{{ !empty($settings->site_logo) ? asset('storage/clients/imgs/settings/' . $settings->site_logo) : asset('clients/imgs/no-image.png') }}" alt="{{ $settings->name ?? 'MISUTECH' }}">
+        </a>
+        <button type="button" class="misutech_drawer_close" id="btnCloseMobileDrawer" aria-label="Đóng menu">✕</button>
+    </div>
+
+    {{-- Drawer Search Bar --}}
+    <div class="misutech_drawer_search_wrap">
+        <form class="misutech_drawer_search" role="search" action="{{ route('shop.index') }}" method="GET">
+            <input class="misutech_drawer_search_input" name="tim-kiem" type="search" placeholder="Tìm kiếm sản phẩm..."
+                aria-label="Tìm kiếm sản phẩm" value="{{ request('tim-kiem') }}" />
+            <button class="misutech_drawer_search_btn" type="submit" aria-label="Tìm kiếm">
+                ⌕
+            </button>
+        </form>
+    </div>
+
+    {{-- Drawer Tabs Switcher --}}
+    <div class="misutech_drawer_tabs">
+        <button type="button" class="misutech_drawer_tab is-active" data-drawer-tab="categories">
+            <span>☰</span> DANH MỤC
+        </button>
+        <button type="button" class="misutech_drawer_tab" data-drawer-tab="menu">
+            <span>❖</span> TRANG CHÍNH
+        </button>
+    </div>
+
+    {{-- Drawer Body: Tab 1 - Danh mục sản phẩm (Tree Accordion) --}}
+    <div class="misutech_drawer_panel is-active" id="drawerPanelCategories">
+        <ul class="misutech_drawer_tree">
+            @foreach ($mainCategories as $category)
+                <li class="misutech_drawer_item {{ $category->children->count() > 0 ? 'has-children' : '' }}">
+                    <div class="misutech_drawer_item_head">
+                        <a href="/danh-muc/{{ $category->slug }}" class="misutech_drawer_link">
+                            <span class="misutech_drawer_cat_icon">▣</span>
+                            <span>{{ $category->name }}</span>
+                        </a>
+                        @if ($category->children->count() > 0)
+                            <button type="button" class="misutech_drawer_toggle" aria-label="Mở rộng danh mục {{ $category->name }}">
+                                <span>›</span>
+                            </button>
+                        @endif
+                    </div>
+
+                    @if ($category->children->count() > 0)
+                        <ul class="misutech_drawer_submenu" hidden>
+                            @foreach ($category->children as $child)
+                                <li class="misutech_drawer_subitem {{ $child->children->count() > 0 ? 'has-grand' : '' }}">
+                                    <div class="misutech_drawer_subhead">
+                                        <a href="/danh-muc/{{ $child->slug }}" class="misutech_drawer_sublink">
+                                            <span>•</span> {{ $child->name }}
+                                        </a>
+                                        @if ($child->children->count() > 0)
+                                            <button type="button" class="misutech_drawer_grandtoggle" aria-label="Mở rộng danh mục {{ $child->name }}">
+                                                <span>›</span>
+                                            </button>
+                                        @endif
+                                    </div>
+
+                                    @if ($child->children->count() > 0)
+                                        <ul class="misutech_drawer_grandmenu" hidden>
+                                            @foreach ($child->children as $grandchild)
+                                                <li>
+                                                    <a href="/danh-muc/{{ $grandchild->slug }}" class="misutech_drawer_grandlink">
+                                                        - {{ $grandchild->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </li>
+            @endforeach
+
+            <li class="misutech_drawer_item">
+                <div class="misutech_drawer_item_head">
+                    <a href="{{ route('shop.index') }}" class="misutech_drawer_link misutech_drawer_link_all">
+                        <span class="misutech_drawer_cat_icon">＋</span>
+                        <span>Xem tất cả sản phẩm ›</span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    {{-- Drawer Body: Tab 2 - Menu Trang Chính & Tiện ích --}}
+    <div class="misutech_drawer_panel" id="drawerPanelMenu" hidden>
+        <ul class="misutech_drawer_navlist">
+            <li>
+                <a href="{{ route('brands.index') }}" class="misutech_drawer_navitem {{ request()->routeIs('brands.*') ? 'active' : '' }}">
+                    <span class="misutech_drawer_navicon">🔥</span>
+                    <span>Thương hiệu</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('documents.index') }}" class="misutech_drawer_navitem {{ request()->routeIs('documents.*') ? 'active' : '' }}">
+                    <span class="misutech_drawer_navicon">📑</span>
+                    <span>Tài liệu kỹ thuật</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('quote.index') }}" class="misutech_drawer_navitem {{ request()->routeIs('quote.*') ? 'active' : '' }}">
+                    <span class="misutech_drawer_navicon">⚡</span>
+                    <span>Lập báo giá Online</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('blogs.index') }}" class="misutech_drawer_navitem {{ request()->routeIs('blogs.*') ? 'active' : '' }}">
+                    <span class="misutech_drawer_navicon">📰</span>
+                    <span>Tin công nghệ</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('contact.index') }}" class="misutech_drawer_navitem {{ request()->routeIs('contact.*') ? 'active' : '' }}">
+                    <span class="misutech_drawer_navicon">✉️</span>
+                    <span>Liên hệ & Địa chỉ</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    {{-- Drawer Bottom Footer: Hotline & Hỗ trợ --}}
+    <div class="misutech_drawer_footer">
+        <div class="misutech_drawer_hotline_box">
+            <div class="misutech_drawer_hotline_label">Hotline & Tư vấn 24/7</div>
+            <a href="tel:{{ $settings->phone ?? ($settings->hotline ?? '0866555212') }}" class="misutech_drawer_hotline_btn">
+                <span>☎ {{ $settings->hotline ?? '0866.555.212' }}</span>
+            </a>
+        </div>
+        <div class="misutech_drawer_email">
+            <span>✉ {{ $settings->email ?? 'kinhdoanhhpt@haiphongtech.vn' }}</span>
+        </div>
+    </div>
+</aside>
+
