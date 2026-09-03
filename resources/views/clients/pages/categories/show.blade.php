@@ -497,7 +497,7 @@
     </section>
 
     <section class="misutech_home_description" id="misutech_home_description">
-        <div class="misutech_home_container" style="display: grid; grid-template-columns: 1fr 2fr; gap: 60px;">
+        <div class="misutech_home_container misutech_home_description_grid">
             <div class="misutech_home_tags_wrapper">
                 <h2 class="misutech_home_tags_title"
                     style="margin-bottom: 20px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
