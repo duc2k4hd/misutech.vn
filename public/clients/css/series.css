@@ -630,34 +630,88 @@
     transform: translateX(2px);
 }
 
-/* ─── Responsive ───────────────────────────────────────────────────────── */
-@media (max-width: 1200px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLET RESPONSIVE (max-width: 1024px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    .misutech_series_header_card {
+        grid-template-columns: 1fr 180px;
+        padding: 20px 22px;
+        gap: 20px;
+    }
+    .misutech_series_main_title {
+        font-size: 20px;
+    }
     .misutech_series_grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    .misutech_series_related_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 }
 
-@media (max-width: 992px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE (max-width: 767px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .misutech_series_page {
+        padding-bottom: 24px;
+    }
+
+    .misutech_series_breadcrumb {
+        padding: 6px 0;
+        font-size: 11.5px;
+    }
+    .misutech_series_breadcrumb_list {
+        gap: 6px;
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+    }
+    .misutech_series_breadcrumb_list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .misutech_series_header_section {
+        padding: 12px 0 10px;
+    }
+
     .misutech_series_header_card {
         grid-template-columns: 1fr;
+        padding: 16px 14px;
+        border-radius: 8px;
+        gap: 14px;
+    }
+
+    .misutech_series_main_title {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .misutech_series_desc_text {
+        font-size: 12.5px;
+        margin-bottom: 10px;
     }
 
     .misutech_series_thumb_box {
-        max-width: 200px;
+        max-width: 180px;
+        height: 140px;
         margin: 0 auto;
     }
 
-    .misutech_series_grid {
-        grid-template-columns: repeat(3, 1fr);
+    .misutech_series_toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .misutech_series_sort_filter {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    .misutech_series_docs_list,
-    .misutech_series_related_grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 640px) {
     .misutech_series_grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
@@ -665,11 +719,67 @@
 
     .misutech_series_card {
         padding: 8px;
+        border-radius: 6px;
     }
 
-    .misutech_series_header_card,
+    .misutech_series_card_media {
+        height: 125px;
+        margin-bottom: 6px;
+    }
+
+    .misutech_series_card_sku {
+        font-size: 11px;
+    }
+
+    .misutech_series_card_name {
+        font-size: 11.5px;
+        line-height: 1.3;
+        min-height: 28px;
+        margin-bottom: 4px;
+    }
+
+    .misutech_series_card_price {
+        font-size: 12.5px;
+    }
+
     .misutech_series_article_card,
     .misutech_series_docs_card {
-        padding: 16px;
+        padding: 16px 14px;
+        border-radius: 8px;
+    }
+
+    .misutech_series_article_body table {
+        display: block;
+        overflow-x: auto;
+        width: 100% !important;
+        white-space: nowrap;
+    }
+
+    .misutech_series_docs_list {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .doc_item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 10px 12px;
+    }
+    .doc_actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+    .doc_btn {
+        text-align: center;
+        padding: 6px 8px;
+        font-size: 11.5px;
+    }
+
+    .misutech_series_related_grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
 }

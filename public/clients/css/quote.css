@@ -75,9 +75,12 @@
 /* Main Two-Column Layout */
 .misutech_quote_layout {
     display: grid;
-    grid-template-columns: 420px 1fr;
+    grid-template-columns: 420px minmax(0, 1fr);
     gap: 24px;
     align-items: start;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Left Panel: Builder & Search */
@@ -85,6 +88,8 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-width: 0;
+    max-width: 100%;
 }
 .quote_card {
     background: #ffffff;
@@ -92,6 +97,9 @@
     border: 1px solid #e2e8f0;
     padding: 20px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 .quote_card_title {
     font-size: 15px;
@@ -101,6 +109,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
     padding-bottom: 10px;
     border-bottom: 1px solid #f1f5f9;
 }
@@ -285,6 +295,8 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    min-width: 0;
+    max-width: 100%;
 }
 
 /* Sticky Action Bar */
@@ -371,6 +383,8 @@
     line-height: 1.5;
     min-height: 800px;
     box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Header of Document */
@@ -445,74 +459,107 @@
 .paper_table_wrap {
     margin-bottom: 20px;
     overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    display: block;
 }
 .paper_table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 12.5px;
 }
 .paper_table th {
     background: #003b70;
     color: #ffffff;
-    padding: 9px 8px;
     font-weight: 700;
-    text-align: left;
-    border: 1px solid #003b70;
+    padding: 9px 8px;
+    text-align: center;
+    border: 1px solid #002d57;
+    font-size: 12px;
 }
-.paper_table th.text-center { text-align: center; }
-.paper_table th.text-right { text-align: right; }
 .paper_table td {
     padding: 8px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e2e8f0;
     vertical-align: middle;
 }
-.paper_table td.text-center { text-align: center; }
-.paper_table td.text-right { text-align: right; }
-.paper_table tr:nth-child(even) {
-    background: #f8fafc;
+.paper_table tbody tr:nth-child(even) {
+    background: #fbfcfd;
 }
-
-/* Inline Quantity / Price Controls in preview */
-.tbl_qty_input {
-    width: 50px;
-    padding: 3px 5px;
+.paper_table tbody tr:hover {
+    background: #f0f7ff;
+}
+.tbl_center {
     text-align: center;
+}
+.tbl_right {
+    text-align: right;
+}
+.tbl_name {
+    font-weight: 600;
+    color: #0f172a;
+}
+.tbl_brand {
+    font-size: 11px;
+    color: #64748b;
+    display: block;
+}
+.tbl_qty_input,
+.tbl_price_input {
+    width: 60px;
+    padding: 4px 6px;
+    font-size: 12px;
     border: 1px solid #cbd5e1;
     border-radius: 4px;
-    font-size: 12px;
+    text-align: center;
+    outline: none;
+    box-sizing: border-box;
 }
 .tbl_price_input {
-    width: 90px;
-    padding: 3px 5px;
+    width: 100px;
     text-align: right;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
-    font-size: 12px;
+}
+.tbl_qty_input:focus,
+.tbl_price_input:focus {
+    border-color: #003b70;
 }
 .tbl_btn_del {
     background: none;
     border: none;
     color: #ef4444;
-    font-size: 15px;
     cursor: pointer;
-    padding: 2px 5px;
+    font-size: 14px;
+    padding: 4px 8px;
     border-radius: 4px;
+    transition: background 0.15s;
 }
 .tbl_btn_del:hover {
     background: #fee2e2;
 }
 
-/* Summary / Total Section */
+/* Empty State in Paper Table */
+.paper_empty_row {
+    text-align: center;
+    padding: 40px 20px !important;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Summary Grid */
 .paper_summary_grid {
     display: grid;
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 1.2fr 1fr;
     gap: 20px;
-    margin-bottom: 25px;
+    margin-top: 15px;
+    align-items: start;
 }
 .paper_terms {
-    font-size: 11px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 11.5px;
     color: #475569;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 .paper_terms h5 {
     margin: 0 0 6px 0;
@@ -522,31 +569,37 @@
 }
 .paper_terms ul {
     margin: 0;
-    padding-left: 15px;
+    padding-left: 16px;
+}
+.paper_terms li {
+    margin-bottom: 3px;
 }
 
+/* Totals Box */
 .paper_totals {
-    background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
-    padding: 12px 16px;
-    font-size: 12px;
+    overflow: hidden;
 }
-.totals_row {
+.paper_total_row {
     display: flex;
     justify-content: space-between;
-    padding: 4px 0;
+    padding: 8px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 12.5px;
 }
-.totals_row.grand_total {
-    border-top: 2px solid #003b70;
-    margin-top: 6px;
-    padding-top: 8px;
+.paper_total_row:last-child {
+    border-bottom: none;
+}
+.paper_total_row.highlight {
+    background: #f0f7ff;
     font-size: 14px;
     font-weight: 800;
     color: #003b70;
+    border-top: 2px solid #003b70;
 }
-.totals_amount_words {
-    font-size: 11px;
+.paper_in_words {
+    font-size: 11.5px;
     font-style: italic;
     color: #64748b;
     margin-top: 6px;
@@ -623,27 +676,165 @@
     }
 }
 
-/* Responsive */
-@media (max-width: 1100px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLET RESPONSIVE (max-width: 1024px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
     .misutech_quote_layout {
         grid-template-columns: 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+    .misutech_quote_intro {
+        padding: 20px;
+        margin: 14px 0 20px;
     }
     .quote_paper {
-        padding: 20px;
+        padding: 24px 20px;
+    }
+    .paper_table_wrap {
+        overflow-x: auto;
+        display: block;
+        width: 100%;
     }
 }
-@media (max-width: 650px) {
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE (max-width: 767px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .misutech_quote_page {
+        padding-bottom: 24px;
+    }
+
+    .misutech_quote_breadcrumb {
+        padding: 8px 0;
+        font-size: 11.5px;
+    }
+    .misutech_quote_breadcrumb_list {
+        gap: 6px;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    .misutech_quote_breadcrumb_list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .misutech_quote_intro {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 14px;
+        margin: 12px 0 16px;
+        border-radius: 8px;
+        gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .quote_intro_text h1 {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+    .quote_intro_text p {
+        font-size: 12px;
+    }
+
+    .misutech_quote_layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .quote_card {
+        padding: 14px 12px;
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .quote_card_title {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .q_row_2 {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .quote_action_bar {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .action_bar_left {
+        text-align: center;
+        font-size: 12px;
+    }
+    .action_bar_right {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        width: 100%;
+    }
+    .btn_quote_pdf,
+    .btn_quote_print,
+    .btn_quote_clear {
+        padding: 8px 4px;
+        font-size: 11px;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .quote_paper {
+        padding: 14px 10px !important;
+        border-radius: 8px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
     .paper_header {
         flex-direction: column;
         gap: 12px;
+        align-items: flex-start;
     }
     .paper_company_info {
         max-width: 100%;
     }
+    .paper_doc_title {
+        font-size: 18px;
+    }
     .paper_customer_box {
         grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
+    }
+    .paper_table_wrap {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 14px;
+    }
+    .paper_table {
+        min-width: 580px;
     }
     .paper_summary_grid {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .paper_signatures {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .sig_box p {
+        margin-bottom: 30px;
     }
 }

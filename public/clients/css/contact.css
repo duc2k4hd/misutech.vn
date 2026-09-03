@@ -335,24 +335,139 @@ textarea.contact_form_control {
     line-height: 1.6;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLET RESPONSIVE (max-width: 1024px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
     .misutech_contact_grid {
         grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .misutech_contact_header_card {
+        padding: 28px 20px;
+        margin-top: 16px;
+        margin-bottom: 20px;
+    }
+    .faq_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE (max-width: 767px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .misutech_contact_page {
+        padding-bottom: 24px;
+    }
+    .misutech_contact_breadcrumb {
+        padding: 8px 0;
+        font-size: 11.5px;
+    }
+    .misutech_contact_breadcrumb_list {
+        gap: 6px;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    .misutech_contact_breadcrumb_list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .misutech_contact_header_card {
+        padding: 20px 14px;
+        margin-top: 12px;
+        margin-bottom: 16px;
+        border-radius: 8px;
+    }
+    .contact_header_title {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+    .contact_header_desc {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .misutech_contact_grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .misutech_contact_info_box,
+    .misutech_contact_form_box {
+        padding: 18px 14px;
+        border-radius: 8px;
+    }
+    .misutech_contact_info_title,
+    .misutech_contact_form_title {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    .contact_item_icon {
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
+    }
+    .contact_item_content h4 {
+        font-size: 11px;
+    }
+    .contact_item_content p,
+    .contact_item_content a {
+        font-size: 12.5px;
+    }
+
+    .contact_form_row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .contact_form_control {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    textarea.contact_form_control {
+        min-height: 90px;
+    }
+    .contact_submit_btn {
+        padding: 11px 18px;
+        font-size: 14px;
+    }
+
+    .misutech_contact_map_wrap {
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .misutech_contact_map_header {
+        padding: 12px 14px;
+    }
+    .misutech_contact_map_header h3 {
+        font-size: 14px;
+    }
+    .misutech_contact_map_iframe {
+        height: 250px;
+    }
+
+    .misutech_contact_faq {
+        padding: 18px 14px;
+        border-radius: 8px;
+    }
+    .misutech_contact_faq_title {
+        font-size: 16px;
+        margin-bottom: 12px;
     }
     .faq_grid {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
-}
-@media (max-width: 576px) {
-    .contact_form_row {
-        grid-template-columns: 1fr;
+    .faq_item {
+        padding: 12px 14px;
     }
-    .misutech_contact_form_box,
-    .misutech_contact_info_box {
-        padding: 20px 16px;
+    .faq_item h4 {
+        font-size: 13px;
     }
-    .contact_header_title {
-        font-size: 20px;
+    .faq_item p {
+        font-size: 12px;
     }
 }

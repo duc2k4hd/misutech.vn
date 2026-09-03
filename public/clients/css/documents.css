@@ -585,39 +585,132 @@
     background: #0284c7;
 }
 
-/* ─── Responsive ───────────────────────────────────────────────────────── */
-@media (max-width: 1100px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLET RESPONSIVE (max-width: 1024px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
     .misutech_doc_grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+    .misutech_doc_header_card {
+        padding: 20px 22px;
+        gap: 16px;
+    }
+    .misutech_doc_main_title {
+        font-size: 20px;
     }
 }
 
-@media (max-width: 768px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE (max-width: 767px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .misutech_doc_page {
+        padding-bottom: 24px;
+    }
+
+    .misutech_doc_breadcrumb {
+        padding: 6px 0;
+        font-size: 11.5px;
+    }
+    .misutech_doc_breadcrumb_list {
+        gap: 6px;
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+    }
+    .misutech_doc_breadcrumb_list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .misutech_doc_header_section {
+        padding: 12px 0 10px;
+    }
+
     .misutech_doc_header_card {
         flex-direction: column;
         align-items: flex-start;
+        padding: 16px 14px;
+        border-radius: 8px;
+        gap: 12px;
+    }
+
+    .misutech_doc_main_title {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .misutech_doc_desc {
+        font-size: 12.5px;
     }
 
     .misutech_doc_header_stat {
         width: 100%;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
+    .misutech_doc_header_stat .stat_num {
+        font-size: 20px;
+    }
+
+    .misutech_doc_filter_section {
+        padding-bottom: 14px;
     }
 
     .misutech_doc_filter_form {
         flex-direction: column;
         align-items: stretch;
+        padding: 12px 14px;
+        gap: 10px;
+        border-radius: 8px;
     }
 
     .filter_input_group.search_box,
+    .filter_input_group.select_box,
     .filter_input_group.select_box select {
         width: 100%;
+        min-width: 0;
+    }
+
+    .filter_actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .btn_filter_submit,
+    .btn_filter_reset {
+        justify-content: center;
+        text-align: center;
     }
 
     .misutech_doc_grid {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .misutech_doc_help_card {
         flex-direction: column;
         text-align: center;
+        padding: 16px 14px;
+        gap: 12px;
+    }
+    .btn_help_call {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .misutech_doc_pagination {
+        margin-top: 16px;
+    }
+    .misutech_doc_pagination .page-item .page-link {
+        padding: 4px 8px;
+        font-size: 12px;
     }
 }

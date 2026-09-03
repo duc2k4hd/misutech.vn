@@ -378,44 +378,125 @@
     color: #10b981;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLET RESPONSIVE (max-width: 1024px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
     .misutech_cart_wrapper {
         flex-direction: column;
+        gap: 20px;
+    }
+    .misutech_cart_items {
+        width: 100%;
     }
     .misutech_cart_summary {
         width: 100%;
         position: static;
+        box-sizing: border-box;
     }
 }
 
-@media (max-width: 768px) {
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE (max-width: 767px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .misutech_cart_title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        padding-left: 10px;
+    }
+
     .misutech_cart_header {
         display: none;
     }
+
     .misutech_cart_item {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 70px minmax(0, 1fr) 30px;
+        gap: 12px;
+        padding: 14px 12px;
         position: relative;
-        padding: 15px;
-        align-items: flex-start;
-        gap: 15px;
+        align-items: start;
     }
+
     .misutech_cart_item_info {
-        width: 100%;
-    }
-    .misutech_cart_item_price_wrapper,
-    .misutech_cart_item_qty_wrapper,
-    .misutech_cart_item_total_price {
-        width: 100%;
-        text-align: left;
-        align-items: flex-start;
-        flex-direction: row;
-        justify-content: flex-start;
+        grid-column: 1 / 3;
+        display: flex;
         gap: 10px;
+        align-items: center;
     }
+
+    .misutech_cart_item_img {
+        width: 65px;
+        height: 65px;
+        flex-shrink: 0;
+    }
+
+    .misutech_cart_item_name {
+        font-size: 0.88rem;
+        line-height: 1.3;
+    }
+
     .misutech_cart_item_action_wrapper {
-        position: absolute;
-        top: 15px;
-        right: 15px;
+        grid-column: 3;
+        grid-row: 1;
+        width: auto;
+        justify-content: flex-end;
+    }
+
+    .misutech_cart_item_price_wrapper {
+        grid-column: 2 / -1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 6px;
+    }
+
+    .misutech_cart_item_qty_wrapper {
+        grid-column: 2 / -1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 6px;
+    }
+
+    .misutech_cart_item_total_price {
+        grid-column: 2 / -1;
+        text-align: right;
+        font-size: 1rem;
+        color: #003b70;
+    }
+
+    .misutech_cart_bottom_actions {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        text-align: center;
+        padding: 14px;
+    }
+
+    .misutech_cart_continue_btn {
+        justify-content: center;
+    }
+
+    .misutech_cart_summary {
+        padding: 16px;
+        border-radius: 8px;
+    }
+
+    .misutech_cart_summary_title {
+        font-size: 1.1rem;
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+    }
+
+    .misutech_cart_summary_total_price {
+        font-size: 1.25rem;
+    }
+
+    .misutech_cart_checkout_btn {
+        padding: 12px 16px;
+        font-size: 1rem;
     }
 }
