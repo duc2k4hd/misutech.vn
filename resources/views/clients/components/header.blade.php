@@ -87,12 +87,11 @@
 
 <nav class="misutech_home_nav" aria-label="Điều hướng chính">
     <div class="misutech_home_container misutech_home_nav_inner" style="position: relative;">
-        <button class="misutech_home_nav_categories" type="button">
+        <button class="misutech_home_nav_categories" type="button" aria-expanded="false" aria-label="Danh mục sản phẩm">
             <span>☰</span> DANH MỤC SẢN PHẨM
         </button>
-        <div class="misutech_home_dropdown_wrapper"
-            style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 900;" hidden>
-            <ul class="misutech_home_category_menu" style="width: 255px;">
+        <div class="misutech_home_dropdown_wrapper" hidden>
+            <ul class="misutech_home_category_menu">
                 @foreach ($mainCategories as $category)
                     <li class="misutech_home_category_item">
                         <a href="/danh-muc/{{ $category->slug }}" class="misutech_home_category_label"
@@ -157,11 +156,13 @@
                 </li>
             </ul>
         </div>
-        <a class="misutech_home_nav_link misutech_home_nav_hot {{ request()->routeIs('brands.*') || request()->is('thuong-hieu*') ? 'active' : '' }}" href="{{ route('brands.index') }}">Thương hiệu</a>
-        <a class="misutech_home_nav_link {{ request()->routeIs('documents.*') || request()->is('tai-lieu*') ? 'active' : '' }}" href="{{ route('documents.index') }}">Tài liệu</a>
-        <a class="misutech_home_nav_link {{ request()->routeIs('quote.*') || request()->is('bao-gia*') ? 'active' : '' }}" href="{{ route('quote.index') }}">Báo giá</a>
-        <a class="misutech_home_nav_link {{ request()->routeIs('blogs.*') || request()->routeIs('posts.*') || request()->is('tin-tuc*') || request()->is('kien-thuc*') || request()->is('tin-cong-nghe*') ? 'active' : '' }}" href="{{ route('blogs.index') }}">Tin công nghệ</a>
-        <a class="misutech_home_nav_link {{ request()->routeIs('contact.*') || request()->is('lien-he*') ? 'active' : '' }}" href="{{ route('contact.index') }}">Liên hệ</a>
+        <div class="misutech_home_nav_links">
+            <a class="misutech_home_nav_link misutech_home_nav_hot {{ request()->routeIs('brands.*') || request()->is('thuong-hieu*') ? 'active' : '' }}" href="{{ route('brands.index') }}">Thương hiệu</a>
+            <a class="misutech_home_nav_link {{ request()->routeIs('documents.*') || request()->is('tai-lieu*') ? 'active' : '' }}" href="{{ route('documents.index') }}">Tài liệu</a>
+            <a class="misutech_home_nav_link {{ request()->routeIs('quote.*') || request()->is('bao-gia*') ? 'active' : '' }}" href="{{ route('quote.index') }}">Báo giá</a>
+            <a class="misutech_home_nav_link {{ request()->routeIs('blogs.*') || request()->routeIs('posts.*') || request()->is('tin-tuc*') || request()->is('kien-thuc*') || request()->is('tin-cong-nghe*') ? 'active' : '' }}" href="{{ route('blogs.index') }}">Tin công nghệ</a>
+            <a class="misutech_home_nav_link {{ request()->routeIs('contact.*') || request()->is('lien-he*') ? 'active' : '' }}" href="{{ route('contact.index') }}">Liên hệ</a>
+        </div>
     </div>
 </nav>
 

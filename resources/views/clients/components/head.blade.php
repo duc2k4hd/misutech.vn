@@ -24,8 +24,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 {{-- Core Style CSS Preload --}}
-<link rel="preload" href="{{ asset('clients/css/style.css') }}" as="style">
-<link rel="stylesheet" href="{{ asset('clients/css/style.css') }}">
+@php
+    $styleCssVersion = file_exists(public_path('clients/css/style.css')) ? filemtime(public_path('clients/css/style.css')) : time();
+@endphp
+<link rel="preload" href="{{ asset('clients/css/style.css') }}?v={{ $styleCssVersion }}" as="style">
+<link rel="stylesheet" href="{{ asset('clients/css/style.css') }}?v={{ $styleCssVersion }}">
 
 {{-- Google Analytics (Tự động nạp khi nhập mã trong Admin Settings) --}}
 @if(!empty($settings->google_analytics))
