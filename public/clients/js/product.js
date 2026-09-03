@@ -572,32 +572,50 @@
 
   // Tab switching
   document.querySelectorAll(".misutech_product_tab_button").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const tabKey = button.dataset.tab;
+      const targetPanel = document.querySelector(`[data-panel="${tabKey}"]`);
+      if (!targetPanel) return;
+
+      const tabsSection = document.querySelector(".misutech_product_tabs_section");
+      const currentScrollY = window.scrollY;
+      const tabsTop = tabsSection ? (tabsSection.getBoundingClientRect().top + window.scrollY - 110) : 0;
+
+      // 1. Show target panel first to prevent body collapse
+      targetPanel.hidden = false;
+      targetPanel.classList.add("misutech_product_active");
+
+      // 2. Hide other panels
+      document.querySelectorAll(".misutech_product_tab_panel").forEach((panel) => {
+        if (panel !== targetPanel) {
+          panel.classList.remove("misutech_product_active");
+          panel.hidden = true;
+        }
+      });
+
+      // 3. Update tab buttons
       document.querySelectorAll(".misutech_product_tab_button").forEach((item) => {
         item.classList.remove("misutech_product_active");
         item.setAttribute("aria-selected", "false");
       });
-      document.querySelectorAll(".misutech_product_tab_panel").forEach((panel) => {
-        panel.classList.remove("misutech_product_active");
-        panel.hidden = true;
-      });
-      const panel = document.querySelector(`[data-panel="${button.dataset.tab}"]`);
       button.classList.add("misutech_product_active");
       button.setAttribute("aria-selected", "true");
-      if (panel) {
-        panel.classList.add("misutech_product_active");
-        panel.hidden = false;
 
-        // Khi mở tab Tài liệu & Catalog, đảm bảo toàn bộ iframe có tham số chuẩn
-        if (button.dataset.tab === "document") {
-          panel.querySelectorAll(".misutech_product_pdf_iframe").forEach((iframe) => {
-            let src = iframe.getAttribute("src") || "";
-            if (src && !src.includes("navpanes=0")) {
-              const base = src.split("#")[0];
-              iframe.setAttribute("src", `${base}#navpanes=0&pagemode=none&view=FitH&toolbar=1`);
-            }
-          });
-        }
+      // 4. If current scroll was below tabs, smoothly keep user at the top of the tabs section
+      if (tabsSection && currentScrollY > tabsTop) {
+        window.scrollTo({ top: tabsTop, behavior: "smooth" });
+      }
+
+      // 5. Khi mở tab Tài liệu & Catalog, đảm bảo toàn bộ iframe có tham số chuẩn
+      if (tabKey === "document") {
+        targetPanel.querySelectorAll(".misutech_product_pdf_iframe").forEach((iframe) => {
+          let src = iframe.getAttribute("src") || "";
+          if (src && !src.includes("navpanes=0")) {
+            const base = src.split("#")[0];
+            iframe.setAttribute("src", `${base}#navpanes=0&pagemode=none&view=FitH&toolbar=1`);
+          }
+        });
       }
     });
   });
