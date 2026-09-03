@@ -16,8 +16,13 @@ class SettingController extends Controller
 
     public function apiList()
     {
-        $settings = Setting::latest()->get();
-        return response()->json(['data' => $settings]);
+        try {
+            $settings = Setting::latest()->get();
+            return response()->json(['data' => array_values($settings->toArray())]);
+        } catch (\Throwable $e) {
+            \Log::error('Setting apiList error: ' . $e->getMessage());
+            return response()->json(['data' => [], 'error' => $e->getMessage()]);
+        }
     }
 
     public function apiStore(Request $request)

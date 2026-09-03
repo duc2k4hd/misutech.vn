@@ -60,54 +60,68 @@ class ProductController extends Controller
 
     public function apiList(Request $request): JsonResponse
     {
-        $trashStatus = $request->input('trash_status', 'all'); // 'all', 'active', 'trashed'
-        $query = Product::withTrashed()->with(['category', 'brand', 'series', 'thumbnailMedia']);
+        try {
+            $trashStatus = $request->input('trash_status', 'all'); // 'all', 'active', 'trashed'
+            $query = Product::withTrashed()->with(['category', 'brand', 'series', 'thumbnailMedia']);
 
-        if ($trashStatus === 'active') {
-            $query->whereNull('deleted_at');
-        } elseif ($trashStatus === 'trashed') {
-            $query->onlyTrashed();
+            if ($trashStatus === 'active') {
+                $query->whereNull('deleted_at');
+            } elseif ($trashStatus === 'trashed') {
+                $query->onlyTrashed();
+            }
+
+            $searchValue = $request->input('search.value');
+            if (!empty($searchValue)) {
+                $query->where(function($q) use ($searchValue) {
+                    $q->where('name', 'like', "%{$searchValue}%")
+                      ->orWhere('sku', 'like', "%{$searchValue}%");
+                });
+            }
+
+            $totalRecords = Product::withTrashed()->count();
+            $filteredRecords = $query->count();
+
+            $perPage = (int) $request->input('length', 10);
+            if ($perPage === -1) {
+                $perPage = $filteredRecords > 0 ? $filteredRecords : 10;
+            } elseif ($perPage <= 0) {
+                $perPage = 10;
+            }
+
+            $start = max(0, (int) $request->input('start', 0));
+            $page = max(1, (int) ($start / $perPage) + 1);
+
+            $products = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
+
+            // Thêm trường `is_trashed` cho mỗi item
+            $items = collect($products->items())->map(function($p) {
+                $arr = $p->toArray();
+                $arr['is_trashed'] = $p->trashed();
+                return $arr;
+            })->values()->all();
+
+            return response()->json([
+                'draw' => intval($request->input('draw', 1)),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $filteredRecords,
+                'data' => $items,
+                'counts' => [
+                    'all'     => Product::withTrashed()->count(),
+                    'active'  => Product::whereNull('deleted_at')->count(),
+                    'trashed' => Product::onlyTrashed()->count(),
+                ]
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Product apiList error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return response()->json([
+                'draw' => intval($request->input('draw', 1)),
+                'recordsTotal' => 0,
+                'recordsFiltered' => 0,
+                'data' => [],
+                'counts' => ['all' => 0, 'active' => 0, 'trashed' => 0],
+                'error' => $e->getMessage()
+            ]);
         }
-
-        $searchValue = $request->input('search.value');
-        if (!empty($searchValue)) {
-            $query->where(function($q) use ($searchValue) {
-                $q->where('name', 'like', "%{$searchValue}%")
-                  ->orWhere('sku', 'like', "%{$searchValue}%");
-            });
-        }
-
-        $totalRecords = Product::withTrashed()->count();
-        $filteredRecords = $query->count();
-
-        $perPage = (int) $request->input('length', 10);
-        if ($perPage == -1) {
-            $perPage = $filteredRecords > 0 ? $filteredRecords : 1;
-        }
-
-        $start = (int) $request->input('start', 0);
-        $page = ($start / $perPage) + 1;
-
-        $products = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
-
-        // Thêm trường `is_trashed` cho mỗi item
-        $items = collect($products->items())->map(function($p) {
-            $arr = $p->toArray();
-            $arr['is_trashed'] = $p->trashed();
-            return $arr;
-        });
-
-        return response()->json([
-            'draw' => intval($request->input('draw')),
-            'recordsTotal' => $totalRecords,
-            'recordsFiltered' => $filteredRecords,
-            'data' => $items,
-            'counts' => [
-                'all'     => Product::withTrashed()->count(),
-                'active'  => Product::whereNull('deleted_at')->count(),
-                'trashed' => Product::onlyTrashed()->count(),
-            ]
-        ]);
     }
 
     public function apiStore(ProductStoreRequest $request): JsonResponse

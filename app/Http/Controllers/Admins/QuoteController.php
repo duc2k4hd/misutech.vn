@@ -22,39 +22,48 @@ class QuoteController extends Controller
      */
     public function apiList(Request $request)
     {
-        $query = Quote::with('items');
+        try {
+            $query = Quote::with('items');
 
-        if ($request->filled('keyword')) {
-            $kw = trim($request->keyword);
-            $query->where(function($q) use ($kw) {
-                $q->where('quote_code', 'like', "%{$kw}%")
-                  ->orWhere('customer_name', 'like', "%{$kw}%")
-                  ->orWhere('customer_phone', 'like', "%{$kw}%")
-                  ->orWhere('customer_company', 'like', "%{$kw}%")
-                  ->orWhere('customer_email', 'like', "%{$kw}%");
-            });
+            if ($request->filled('keyword')) {
+                $kw = trim($request->keyword);
+                $query->where(function($q) use ($kw) {
+                    $q->where('quote_code', 'like', "%{$kw}%")
+                      ->orWhere('customer_name', 'like', "%{$kw}%")
+                      ->orWhere('customer_phone', 'like', "%{$kw}%")
+                      ->orWhere('customer_company', 'like', "%{$kw}%")
+                      ->orWhere('customer_email', 'like', "%{$kw}%");
+                });
+            }
+
+            if ($request->filled('status') && $request->status !== 'all') {
+                $query->where('status', $request->status);
+            }
+
+            $quotes = $query->orderBy('created_at', 'desc')->get();
+
+            // Thống kê nhanh
+            $stats = [
+                'total'          => Quote::count(),
+                'total_amount'   => (float) Quote::sum('total_amount'),
+                'draft'          => Quote::where('status', 'draft')->count(),
+                'sent'           => Quote::where('status', 'sent')->count(),
+                'confirmed'      => Quote::where('status', 'confirmed')->count(),
+                'completed'      => Quote::where('status', 'completed')->count(),
+            ];
+
+            return response()->json([
+                'data'  => array_values($quotes->toArray()),
+                'stats' => $stats
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Quote apiList error: ' . $e->getMessage());
+            return response()->json([
+                'data'  => [],
+                'stats' => ['total' => 0, 'total_amount' => 0, 'draft' => 0, 'sent' => 0, 'confirmed' => 0, 'completed' => 0],
+                'error' => $e->getMessage()
+            ]);
         }
-
-        if ($request->filled('status') && $request->status !== 'all') {
-            $query->where('status', $request->status);
-        }
-
-        $quotes = $query->orderBy('created_at', 'desc')->get();
-
-        // Thống kê nhanh
-        $stats = [
-            'total'          => Quote::count(),
-            'total_amount'   => (float) Quote::sum('total_amount'),
-            'draft'          => Quote::where('status', 'draft')->count(),
-            'sent'           => Quote::where('status', 'sent')->count(),
-            'confirmed'      => Quote::where('status', 'confirmed')->count(),
-            'completed'      => Quote::where('status', 'completed')->count(),
-        ];
-
-        return response()->json([
-            'data'  => $quotes,
-            'stats' => $stats
-        ]);
     }
 
     /**

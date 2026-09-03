@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Misutech Admin')</title>
     <!-- Favicon icon -->
     @php
@@ -339,6 +340,23 @@
 
     <!-- Global Admin Utility Scripts -->
     <script>
+        // Thiết lập cấu hình AJAX mặc định cho toàn bộ Admin (CSRF + Headers)
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        });
+
+        // Chặn popup cảnh báo khó chịu của DataTables trên toàn bộ hệ thống
+        if ($.fn && $.fn.dataTable) {
+            $.fn.dataTable.ext.errMode = 'none';
+        }
+        $(document).on('error.dt', function(e, settings, techNote, message) {
+            console.warn('DataTables warning (handled):', message);
+        });
+
         function adminClearCache() {
             if (typeof toastr !== 'undefined') {
                 toastr.info('Đang làm mới cache hệ thống...');

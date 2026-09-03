@@ -23,26 +23,31 @@ class SupportContactController extends Controller
      */
     public function apiList(Request $request)
     {
-        $query = SupportContact::query();
+        try {
+            $query = SupportContact::query();
 
-        if ($request->filled('keyword')) {
-            $kw = trim($request->keyword);
-            $query->where(function($q) use ($kw) {
-                $q->where('name', 'like', "%{$kw}%")
-                  ->orWhere('phone', 'like', "%{$kw}%")
-                  ->orWhere('department', 'like', "%{$kw}%");
-            });
+            if ($request->filled('keyword')) {
+                $kw = trim($request->keyword);
+                $query->where(function($q) use ($kw) {
+                    $q->where('name', 'like', "%{$kw}%")
+                      ->orWhere('phone', 'like', "%{$kw}%")
+                      ->orWhere('department', 'like', "%{$kw}%");
+                });
+            }
+
+            if ($request->filled('department_type')) {
+                $query->where('department_type', $request->department_type);
+            }
+
+            $contacts = $query->orderBy('sort_order', 'asc')
+                ->orderBy('id', 'desc')
+                ->get();
+
+            return response()->json(['data' => array_values($contacts->toArray())]);
+        } catch (\Throwable $e) {
+            \Log::error('SupportContact apiList error: ' . $e->getMessage());
+            return response()->json(['data' => [], 'error' => $e->getMessage()]);
         }
-
-        if ($request->filled('department_type')) {
-            $query->where('department_type', $request->department_type);
-        }
-
-        $contacts = $query->orderBy('sort_order', 'asc')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return response()->json(['data' => $contacts]);
     }
 
     /**

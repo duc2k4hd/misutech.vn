@@ -689,12 +689,13 @@
                         d.trash_status = window.currentTrashFilter || 'all';
                     },
                     dataSrc: function(json) {
+                        if (!json) return [];
                         if (json.counts) {
                             $('#countAll').text(json.counts.all || 0);
                             $('#countActive').text(json.counts.active || 0);
                             $('#countTrashed').text(json.counts.trashed || 0);
                         }
-                        return json.data;
+                        return Array.isArray(json.data) ? json.data : [];
                     }
                 },
                 columns: [

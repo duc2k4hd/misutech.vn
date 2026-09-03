@@ -28,7 +28,13 @@ return Application::configure(basePath: dirname(__DIR__))
         );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Trả JSON thay vì HTML khi có exception trên các route API
+        // Quan trọng: phải bao gồm cả admin/api/* để DataTables không nhận HTML error
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
+            fn (Request $request) =>
+                $request->is('api/*') ||
+                $request->is('admin/api/*') ||
+                $request->expectsJson(),
         );
     })->create();
+

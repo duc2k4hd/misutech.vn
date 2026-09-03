@@ -21,37 +21,46 @@ class ContactController extends Controller
      */
     public function apiList(Request $request)
     {
-        $query = Contact::query();
+        try {
+            $query = Contact::query();
 
-        if ($request->filled('keyword')) {
-            $kw = trim($request->keyword);
-            $query->where(function($q) use ($kw) {
-                $q->where('name', 'like', "%{$kw}%")
-                  ->orWhere('phone', 'like', "%{$kw}%")
-                  ->orWhere('email', 'like', "%{$kw}%")
-                  ->orWhere('subject', 'like', "%{$kw}%")
-                  ->orWhere('message', 'like', "%{$kw}%");
-            });
+            if ($request->filled('keyword')) {
+                $kw = trim($request->keyword);
+                $query->where(function($q) use ($kw) {
+                    $q->where('name', 'like', "%{$kw}%")
+                      ->orWhere('phone', 'like', "%{$kw}%")
+                      ->orWhere('email', 'like', "%{$kw}%")
+                      ->orWhere('subject', 'like', "%{$kw}%")
+                      ->orWhere('message', 'like', "%{$kw}%");
+                });
+            }
+
+            if ($request->filled('status') && $request->status !== 'all') {
+                $query->where('status', $request->status);
+            }
+
+            $contacts = $query->orderBy('created_at', 'desc')->get();
+
+            // Thống kê nhanh
+            $stats = [
+                'total'     => Contact::count(),
+                'pending'   => Contact::where('status', 'pending')->count(),
+                'contacted' => Contact::where('status', 'contacted')->count(),
+                'completed' => Contact::where('status', 'completed')->count(),
+            ];
+
+            return response()->json([
+                'data'  => array_values($contacts->toArray()),
+                'stats' => $stats
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Contact apiList error: ' . $e->getMessage());
+            return response()->json([
+                'data'  => [],
+                'stats' => ['total' => 0, 'pending' => 0, 'contacted' => 0, 'completed' => 0],
+                'error' => $e->getMessage()
+            ]);
         }
-
-        if ($request->filled('status') && $request->status !== 'all') {
-            $query->where('status', $request->status);
-        }
-
-        $contacts = $query->orderBy('created_at', 'desc')->get();
-
-        // Thống kê nhanh
-        $stats = [
-            'total'     => Contact::count(),
-            'pending'   => Contact::where('status', 'pending')->count(),
-            'contacted' => Contact::where('status', 'contacted')->count(),
-            'completed' => Contact::where('status', 'completed')->count(),
-        ];
-
-        return response()->json([
-            'data'  => $contacts,
-            'stats' => $stats
-        ]);
     }
 
     /**

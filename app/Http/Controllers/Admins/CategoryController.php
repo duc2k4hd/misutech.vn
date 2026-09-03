@@ -49,11 +49,16 @@ class CategoryController extends Controller
 
     public function apiList()
     {
-        $categories = Category::withCount(['children', 'products', 'posts'])
-            ->orderBy('position', 'asc')
-            ->orderBy('name', 'asc')
-            ->get();
-        return response()->json(['data' => $categories]);
+        try {
+            $categories = Category::withCount(['children', 'products', 'posts'])
+                ->orderBy('position', 'asc')
+                ->orderBy('name', 'asc')
+                ->get();
+            return response()->json(['data' => array_values($categories->toArray())]);
+        } catch (\Throwable $e) {
+            \Log::error('Category apiList error: ' . $e->getMessage());
+            return response()->json(['data' => [], 'error' => $e->getMessage()]);
+        }
     }
 
     public function apiStore(Request $request)

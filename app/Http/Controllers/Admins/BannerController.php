@@ -17,8 +17,13 @@ class BannerController extends Controller
 
     public function apiList()
     {
-        $banners = Banner::latest()->get();
-        return response()->json(['data' => $banners]);
+        try {
+            $banners = Banner::latest()->get();
+            return response()->json(['data' => array_values($banners->toArray())]);
+        } catch (\Throwable $e) {
+            \Log::error('Banner apiList error: ' . $e->getMessage());
+            return response()->json(['data' => [], 'error' => $e->getMessage()]);
+        }
     }
 
     public function apiStore(Request $request)
