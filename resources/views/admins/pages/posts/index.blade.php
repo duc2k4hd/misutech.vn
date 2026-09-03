@@ -680,6 +680,10 @@
             
             initTinyMCE();
             
+            if ($.fn && $.fn.dataTable) {
+                $.fn.dataTable.ext.errMode = 'none';
+            }
+
             table = $('#postsTable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -696,6 +700,9 @@
                             $('#countTrashed').text(json.counts.trashed || 0);
                         }
                         return Array.isArray(json.data) ? json.data : [];
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.warn('Posts DataTable AJAX error:', xhr.status, xhr.responseText);
                     }
                 },
                 columns: [

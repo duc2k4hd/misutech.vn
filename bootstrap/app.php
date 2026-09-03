@@ -20,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Tin tưởng proxy (Cloudflare, Nginx, cPanel SSL reverse proxy) để nhận diện đúng HTTPS
+        $middleware->trustProxies(at: '*');
+
         $middleware->redirectGuestsTo(fn (Request $request) =>
             $request->is('admin/*') ? route('admin.login') : route('login')
         );

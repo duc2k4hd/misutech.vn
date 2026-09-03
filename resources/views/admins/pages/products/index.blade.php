@@ -679,6 +679,10 @@
             let currentTrashFilter = 'all';
             window.currentTrashFilter = currentTrashFilter;
 
+            if ($.fn && $.fn.dataTable) {
+                $.fn.dataTable.ext.errMode = 'none';
+            }
+
             table = $('#productsTable').DataTable({
                 processing: true,
                 serverSide: true, 
@@ -696,6 +700,9 @@
                             $('#countTrashed').text(json.counts.trashed || 0);
                         }
                         return Array.isArray(json.data) ? json.data : [];
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.warn('Products DataTable AJAX error:', xhr.status, xhr.responseText);
                     }
                 },
                 columns: [

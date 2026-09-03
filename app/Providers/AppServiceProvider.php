@@ -26,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         \Illuminate\Pagination\Paginator::useBootstrapFive();
 
+        // Tự động nhận diện HTTPS khi chạy trên Production hoặc qua SSL proxy/Cloudflare (tránh lỗi Mixed Content)
+        if (request()->isSecure() || request()->header('X-Forwarded-Proto') === 'https' || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || config('app.env') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         // Chia sẻ dữ liệu toàn cục cho View bằng View Composer
         // QUAN TRỌNG: KHÔNG dùng Cache::rememberForever ở đây vì:
         // 1. Eloquent Collection 200KB+ khi serialize/unserialize sẽ mất relationships
