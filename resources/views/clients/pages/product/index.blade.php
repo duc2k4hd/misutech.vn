@@ -331,11 +331,6 @@
 @push('styles')
     <link rel="stylesheet"
         href="{{ asset('clients/css/product.css') }}?v={{ file_exists(public_path('clients/css/product.css')) ? filemtime(public_path('clients/css/product.css')) : time() }}">
-    <style>
-        .misutech_product_container {
-            margin-inline: 0 !important;
-        }
-    </style>
 @endpush
 
 @push('scripts')

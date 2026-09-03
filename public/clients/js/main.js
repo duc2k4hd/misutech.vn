@@ -222,17 +222,15 @@
 
     const header = document.querySelector(".misutech_home_header");
     const nav = document.querySelector(".misutech_home_nav");
-    if (header) {
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 10) {
-                header.classList.add("is-sticky");
-                if (nav) nav.classList.add("is-sticky");
-            } else {
-                header.classList.remove("is-sticky");
-                if (nav) nav.classList.remove("is-sticky");
-            }
-        });
-    }
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 10) {
+            header?.classList.add("is-sticky");
+            nav?.classList.add("is-sticky");
+        } else {
+            header?.classList.remove("is-sticky");
+            nav?.classList.remove("is-sticky");
+        }
+    }, { passive: true });
 
     /* ═══════════════════════════════════════════════════════════════════════════
        MOBILE OFF-CANVAS DRAWER MENU HANDLERS
