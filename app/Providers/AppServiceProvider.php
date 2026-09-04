@@ -76,17 +76,11 @@ class AppServiceProvider extends ServiceProvider
                             ->get()
                         : collect();
 
-                    $brands = Schema::hasTable('brands') ? \App\Models\Brand::orderBy('name')->get() : collect();
-                    $series = Schema::hasTable('series') ? \App\Models\Series::orderBy('name')->get() : collect();
-                    $categories = $allCategories;
-                    $sharedData = compact('allCategories', 'mainCategories', 'categories', 'brands', 'series', 'settings', 'global_banners', 'supportContacts');
+                    $sharedData = compact('allCategories', 'mainCategories', 'settings', 'global_banners', 'supportContacts');
                 } catch (\Throwable $e) {
                     $sharedData = [
                         'allCategories'   => collect(),
                         'mainCategories'  => collect(),
-                        'categories'      => collect(),
-                        'brands'          => collect(),
-                        'series'          => collect(),
                         'settings'        => (object) [],
                         'global_banners'  => collect(),
                         'supportContacts' => collect(),
