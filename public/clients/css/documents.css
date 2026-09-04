@@ -500,35 +500,53 @@
     margin-top: 25px;
     display: flex;
     justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-.misutech_doc_pagination .pagination {
-    display: flex;
-    gap: 4px;
+.misutech_doc_pagination .pagination,
+.misutech_doc_pagination .misutech_pagination_list {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
     list-style: none;
     padding: 0;
     margin: 0;
+    max-width: 100%;
 }
 
-.misutech_doc_pagination .page-item .page-link {
-    padding: 6px 12px;
+.misutech_doc_pagination .page-item .page-link,
+.misutech_doc_pagination .misutech_page_link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #334155;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 13px;
+    font-weight: 600;
     text-decoration: none;
     transition: all 0.15s ease;
 }
 
-.misutech_doc_pagination .page-item.active .page-link {
+.misutech_doc_pagination .page-item.active .page-link,
+.misutech_doc_pagination .misutech_page_item.active .misutech_page_link {
     background: #003b70;
     border-color: #003b70;
     color: #ffffff;
     font-weight: 700;
 }
 
-.misutech_doc_pagination .page-item .page-link:hover:not(.active) {
+.misutech_doc_pagination .page-item .page-link:hover:not(.active),
+.misutech_doc_pagination .misutech_page_link:hover:not(.dots) {
     background: #f1f5f9;
     border-color: #94a3b8;
 }
@@ -709,8 +727,12 @@
     .misutech_doc_pagination {
         margin-top: 16px;
     }
-    .misutech_doc_pagination .page-item .page-link {
-        padding: 4px 8px;
-        font-size: 12px;
+    .misutech_doc_pagination .page-item .page-link,
+    .misutech_doc_pagination .misutech_page_link {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 6px;
+        font-size: 12.5px;
+        border-radius: 4px;
     }
 }

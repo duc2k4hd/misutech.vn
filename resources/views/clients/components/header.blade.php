@@ -54,6 +54,7 @@
     </div>
 </div>
 
+<div class="misutech_header_sticky_group" id="misutechHeaderStickyGroup">
 <header class="misutech_home_header">
     <div class="misutech_home_container misutech_home_header_inner">
         {{-- Mobile Hamburger Button --}}
@@ -172,6 +173,7 @@
         </div>
     </div>
 </nav>
+</div>
 
 {{-- Lớp bóng mờ (Overlay Backdrop) khi mở Menu Danh mục sản phẩm trên Desktop/Tablet --}}
 <div class="misutech_menu_backdrop" id="menuBackdrop"></div>

@@ -220,15 +220,27 @@
             showToast("MISUTECH sẵn sàng tư vấn cho bạn"),
         );
 
+    const headerGroup = document.querySelector(".misutech_header_sticky_group");
     const header = document.querySelector(".misutech_home_header");
     const nav = document.querySelector(".misutech_home_nav");
+    let isStickyActive = false;
+
     window.addEventListener("scroll", () => {
-        if (window.scrollY > 10) {
-            header?.classList.add("is-sticky");
-            nav?.classList.add("is-sticky");
-        } else {
-            header?.classList.remove("is-sticky");
-            nav?.classList.remove("is-sticky");
+        const scrollY = window.scrollY;
+        if (scrollY > 80) {
+            if (!isStickyActive) {
+                isStickyActive = true;
+                headerGroup?.classList.add("is-sticky");
+                header?.classList.add("is-sticky");
+                nav?.classList.add("is-sticky");
+            }
+        } else if (scrollY < 30) {
+            if (isStickyActive) {
+                isStickyActive = false;
+                headerGroup?.classList.remove("is-sticky");
+                header?.classList.remove("is-sticky");
+                nav?.classList.remove("is-sticky");
+            }
         }
     }, { passive: true });
 

@@ -20,8 +20,8 @@ class SeriesController extends Controller
                 'brand:id,name,slug',
                 'category:id,name,slug,parent_id',
                 'products' => function ($q) {
-                    $q->where('status', 'active')
-                      ->select(['id', 'name', 'slug', 'sku', 'price', 'sale_price', 'series_id', 'status', 'short_description'])
+                    $q->published()
+                      ->select(['id', 'name', 'slug', 'sku', 'price', 'sale_price', 'series_id', 'status', 'published_at', 'short_description'])
                       ->with(['thumbnailMedia', 'catalogMedia'])
                       ->orderBy('name');
                 }
@@ -82,7 +82,7 @@ class SeriesController extends Controller
                 })
                 ->select(['id', 'name', 'slug', 'brand_id', 'category_id', 'description'])
                 ->with(['brand:id,name,slug', 'category:id,name,slug'])
-                ->withCount(['products' => fn($q) => $q->where('status', 'active')])
+                ->withCount(['products' => fn($q) => $q->published()])
                 ->take(6)
                 ->get()
                 ->toArray();

@@ -37,13 +37,23 @@ class Series extends Model
     }
 
     /**
-     * Chỉ các sản phẩm active thuộc series (Tối đa 15 model mới nhất).
+     * Chỉ các sản phẩm đã xuất bản (published) thuộc series (Tối đa 15 model mới nhất).
      */
     public function activeProducts()
     {
         return $this->hasMany(Product::class)
-            ->where('status', 'active')
+            ->published()
             ->orderByDesc('created_at')
             ->take(15);
+    }
+
+    /**
+     * Các sản phẩm đã xuất bản thuộc series này, sắp xếp theo tên.
+     */
+    public function publishedProducts()
+    {
+        return $this->hasMany(Product::class)
+            ->published()
+            ->orderBy('name');
     }
 }

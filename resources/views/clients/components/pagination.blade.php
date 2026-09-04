@@ -1,4 +1,16 @@
 @if ($paginator->hasPages())
+    @php
+        // Giới hạn onEachSide(1) giúp giao diện luôn tinh gọn, chống tràn màn hình trên thiết bị di động
+        $paginator->onEachSide(1);
+        $window = \Illuminate\Pagination\UrlWindow::make($paginator);
+        $elements = array_filter([
+            $window['first'],
+            is_array($window['slider']) ? '...' : null,
+            $window['slider'],
+            is_array($window['last']) ? '...' : null,
+            $window['last'],
+        ]);
+    @endphp
     <nav class="misutech_pagination_nav" role="navigation" aria-label="Pagination Navigation">
         <ul class="misutech_pagination_list">
             {{-- Previous Page Link --}}

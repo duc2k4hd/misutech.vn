@@ -141,6 +141,33 @@ a {
     height: 13px;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   STICKY HEADER GROUP (CẢ HEADER XANH + NAV TRẮNG CÙNG DÍNH KÈM ANIMATION)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.misutech_header_sticky_group {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    background: transparent;
+}
+
+@keyframes misutechHeaderSlideDown {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.misutech_header_sticky_group.is-sticky {
+    animation: misutechHeaderSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    box-shadow: 0 4px 20px rgba(0, 20, 50, 0.15);
+}
+
 .misutech_home_header {
     background: var(--misutech_home_primary);
     color: var(--misutech_home_white);
@@ -277,14 +304,12 @@ a {
 .misutech_home_nav {
     border-bottom: 1px solid var(--misutech_home_line);
     background: var(--misutech_home_white);
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 999;
 }
 
 .misutech_home_nav.is-sticky {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-bottom-color: transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
 .misutech_home_nav_inner {
@@ -1340,19 +1365,27 @@ a {
     align-items: center;
     margin: 35px 0 15px;
     width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 0;
 }
 
 .misutech_pagination_list {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 6px;
     list-style: none;
     padding: 0;
     margin: 0;
+    max-width: 100%;
 }
 
 .misutech_page_item {
-    display: inline-block;
+    display: inline-flex;
+    flex-shrink: 0;
 }
 
 .misutech_page_link {
@@ -1498,7 +1531,7 @@ a {
 
     /* Main Navigation */
     .misutech_home_nav {
-        top: 58px;
+        top: 0;
     }
 
     .misutech_home_nav_inner {
@@ -2320,5 +2353,37 @@ a {
         display: block;
         margin: 0 auto;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+    }
+
+    /* Mobile Pagination Responsive (Đảm bảo thanh phân trang luôn cân đối, vừa vặn màn hình) */
+    .misutech_pagination_nav,
+    .misutech_doc_pagination,
+    .misutech_blog_pagination {
+        margin: 20px 0 10px;
+        padding: 4px 0;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .misutech_pagination_list {
+        gap: 4px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .misutech_page_link {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 6px;
+        font-size: 12.5px;
+        border-radius: 5px;
+    }
+
+    .misutech_page_link.dots {
+        min-width: 14px;
+        padding: 0;
+        font-size: 12px;
     }
 }
