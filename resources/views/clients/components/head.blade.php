@@ -9,8 +9,10 @@
 
 {{-- Favicons & App Icons --}}
 @php
-    $faviconUrl = !empty($settings->site_favicon) 
-        ? (Str::startsWith($settings->site_favicon, ['http://', 'https://']) ? $settings->site_favicon : asset('storage/clients/imgs/settings/' . $settings->site_favicon))
+    $faviconUrl = !empty($settings->site_favicon)
+        ? (Str::startsWith($settings->site_favicon, ['http://', 'https://'])
+            ? $settings->site_favicon
+            : asset('storage/clients/imgs/settings/' . $settings->site_favicon))
         : asset('storage/clients/imgs/settings/favicon.png');
 @endphp
 <link rel="apple-touch-icon" sizes="180x180" href="{{ $faviconUrl }}">
@@ -24,19 +26,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 {{-- Core Style CSS Preload --}}
-@php
-    $styleCssVersion = file_exists(public_path('clients/css/style.css')) ? filemtime(public_path('clients/css/style.css')) : time();
-@endphp
-<link rel="preload" href="{{ asset('clients/css/style.css') }}?v={{ $styleCssVersion }}" as="style">
-<link rel="stylesheet" href="{{ asset('clients/css/style.css') }}?v={{ $styleCssVersion }}">
+<link rel="preload" href="{{ asset('clients/css/style.css') }}" as="style">
+<link rel="stylesheet" href="{{ asset('clients/css/style.css') }}">
 
 {{-- Google Analytics (Tự động nạp khi nhập mã trong Admin Settings) --}}
-@if(!empty($settings->google_analytics))
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $settings->google_analytics }}"></script>
+@if (!empty($settings->google_analytics))
+    <!-- Google Tag Manager -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ $settings->google_analytics }}');
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', '{{ $settings->google_analytics }}');
     </script>
+    <!-- End Google Tag Manager -->
 @endif
