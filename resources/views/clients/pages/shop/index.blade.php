@@ -501,7 +501,7 @@
     </section>
 
     <section class="misutech_home_benefits" aria-label="Shopping benefits"
-        style="background: var(--misutech_home_white); padding: 60px 0;">
+        style="background: var(--misutech_home_white); padding: 20px 0 0;">
         <div class="misutech_home_benefit_grid" style="gap: 40px;">
             <article class="misutech_home_benefit"
                 style="align-items: center; padding: 30px; border-radius: 12px; background: #f8f9fa; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
@@ -510,7 +510,7 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="1" y="3" width="15" height="13"></rect>
-                        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                        <polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon>
                         <circle cx="5.5" cy="18.5" r="2.5"></circle>
                         <circle cx="18.5" cy="18.5" r="2.5"></circle>
                     </svg>
@@ -569,8 +569,16 @@
     @if (count($viewedProducts) > 0)
         <section class="misutech_home_recently_viewed">
             <div class="misutech_home_container">
-                <h2 class="misutech_home_recent_title" style="margin-bottom: 40px;">Sản Phẩm Đã Xem</h2>
-                <div class="misutech_home_product_grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="misutech_home_recent_header">
+                    <h2 class="misutech_home_recent_title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        Sản Phẩm Đã Xem
+                    </h2>
+                </div>
+                <div class="misutech_recently_viewed_grid">
                     @foreach ($viewedProducts as $product)
                         @includeFirst(['clients.pages.shop.partials.product_card', 'clients.components.product_card'], ['product' => $product])
                     @endforeach

@@ -793,5 +793,30 @@
     if (event.key === "ArrowRight" && imageModal && !imageModal.hidden) setMainImage(activeImageIndex + 1);
   });
 
+  // Tự động tối ưu bảng trong nội dung mô tả sản phẩm (30/70 cho 2 cột & cuộn ngang mượt cho >= 3 cột)
+  function initProductContentTables() {
+    const tables = document.querySelectorAll(".misutech_product_content_body table, .misutech_product_tab_panel table");
+    tables.forEach((table) => {
+      // Phân loại số lượng cột từ hàng đầu tiên
+      const firstRow = table.querySelector("tr");
+      if (firstRow) {
+        const cellCount = firstRow.children.length;
+        if (cellCount === 2) {
+          table.classList.add("misutech_table_2cols");
+        } else if (cellCount >= 3) {
+          table.classList.add("misutech_table_multicols");
+        }
+      }
+      // Tự động bọc wrapper cuộn ngang mượt mà nếu chưa có
+      if (!table.parentElement.classList.contains("misutech_product_table_wrapper")) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "misutech_product_table_wrapper";
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+  }
+
+  initProductContentTables();
   buildRelatedDots();
 })();

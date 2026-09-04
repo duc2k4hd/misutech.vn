@@ -209,9 +209,9 @@ body.misutech_product_no_scroll {
 
 .misutech_product_breadcrumb {
     min-height: 40px;
-    border-bottom: 1px solid #edf0f2;
+    border-bottom: 1px solid #f1f5f9;
     background: #ffffff;
-    padding: 8px 0;
+    padding: 10px 0;
 }
 
 .misutech_product_breadcrumb_inner {
@@ -220,23 +220,27 @@ body.misutech_product_no_scroll {
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.4;
 }
 
 .misutech_product_breadcrumb_link {
     color: #64748b;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     transition: color 0.15s ease;
 }
 
 .misutech_product_breadcrumb_link:hover {
-    color: var(--misutech_product_primary);
+    color: var(--misutech_product_primary, #003b70);
 }
 
 .misutech_product_breadcrumb_separator {
     color: #94a3b8;
-    font-size: 9px;
+    font-size: 14px;
+    line-height: 1;
     display: inline-flex;
     align-items: center;
 }
@@ -244,6 +248,17 @@ body.misutech_product_no_scroll {
 #misutech_breadcrumb_current {
     color: #0f172a;
     font-weight: 600;
+}
+
+.misutech_breadcrumb_home_icon {
+    width: 13px;
+    height: 13px;
+    color: #94a3b8;
+    transition: color 0.15s ease;
+}
+
+.misutech_product_breadcrumb_link:hover .misutech_breadcrumb_home_icon {
+    color: var(--misutech_product_primary, #003b70);
 }
 
 .misutech_product_product {
@@ -901,7 +916,6 @@ body.misutech_product_no_scroll {
 }
 
 .misutech_product_shipping_notes {
-    margin-top: 42px;
     color: var(--misutech_product_secondary);
     font-size: 1.05rem;
 }
@@ -926,34 +940,57 @@ body.misutech_product_no_scroll {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 32px;
-    margin-bottom: 24px;
-    padding: 0 0 2px;
+    gap: 8px;
+    margin-bottom: 26px;
+    padding: 0;
     border-bottom: 2px solid #e2e8f0;
     background: transparent;
 }
 
 .misutech_product_tab_button {
     position: relative;
-    padding: 8px 4px 14px;
-    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px 15px;
+    color: #64748b;
     border: 0;
+    border-radius: 8px 8px 0 0;
     background: transparent;
-    font-size: 15px;
+    font-size: 16.5px;
     font-weight: 600;
     line-height: 1.3;
     white-space: nowrap;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.misutech_product_tab_button .misutech_tab_icon {
+    width: 19px;
+    height: 19px;
+    color: #94a3b8;
+    transition: transform 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
 }
 
 .misutech_product_tab_button:hover {
-    color: var(--misutech_product_primary);
+    color: var(--misutech_product_primary, #003b70);
+    background: #f8fafc;
+}
+
+.misutech_product_tab_button:hover .misutech_tab_icon {
+    color: var(--misutech_product_primary, #003b70);
+    transform: translateY(-1px);
 }
 
 .misutech_product_tab_button.misutech_product_active {
-    color: var(--misutech_product_primary);
+    color: var(--misutech_product_primary, #003b70);
     font-weight: 700;
+    background: rgba(0, 59, 112, 0.035);
+}
+
+.misutech_product_tab_button.misutech_product_active .misutech_tab_icon {
+    color: var(--misutech_product_primary, #003b70);
 }
 
 .misutech_product_tab_button::after {
@@ -961,11 +998,12 @@ body.misutech_product_no_scroll {
     bottom: -2px;
     left: 0;
     right: 0;
-    height: 2.5px;
+    height: 3.5px;
     content: "";
-    background: var(--misutech_product_primary);
+    background: var(--misutech_product_primary, #003b70);
+    border-radius: 3px 3px 0 0;
     transform: scaleX(0);
-    transition: transform 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .misutech_product_tab_button.misutech_product_active::after {
@@ -1014,32 +1052,268 @@ body.misutech_product_no_scroll {
     color: #334155;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   NỘI DUNG MÔ TẢ SẢN PHẨM (.misutech_product_content_body)
+   Đồng bộ giao diện thương hiệu MISUTECH, chuyên nghiệp, chuẩn Typography
+   ══════════════════════════════════════════════════════════════════════════ */
 .misutech_product_content_body {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #334155;
+    font-family: inherit;
+    word-break: break-word;
+}
+
+.misutech_product_content_body * {
+    box-sizing: border-box;
+}
+
+/* Đoạn văn */
+.misutech_product_content_body p {
+    margin: 0 0 16px;
     font-size: 14.5px;
     line-height: 1.75;
     color: #334155;
 }
 
-.misutech_product_content_body h2,
+/* Các cấp tiêu đề (Headings) */
+.misutech_product_content_body h1 {
+    font-size: 21px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 28px 0 14px;
+    line-height: 1.35;
+}
+
+.misutech_product_content_body h2 {
+    color: #003b70;
+    font-weight: 700;
+    margin: 24px 0 14px;
+    font-size: 17.5px;
+    line-height: 1.35;
+    padding-left: 10px;
+    border-left: 3.5px solid #003b70;
+}
+
 .misutech_product_content_body h3 {
     color: #0f172a;
     font-weight: 700;
-    margin: 20px 0 14px;
-    font-size: 17px;
+    margin: 20px 0 12px;
+    font-size: 16px;
     line-height: 1.4;
 }
 
+.misutech_product_content_body h4 {
+    color: #1e293b;
+    font-weight: 700;
+    margin: 16px 0 10px;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.misutech_product_content_body h5,
+.misutech_product_content_body h6 {
+    color: #334155;
+    font-weight: 700;
+    margin: 14px 0 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Liên kết (Links) */
+.misutech_product_content_body a {
+    color: #003b70;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px dotted rgba(0, 59, 112, 0.45);
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.misutech_product_content_body a:hover {
+    color: #0284c7;
+    border-bottom-color: #0284c7;
+}
+
+/* Chữ đậm / nghiêng / gạch chân / gạch ngang */
+.misutech_product_content_body strong,
+.misutech_product_content_body b {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.misutech_product_content_body em,
+.misutech_product_content_body i {
+    font-style: italic;
+    color: #475569;
+}
+
+.misutech_product_content_body u {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.misutech_product_content_body del,
+.misutech_product_content_body s {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+.misutech_product_content_body mark {
+    background: #fef08a;
+    color: #854d0e;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Danh sách (Lists) */
+.misutech_product_content_body ul {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    list-style-type: disc;
+    color: #334155;
+}
+
+.misutech_product_content_body ol {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    list-style-type: decimal;
+    color: #334155;
+}
+
+.misutech_product_content_body li {
+    margin-bottom: 7px;
+    line-height: 1.65;
+}
+
+.misutech_product_content_body li::marker {
+    color: #003b70;
+}
+
+/* Trích dẫn (Blockquotes) */
+.misutech_product_content_body blockquote {
+    margin: 20px 0;
+    padding: 14px 20px;
+    border-left: 4px solid #003b70;
+    background: #f8fafc;
+    border-radius: 0 8px 8px 0;
+    color: #475569;
+    font-style: italic;
+}
+
+.misutech_product_content_body blockquote p {
+    margin-bottom: 0;
+}
+
+/* Hình ảnh & Media */
+.misutech_product_content_body img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 6px;
+    margin: 16px auto;
+    display: block;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    border: 1px solid #edf2f7;
+}
+
+.misutech_product_content_body figure {
+    margin: 18px 0;
+    text-align: center;
+}
+
+.misutech_product_content_body figcaption {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.misutech_product_content_body hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 24px 0;
+}
+
+/* Code & Pre */
+.misutech_product_content_body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    background: #f1f5f9;
+    color: #003b70;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+.misutech_product_content_body pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 16px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 18px 0;
+    scrollbar-width: thin;
+}
+
+.misutech_product_content_body pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+}
+
+/* Wrapper thanh cuộn bảng chuyên nghiệp */
+.misutech_product_table_wrapper {
+    width: 100%;
+    margin: 18px 0 24px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f8fafc;
+}
+
+.misutech_product_table_wrapper::-webkit-scrollbar {
+    height: 5px;
+}
+
+.misutech_product_table_wrapper::-webkit-scrollbar-track {
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.misutech_product_table_wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.misutech_product_table_wrapper::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Định dạng Bảng tổng thể (Table) */
 .misutech_product_content_body table,
 .misutech_product_tab_panel table {
     width: 100% !important;
-    border-spacing: 0 !important;
     border-collapse: collapse !important;
-    margin: 16px 0 24px !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 6px !important;
-    overflow: hidden !important;
+    border-spacing: 0 !important;
     font-size: 13.5px !important;
     background: #ffffff !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/* Fallback khi bảng không nằm trong wrapper */
+.misutech_product_content_body > table,
+.misutech_product_tab_panel > table {
+    margin: 18px 0 24px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
 }
 
 .misutech_product_content_body table th,
@@ -1049,45 +1323,110 @@ body.misutech_product_no_scroll {
     font-weight: 700 !important;
     text-align: left !important;
     padding: 11px 16px !important;
-    border-bottom: 1.5px solid #e2e8f0 !important;
-    border-right: 1px solid #e2e8f0 !important;
-}
-
-.misutech_product_content_body table th:last-child,
-.misutech_product_tab_panel table th:last-child {
-    border-right: 0 !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    border-right: 1px solid #edf2f7 !important;
+    letter-spacing: 0.15px !important;
 }
 
 .misutech_product_content_body table td,
 .misutech_product_tab_panel table td {
     padding: 10px 16px !important;
-    border-bottom: 1px solid #eef2f6 !important;
-    border-right: 1px solid #eef2f6 !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    border-right: 1px solid #edf2f7 !important;
     color: #334155 !important;
-    line-height: 1.55 !important;
+    line-height: 1.6 !important;
+    vertical-align: middle !important;
 }
 
-.misutech_product_content_body table td:first-child,
-.misutech_product_tab_panel table td:first-child {
-    font-weight: 600 !important;
-    color: #0f172a !important;
-    width: 32% !important;
-    background: #f8fafc !important;
-}
-
+.misutech_product_content_body table th:last-child,
+.misutech_product_tab_panel table th:last-child,
 .misutech_product_content_body table td:last-child,
 .misutech_product_tab_panel table td:last-child {
-    border-right: 0 !important;
+    border-right: none !important;
 }
 
 .misutech_product_content_body table tr:last-child td,
 .misutech_product_tab_panel table tr:last-child td {
-    border-bottom: 0 !important;
+    border-bottom: none !important;
 }
 
 .misutech_product_content_body table tr:hover td,
 .misutech_product_tab_panel table tr:hover td {
+    background: #f8fafc !important;
+}
+
+/* ─── BẢNG 2 CỘT: CHIA TỶ LỆ 30% / 70% VÀ KHÔNG BAO GIỜ BỊ CHE CHỮ ─── */
+.misutech_product_content_body table.misutech_table_2cols,
+.misutech_product_content_body table:has(tr > :first-child:nth-last-child(2)),
+.misutech_product_tab_panel table.misutech_table_2cols,
+.misutech_product_tab_panel table:has(tr > :first-child:nth-last-child(2)) {
+    table-layout: fixed !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Cột 1 (30%): Thuộc tính / Nhãn */
+.misutech_product_content_body table.misutech_table_2cols tr > th:first-child,
+.misutech_product_content_body table.misutech_table_2cols tr > td:first-child,
+.misutech_product_content_body table tr > th:first-child:nth-last-child(2),
+.misutech_product_content_body table tr > td:first-child:nth-last-child(2),
+.misutech_product_tab_panel table.misutech_table_2cols tr > th:first-child,
+.misutech_product_tab_panel table.misutech_table_2cols tr > td:first-child,
+.misutech_product_tab_panel table tr > th:first-child:nth-last-child(2),
+.misutech_product_tab_panel table tr > td:first-child:nth-last-child(2) {
+    width: 30% !important;
+    max-width: 35% !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+    background: #f8fafc !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+}
+
+/* Cột 2 (70%): Giá trị thông số kỹ thuật (xuống dòng tự nhiên, hiển thị trọn vẹn 100%) */
+.misutech_product_content_body table.misutech_table_2cols tr > th:last-child,
+.misutech_product_content_body table.misutech_table_2cols tr > td:last-child,
+.misutech_product_content_body table tr > th:first-child:nth-last-child(2) ~ th:last-child,
+.misutech_product_content_body table tr > td:first-child:nth-last-child(2) ~ td:last-child,
+.misutech_product_tab_panel table.misutech_table_2cols tr > th:last-child,
+.misutech_product_tab_panel table.misutech_table_2cols tr > td:last-child,
+.misutech_product_tab_panel table tr > th:first-child:nth-last-child(2) ~ th:last-child,
+.misutech_product_tab_panel table tr > td:first-child:nth-last-child(2) ~ td:last-child {
+    width: 70% !important;
+    color: #334155 !important;
+    background: #ffffff !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+.misutech_product_content_body table.misutech_table_2cols tr:hover td:first-child,
+.misutech_product_content_body table tr:hover > td:first-child:nth-last-child(2) {
     background: #f1f5f9 !important;
+}
+.misutech_product_content_body table.misutech_table_2cols tr:hover td:last-child,
+.misutech_product_content_body table tr:hover > td:first-child:nth-last-child(2) ~ td:last-child {
+    background: #f8fafc !important;
+}
+
+/* ─── BẢNG 3 CỘT TRỞ LÊN: CUỘN NGANG MƯỢT MÀ, KHÔNG BỊ CO CỨNG ─── */
+.misutech_product_content_body table.misutech_table_multicols,
+.misutech_product_content_body table:has(tr > :first-child:not(:nth-last-child(2)):not(:only-child)),
+.misutech_product_tab_panel table.misutech_table_multicols,
+.misutech_product_tab_panel table:has(tr > :first-child:not(:nth-last-child(2)):not(:only-child)) {
+    min-width: 600px !important;
+    width: max-content !important;
+    table-layout: auto !important;
+}
+
+.misutech_product_content_body table.misutech_table_multicols th,
+.misutech_product_content_body table.misutech_table_multicols td,
+.misutech_product_content_body table:has(tr > :first-child:not(:nth-last-child(2)):not(:only-child)) th,
+.misutech_product_content_body table:has(tr > :first-child:not(:nth-last-child(2)):not(:only-child)) td,
+.misutech_product_tab_panel table.misutech_table_multicols th,
+.misutech_product_tab_panel table.misutech_table_multicols td {
+    white-space: nowrap !important;
+    padding: 10px 14px !important;
 }
 
 /* Layout 70/30 cho Tabs và Sidebar */
@@ -2924,19 +3263,50 @@ body.misutech_product_no_scroll {
     }
 
     .misutech_product_breadcrumb {
-        padding: 8px 0;
-        margin-bottom: 8px;
+        padding: 8px 0 6px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid #f1f5f9;
+        background: #ffffff;
     }
 
     .misutech_product_breadcrumb_inner {
-        font-size: 11.5px;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
         overflow-x: auto;
         white-space: nowrap;
         scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
     }
 
     .misutech_product_breadcrumb_inner::-webkit-scrollbar {
         display: none;
+    }
+
+    .misutech_product_breadcrumb_link {
+        flex-shrink: 0;
+        font-size: 12px;
+        gap: 4px;
+    }
+
+    .misutech_product_breadcrumb_separator {
+        flex-shrink: 0;
+        font-size: 13px;
+        color: #cbd5e1;
+    }
+
+    #misutech_breadcrumb_current {
+        flex-shrink: 0;
+        font-size: 12px;
+        font-weight: 500;
+        color: #1e293b;
+        max-width: 190px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .misutech_product_product {
@@ -3108,22 +3478,23 @@ body.misutech_product_no_scroll {
 
     /* Tabs & Sidebar Section */
     .misutech_product_tabs_section {
-        padding: 24px 0 16px;
+        padding: 5px 0 16px;
     }
 
     .misutech_product_tabs_layout {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 0;
     }
 
     .misutech_product_tabs {
         position: relative;
         overflow-x: auto;
         scrollbar-width: none;
-        gap: 16px;
-        padding: 4px 0 2px;
-        margin-bottom: 16px;
+        gap: 6px;
+        padding: 2px 0 0;
+        margin-bottom: 18px;
         border-bottom: 2px solid #e2e8f0;
+        -webkit-overflow-scrolling: touch;
     }
 
     .misutech_product_tabs::-webkit-scrollbar {
@@ -3131,22 +3502,88 @@ body.misutech_product_no_scroll {
     }
 
     .misutech_product_tab_button {
-        font-size: 13px;
-        padding-bottom: 6px;
+        font-size: 14.5px;
+        padding: 9px 14px 12px;
+        gap: 6px;
         flex-shrink: 0;
     }
 
+    .misutech_product_tab_button .misutech_tab_icon {
+        width: 16px;
+        height: 16px;
+    }
+
     .misutech_product_content_body {
-        font-size: 13px;
+        font-size: 13.5px;
         line-height: 1.65;
     }
 
-    .misutech_product_content_body table,
-    .misutech_product_tab_panel table {
-        display: block;
-        overflow-x: auto;
+    .misutech_product_content_body h1 {
+        font-size: 18px;
+        margin: 20px 0 10px;
+    }
+
+    .misutech_product_content_body h2 {
+        font-size: 16px;
+        margin: 18px 0 10px;
+        border-left-width: 3px;
+        padding-left: 8px;
+    }
+
+    .misutech_product_content_body h3 {
+        font-size: 15px;
+        margin: 16px 0 8px;
+    }
+
+    .misutech_product_content_body p {
+        font-size: 13.5px;
+        margin-bottom: 12px;
+    }
+
+    /* Bảng 2 cột trên Mobile: Hiển thị chuẩn table tỷ lệ 30/70, tự động xuống dòng không bị cắt chữ */
+    .misutech_product_content_body table.misutech_table_2cols,
+    .misutech_product_content_body table:has(tr > :first-child:nth-last-child(2)),
+    .misutech_product_tab_panel table.misutech_table_2cols,
+    .misutech_product_tab_panel table:has(tr > :first-child:nth-last-child(2)) {
+        display: table !important;
         width: 100% !important;
-        white-space: nowrap;
+        table-layout: fixed !important;
+        min-width: 0 !important;
+    }
+
+    .misutech_product_content_body table.misutech_table_2cols tr > th:first-child,
+    .misutech_product_content_body table.misutech_table_2cols tr > td:first-child,
+    .misutech_product_content_body table tr > th:first-child:nth-last-child(2),
+    .misutech_product_content_body table tr > td:first-child:nth-last-child(2),
+    .misutech_product_tab_panel table.misutech_table_2cols tr > th:first-child,
+    .misutech_product_tab_panel table.misutech_table_2cols tr > td:first-child {
+        width: 32% !important;
+        padding: 9px 10px !important;
+        font-size: 12.5px !important;
+        white-space: normal !important;
+    }
+
+    .misutech_product_content_body table.misutech_table_2cols tr > th:last-child,
+    .misutech_product_content_body table.misutech_table_2cols tr > td:last-child,
+    .misutech_product_content_body table tr > th:first-child:nth-last-child(2) ~ th:last-child,
+    .misutech_product_content_body table tr > td:first-child:nth-last-child(2) ~ td:last-child,
+    .misutech_product_tab_panel table.misutech_table_2cols tr > th:last-child,
+    .misutech_product_tab_panel table.misutech_table_2cols tr > td:last-child {
+        width: 68% !important;
+        padding: 9px 10px !important;
+        font-size: 12.5px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+    }
+
+    /* Bảng >= 3 cột trên Mobile: Cho phép cuộn ngang mượt mà */
+    .misutech_product_content_body table.misutech_table_multicols,
+    .misutech_product_content_body table:has(tr > :first-child:not(:nth-last-child(2)):not(:only-child)),
+    .misutech_product_tab_panel table.misutech_table_multicols,
+    .misutech_product_tab_panel table:has(tr > :first-child:not(:nth-last-child(2)):not(:only-child)) {
+        display: table !important;
+        min-width: 520px !important;
+        width: max-content !important;
     }
 
     .misutech_product_tabs_sidebar {

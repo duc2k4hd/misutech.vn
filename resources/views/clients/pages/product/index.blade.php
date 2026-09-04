@@ -344,15 +344,21 @@
         {{-- Breadcrumb --}}
         <nav class="misutech_product_breadcrumb" aria-label="Breadcrumb">
             <div class="misutech_product_container misutech_product_breadcrumb_inner">
-                <a class="misutech_product_breadcrumb_link" href="{{ route('home.index') }}">Trang chủ</a>
+                <a class="misutech_product_breadcrumb_link" href="{{ route('home.index') }}">
+                    <svg class="misutech_breadcrumb_home_icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Trang chủ
+                </a>
                 @if ($product->category)
-                    <span class="misutech_product_breadcrumb_separator">◆</span>
+                    <span class="misutech_product_breadcrumb_separator">›</span>
                     <a class="misutech_product_breadcrumb_link"
                         href="{{ route('categories.show', $product->category->slug) }}">
                         {{ $product->category->name }}
                     </a>
                 @endif
-                <span class="misutech_product_breadcrumb_separator">◆</span>
+                <span class="misutech_product_breadcrumb_separator">›</span>
                 <span id="misutech_breadcrumb_current">{{ $product->name }}</span>
             </div>
         </nav>
@@ -610,13 +616,42 @@
                 <div class="misutech_product_tabs_main">
                     <div class="misutech_product_tabs" role="tablist" aria-label="Thông tin sản phẩm">
                         <button class="misutech_product_tab_button misutech_product_active" type="button" role="tab"
-                            aria-selected="true" data-tab="description">Mô tả sản phẩm</button>
+                            aria-selected="true" data-tab="description">
+                            <svg class="misutech_tab_icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <span>Mô tả sản phẩm</span>
+                        </button>
                         <button class="misutech_product_tab_button" type="button" role="tab" aria-selected="false"
-                            data-tab="document">Tài liệu &amp; Catalog</button>
+                            data-tab="document">
+                            <svg class="misutech_tab_icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                            <span>Tài liệu &amp; Catalog</span>
+                        </button>
                         <button class="misutech_product_tab_button misutech_product_hide_on_mobile" type="button"
-                            role="tab" aria-selected="false" data-tab="delivery">Chính sách giao hàng</button>
+                            role="tab" aria-selected="false" data-tab="delivery">
+                            <svg class="misutech_tab_icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="1" y="3" width="15" height="13"></rect>
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon>
+                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                            </svg>
+                            <span>Chính sách giao hàng</span>
+                        </button>
                         <button class="misutech_product_tab_button misutech_product_hide_on_mobile" type="button"
-                            role="tab" aria-selected="false" data-tab="returns">Đổi trả &amp; Bảo hành</button>
+                            role="tab" aria-selected="false" data-tab="returns">
+                            <svg class="misutech_tab_icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <polyline points="9 12 11 14 15 10"></polyline>
+                            </svg>
+                            <span>Đổi trả &amp; Bảo hành</span>
+                        </button>
                     </div>
                     <div class="misutech_product_tab_panels">
                         <div class="misutech_product_tab_panel misutech_product_active"

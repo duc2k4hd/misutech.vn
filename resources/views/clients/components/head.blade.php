@@ -26,8 +26,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 {{-- Core Style CSS Preload --}}
-<link rel="preload" href="{{ asset('clients/css/style.css') }}" as="style">
-<link rel="stylesheet" href="{{ asset('clients/css/style.css') }}">
+<link rel="preload" href="{{ asset('clients/css/style.css?v='. time()) }}" as="style">
+<link rel="stylesheet" href="{{ asset('clients/css/style.css?v='. time()) }}">
 
 {{-- Google Analytics (Tự động nạp khi nhập mã trong Admin Settings) --}}
 @if (!empty($settings->google_analytics))
