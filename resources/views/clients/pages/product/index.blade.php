@@ -330,12 +330,12 @@
 
 @push('styles')
     <link rel="stylesheet"
-        href="{{ asset('clients/css/product.css') }}?v={{ file_exists(public_path('clients/css/product.css')) ? filemtime(public_path('clients/css/product.css')) : time() }}">
+        href="{{ asset('clients/css/product.css') }}?v={{ file_exists(public_path('clients/css/product.css')) ? filemtime(public_path('clients/css/product.css')) : '1.0' }}">
 @endpush
 
 @push('scripts')
     <script
-        src="{{ asset('clients/js/product.js') }}?v={{ file_exists(public_path('clients/js/product.js')) ? filemtime(public_path('clients/js/product.js')) : time() }}">
+        src="{{ asset('clients/js/product.js') }}?v={{ file_exists(public_path('clients/js/product.js')) ? filemtime(public_path('clients/js/product.js')) : '1.0' }}" defer>
     </script>
 @endpush
 
@@ -374,24 +374,24 @@
                         aria-label="Mở ảnh sản phẩm lớn">
                         <img class="misutech_product_main_image" id="misutech_main_img"
                             src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                            alt="{{ $product->name }}" fetchpriority="high" decoding="async">
+                            alt="{{ $product->name }}" width="500" height="500" fetchpriority="high" loading="eager" decoding="async">
                         <span class="misutech_product_zoom_hint">⌕</span>
                     </button>
 
-                    <div class="misutech_product_thumbnails" id="misutech_product_thumbnails_wrapper" role="list"
+                    <div class="misutech_product_thumbnails" id="misutech_product_thumbnails_wrapper"
                         aria-label="Ảnh sản phẩm">
                         <button class="misutech_product_thumbnail misutech_product_active" type="button"
                             data-image="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
                             aria-label="Ảnh chính">
                             <img class="misutech_product_thumbnail_image"
                                 src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                                alt="{{ $product->name }}" loading="lazy" decoding="async">
+                                alt="{{ $product->name }}" width="80" height="80" loading="lazy" decoding="async">
                         </button>
                         @foreach ($product->galleryMedia as $i => $img)
                             <button class="misutech_product_thumbnail" type="button" data-image="{{ $img->url }}"
                                 aria-label="Ảnh {{ $i + 2 }}">
                                 <img class="misutech_product_thumbnail_image" src="{{ $img->url }}"
-                                    alt="{{ $img->alt ?? $product->name }}" loading="lazy" decoding="async">
+                                    alt="{{ $img->alt ?? $product->name }}" width="80" height="80" loading="lazy" decoding="async">
                             </button>
                         @endforeach
                     </div>
@@ -412,7 +412,7 @@
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
                                 target="_blank" rel="noopener noreferrer"
                                 class="misutech_product_share_btn misutech_product_share_fb" title="Chia sẻ lên Facebook"
-                                aria-label="Facebook">
+                                aria-label="Chia sẻ sản phẩm lên Facebook">
                                 <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
                                     <path
                                         d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -846,7 +846,7 @@
                                     @endphp
                                     <a href="{{ route('product.show', $sp->slug) }}" class="misutech_product_side_pitem">
                                         <div class="misutech_product_side_pimg">
-                                            <img src="{{ $spThumb }}" alt="{{ $sp->name }}" loading="lazy"
+                                            <img src="{{ $spThumb }}" alt="{{ $sp->name }}" width="70" height="70" loading="lazy"
                                                 decoding="async">
                                         </div>
                                         <div class="misutech_product_side_pinfo">
@@ -927,7 +927,7 @@
                                     <div class="misutech_product_related_media">
                                         <img class="misutech_product_related_image"
                                             src="{{ $related->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                                            alt="{{ $related->name }}" loading="lazy" decoding="async">
+                                            alt="{{ $related->name }}" width="220" height="220" loading="lazy" decoding="async">
                                         <div class="misutech_product_card_actions">
                                             <button class="misutech_product_card_action" type="button" data-cart
                                                 data-related-cart data-product-id="{{ $related->id }}"
@@ -1009,7 +1009,7 @@
                         </div>
 
                         <div class="misutech_product_review_prompt">
-                            <h4 class="prompt_title">Bạn đã dùng sản phẩm này?</h4>
+                            <h3 class="prompt_title">Bạn đã dùng sản phẩm này?</h3>
                             <p class="prompt_desc">Hãy để lại đánh giá để giúp khách hàng khác có thêm thông tin</p>
                             <button type="button" class="misutech_btn_open_review_form" id="misutech_btn_open_review">
                                 ✍ Viết đánh giá ngay
@@ -1129,7 +1129,7 @@
         </section>
     </div>
 
-    <aside class="misutech_product_cart_drawer" aria-hidden="true">
+    <aside class="misutech_product_cart_drawer" aria-hidden="true" hidden>
         <div class="misutech_product_cart_drawer_header">
             <h2 class="misutech_product_cart_drawer_title">Giỏ hàng</h2><button class="misutech_product_cart_close"
                 type="button" aria-label="Close cart">×</button>
@@ -1183,7 +1183,7 @@
                 <div class="misutech_lightbox_image_wrapper" id="misutech_lb_wrapper">
                     <img class="misutech_product_modal_image misutech_lb_img" id="misutech_lb_main_img"
                         src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                        alt="{{ $product->name }}" draggable="false">
+                        alt="{{ $product->name }}" width="800" height="800" decoding="async" draggable="false">
                 </div>
 
                 <button class="misutech_lb_nav misutech_lb_nav_next" id="misutech_lb_next" type="button" aria-label="Ảnh tiếp theo">
@@ -1198,13 +1198,13 @@
                         data-index="0" data-src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
                         aria-label="Ảnh 1">
                         <img src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                            alt="{{ $product->name }}" draggable="false">
+                            alt="{{ $product->name }}" width="60" height="60" loading="lazy" decoding="async" draggable="false">
                     </button>
                     @foreach ($product->galleryMedia as $i => $img)
                         <button class="misutech_lb_thumb_item" type="button"
                             data-index="{{ $i + 1 }}" data-src="{{ $img->url }}"
                             aria-label="Ảnh {{ $i + 2 }}">
-                            <img src="{{ $img->url }}" alt="{{ $img->alt ?? $product->name }}" draggable="false">
+                            <img src="{{ $img->url }}" alt="{{ $img->alt ?? $product->name }}" width="60" height="60" loading="lazy" decoding="async" draggable="false">
                         </button>
                     @endforeach
                 </div>
@@ -1230,7 +1230,7 @@
 
             <div class="misutech_modal_product_preview">
                 <img src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                    alt="{{ $product->name }}">
+                    alt="{{ $product->name }}" width="60" height="60" loading="lazy" decoding="async">
                 <div class="misutech_modal_product_meta">
                     <h4 class="misutech_modal_pname">{{ $product->name }}</h4>
                     <p class="misutech_modal_psku">
@@ -1354,8 +1354,6 @@
             </div>
         </div>
     </div>
-
-    <div class="misutech_product_toast" role="status" aria-live="polite" hidden></div>
 
     @if (!empty($embeddedSeriesModels))
         <script id="misutech_embedded_models" type="application/json">

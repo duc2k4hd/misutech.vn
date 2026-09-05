@@ -41,12 +41,22 @@
   }
 
   function showToast(message) {
+    if (typeof window.showToast === "function") {
+      window.showToast(message);
+      return;
+    }
+    const toastEl = document.getElementById("misutech_global_toast") || document.querySelector(".misutech_toast, .misutech_home_toast, .misutech_product_toast");
+    if (!toastEl) return;
     window.clearTimeout(toastTimer);
-    if (!toast) return;
-    toast.textContent = message;
-    toast.hidden = false;
+    toastEl.textContent = message;
+    toastEl.removeAttribute("hidden");
+    toastEl.setAttribute("aria-hidden", "false");
+    toastEl.classList.add("show");
     toastTimer = window.setTimeout(() => {
-      toast.hidden = true;
+      toastEl.classList.remove("show");
+      toastEl.setAttribute("aria-hidden", "true");
+      toastEl.setAttribute("hidden", "true");
+      toastEl.textContent = "";
     }, 2300);
   }
 
@@ -386,8 +396,12 @@
 
   function openCart() {
     if (!cartDrawer) return;
-    cartDrawer.classList.add("misutech_product_open");
-    cartDrawer.setAttribute("aria-hidden", "false");
+    cartDrawer.hidden = false;
+    // Force a microtick so CSS transitions work if drawer was hidden
+    requestAnimationFrame(() => {
+      cartDrawer.classList.add("misutech_product_open");
+      cartDrawer.setAttribute("aria-hidden", "false");
+    });
     if (cartOverlay) cartOverlay.hidden = false;
     document.body.classList.add("misutech_product_no_scroll");
   }
@@ -400,6 +414,11 @@
     if (!document.querySelector(".misutech_product_modal:not([hidden])")) {
       document.body.classList.remove("misutech_product_no_scroll");
     }
+    window.setTimeout(() => {
+      if (cartDrawer && !cartDrawer.classList.contains("misutech_product_open")) {
+        cartDrawer.hidden = true;
+      }
+    }, 280);
   }
 
   function addToCart(quantity, title, price, imageSource, openAfterAdd) {

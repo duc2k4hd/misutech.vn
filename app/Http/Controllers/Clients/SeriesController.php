@@ -10,6 +10,75 @@ use Illuminate\Http\Request;
 class SeriesController extends Controller
 {
     /**
+     * Danh sách tất cả các Dòng sản phẩm (Series Hub) chuẩn SEO.
+     */
+    public function index(Request $request)
+    {
+        $search = trim($request->input('q', ''));
+        $brandSlug = $request->input('brand');
+        $catSlug = $request->input('category');
+
+        $query = Series::query()
+            ->where('status', 'active')
+            ->with(['brand:id,name,slug', 'category:id,name,slug'])
+            ->withCount(['products' => fn($q) => $q->published()]);
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhereHas('brand', fn($b) => $b->where('name', 'like', "%{$search}%"))
+                  ->orWhereHas('category', fn($c) => $c->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        if (!empty($brandSlug)) {
+            $query->whereHas('brand', fn($b) => $b->where('slug', $brandSlug));
+        }
+
+        if (!empty($catSlug)) {
+            $query->whereHas('category', fn($c) => $c->where('slug', $catSlug));
+        }
+
+        $seriesList = $query->orderBy('name', 'asc')->paginate(24)->withQueryString();
+
+        // Danh sách Thương hiệu & Danh mục để lọc (Cached & Object mapped)
+        $brandsData = \Illuminate\Support\Facades\Cache::remember('series_filter_brands', 3600, function () {
+            return \App\Models\Brand::select(['id', 'name', 'slug'])
+                ->whereHas('series', fn($s) => $s->where('status', 'active'))
+                ->orderBy('name', 'asc')
+                ->get()
+                ->toArray();
+        });
+        $brands = collect($brandsData)->map(fn($item) => (object)$item);
+
+        $categoriesData = \Illuminate\Support\Facades\Cache::remember('series_filter_categories', 3600, function () {
+            return Category::select(['id', 'name', 'slug'])
+                ->where('status', 'active')
+                ->where('type', 'product')
+                ->whereHas('series', fn($s) => $s->where('status', 'active'))
+                ->orderBy('name', 'asc')
+                ->get()
+                ->toArray();
+        });
+        $categories = collect($categoriesData)->map(fn($item) => (object)$item);
+
+        $totalSeriesCount = \Illuminate\Support\Facades\Cache::remember('series_total_count', 3600, function () {
+            return Series::where('status', 'active')->count();
+        });
+
+        return view('clients.pages.series.index', compact(
+            'seriesList',
+            'brands',
+            'categories',
+            'search',
+            'brandSlug',
+            'catSlug',
+            'totalSeriesCount'
+        ));
+    }
+
+    /**
      * Hiển thị trang Landing / Chi tiết Dòng sản phẩm (Series) chuẩn SEO.
      */
     public function show(Request $request, string $slug)
@@ -59,9 +128,18 @@ class SeriesController extends Controller
         foreach ($series->products as $p) {
             foreach ($p->catalogMedia as $doc) {
                 if ($doc->url && !$allCatalogs->contains('url', $doc->url)) {
+                    $cleanName = $doc->filename;
+                    if (\Illuminate\Support\Str::startsWith($cleanName, ['http://', 'https://']) || \Illuminate\Support\Str::contains($cleanName, '/')) {
+                        $cleanName = basename(urldecode($cleanName));
+                    }
+                    if (!$cleanName || $cleanName === '.' || $cleanName === '/') {
+                        $cleanName = 'Catalog / Tài liệu kỹ thuật ' . $series->name;
+                    }
                     $allCatalogs->push((object)[
+                        'id' => $doc->id,
                         'url' => $doc->url,
-                        'filename' => $doc->filename ?: 'Catalog / Tài liệu kỹ thuật ' . $series->name,
+                        'download_url' => route('documents.download', $doc->id),
+                        'filename' => $cleanName,
                         'product_name' => $p->name
                     ]);
                 }

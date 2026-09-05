@@ -61,37 +61,30 @@
             ];
         }
 
-        // Schema Breadcrumbs
-        $breadcrumbItems = [
-            [
-                '@type' => 'ListItem',
-                'position' => 1,
-                'name' => 'Trang chủ',
-                'item' => route('home.index'),
-            ]
-        ];
-        $pos = 2;
-        if ($categoryBreadcrumbs->isNotEmpty()) {
-            foreach ($categoryBreadcrumbs as $catItem) {
-                $breadcrumbItems[] = [
-                    '@type' => 'ListItem',
-                    'position' => $pos++,
-                    'name' => $catItem->name,
-                    'item' => route('categories.show', $catItem->slug),
-                ];
-            }
-        }
-        $breadcrumbItems[] = [
-            '@type' => 'ListItem',
-            'position' => $pos,
-            'name' => $series->name,
-            'item' => $pageUrl,
-        ];
-
+        // Schema Breadcrumbs (1: Trang chủ, 2: Series, 3: Tên Series)
         $breadcrumbSchema = [
             '@context' => 'https://schema.org',
             '@type' => 'BreadcrumbList',
-            'itemListElement' => $breadcrumbItems,
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Trang chủ',
+                    'item' => route('home.index'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Series',
+                    'item' => url('/series'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $series->name,
+                    'item' => $pageUrl,
+                ]
+            ],
         ];
     @endphp
 
@@ -124,7 +117,10 @@
 @endpush
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('clients/css/series.css') }}">
+    @php
+        $seriesCssVersion = file_exists(public_path('clients/css/series.css')) ? filemtime(public_path('clients/css/series.css')) : '1.0';
+    @endphp
+    <link rel="stylesheet" href="{{ asset('clients/css/series.css?v=' . $seriesCssVersion) }}">
 @endpush
 
 @section('content')
@@ -134,12 +130,8 @@
             <div class="misutech_home_container">
                 <ol class="misutech_series_breadcrumb_list">
                     <li><a href="{{ route('home.index') }}">Trang chủ</a></li>
-                    @if($categoryBreadcrumbs->isNotEmpty())
-                        @foreach($categoryBreadcrumbs as $cat)
-                            <li class="separator">»</li>
-                            <li><a href="{{ route('categories.show', $cat->slug) }}">{{ $cat->name }}</a></li>
-                        @endforeach
-                    @endif
+                    <li class="separator">»</li>
+                    <li><a href="{{ url('/series') }}">Series</a></li>
                     <li class="separator">»</li>
                     <li class="current" aria-current="page">{{ $series->name }}</li>
                 </ol>
@@ -191,7 +183,7 @@
 
                     <div class="misutech_series_header_right">
                         <div class="misutech_series_thumb_box">
-                            <img src="{{ $seriesThumbnail }}" alt="{{ $series->name }}" class="misutech_series_thumb_img" loading="eager">
+                            <img src="{{ $seriesThumbnail }}" alt="{{ $series->name }}" class="misutech_series_thumb_img" width="300" height="225" fetchpriority="high" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -239,7 +231,7 @@
                                         <span class="misutech_series_card_sale">-{{ round((1 - $prod->sale_price / $prod->price) * 100) }}%</span>
                                     @endif
                                     <a href="{{ route('product.show', $prod->slug) }}" class="misutech_series_card_link" title="{{ $prod->name }}">
-                                        <img src="{{ $thumb }}" alt="{{ $prod->name }}" loading="lazy" decoding="async">
+                                        <img src="{{ $thumb }}" alt="{{ $prod->name }}" width="200" height="200" loading="lazy" decoding="async">
                                     </a>
                                     <div class="misutech_series_card_actions">
                                         <button class="misutech_series_card_btn_cart" type="button"
@@ -303,16 +295,18 @@
                         <div class="misutech_series_docs_list">
                             @foreach($allCatalogs as $catDoc)
                                 <div class="misutech_series_doc_item">
-                                    <span class="doc_icon">📄</span>
-                                    <div class="doc_meta">
-                                        <strong class="doc_title">{{ $catDoc->filename }}</strong>
-                                        <span class="doc_ref">Model: {{ $catDoc->product_name }}</span>
+                                    <div class="doc_main_info">
+                                        <span class="doc_icon">📄</span>
+                                        <div class="doc_meta">
+                                            <strong class="doc_title" title="{{ $catDoc->filename }}">{{ $catDoc->filename }}</strong>
+                                            <span class="doc_ref">Model: {{ $catDoc->product_name }}</span>
+                                        </div>
                                     </div>
                                     <div class="doc_btns">
-                                        <a href="{{ $catDoc->url }}" target="_blank" rel="noopener noreferrer" class="doc_btn view_btn">
+                                        <a href="{{ $catDoc->url }}" target="_blank" rel="noopener noreferrer" class="doc_btn view_btn" title="Xem trực tiếp trong trình duyệt">
                                             Xem PDF ↗
                                         </a>
-                                        <a href="{{ $catDoc->url }}" download class="doc_btn download_btn">
+                                        <a href="{{ !empty($catDoc->id) ? route('documents.download', $catDoc->id) : $catDoc->url }}" class="doc_btn download_btn" title="Tải file trực tiếp về thiết bị">
                                             Tải về ⤓
                                         </a>
                                     </div>

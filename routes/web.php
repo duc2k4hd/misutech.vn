@@ -18,6 +18,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/cua-hang', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/thuong-hieu', [ShopController::class, 'brands'])->name('brands.index');
 Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/series', [SeriesController::class, 'index'])->name('series.index');
 Route::get('/series/{slug}', [SeriesController::class, 'show'])->name('series.show');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/san-pham/{slug}/danh-gia', [ProductController::class, 'storeReview'])->name('product.review.store');

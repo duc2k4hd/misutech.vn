@@ -37,36 +37,27 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         // Tự động nhận diện HTTPS khi chạy trên Production hoặc qua SSL proxy/Cloudflare (tránh lỗi Mixed Content)
-        if (request()->isSecure() || request()->header('X-Forwarded-Proto') === 'https' || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || config('app.env') === 'production') {
-            URL::forceScheme('https');
+        if (!app()->runningInConsole()) {
+            if (request()->isSecure() || request()->header('X-Forwarded-Proto') === 'https' || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || config('app.env') === 'production') {
+                URL::forceScheme('https');
+            }
         }
 
         // Chia sẻ dữ liệu toàn cục cho View bằng View Composer
-        // QUAN TRỌNG: KHÔNG dùng Cache::rememberForever ở đây vì:
-        // 1. Eloquent Collection 200KB+ khi serialize/unserialize sẽ mất relationships
-        // 2. static $sharedData đã handle per-request caching hiệu quả (chỉ query 1 lần/request)
-        // 3. Các queries này rất nhanh (<5ms) với index đầy đủ
         View::composer('*', function ($view) {
             static $sharedData = null;
             if ($sharedData === null) {
                 try {
-                    // Query thẳng từ DB (không qua cache) — an toàn, nhanh, không bao giờ lỗi serialization
-                    // FIX: thêm type='product' + status='active' để không lẫn danh mục blog vào mega menu
-                    $allCategories = Schema::hasTable('categories')
-                        ? Category::whereNull('parent_id')
-                            ->where('type', 'product')
-                            ->where('status', 'active')
-                            ->with('children.children')
-                            ->orderBy('id', 'asc')
-                            ->get()
-                        : collect();
+                    $allCategories = Category::whereNull('parent_id')
+                        ->where('type', 'product')
+                        ->where('status', 'active')
+                        ->with('children.children')
+                        ->orderBy('id', 'asc')
+                        ->get();
 
-                    // Sidebar chỉ hiển thị 9 danh mục đầu; "Xem tất cả" dùng $allCategories để show full
                     $mainCategories = $allCategories->take(9);
 
-                    $settingsArray = Schema::hasTable('settings')
-                        ? Setting::all()->pluck('value', 'key')->toArray()
-                        : [];
+                    $settingsArray = Setting::select(['key', 'value'])->pluck('value', 'key')->toArray();
                     $settings = (object) $settingsArray;
 
                     // Xử lý định dạng Hotline
@@ -79,16 +70,14 @@ class AppServiceProvider extends ServiceProvider
                         $settings->hotline = $settings->hotline ?? '0866.555.212';
                     }
 
-                    $global_banners = Schema::hasTable('banners')
-                        ? Banner::where('status', 'active')->get()
-                        : collect();
+                    $global_banners = Banner::select(['id', 'title', 'image', 'link', 'position', 'status'])
+                        ->where('status', 'active')
+                        ->get();
 
-                    $supportContacts = Schema::hasTable('support_contacts')
-                        ? SupportContact::where('is_active', true)
-                            ->where('show_in_popup', true)
-                            ->orderBy('sort_order', 'asc')
-                            ->get()
-                        : collect();
+                    $supportContacts = SupportContact::where('is_active', true)
+                        ->where('show_in_popup', true)
+                        ->orderBy('sort_order', 'asc')
+                        ->get();
 
                     $sharedData = compact('allCategories', 'mainCategories', 'settings', 'global_banners', 'supportContacts');
                 } catch (\Throwable $e) {

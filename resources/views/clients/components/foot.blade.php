@@ -1,5 +1,5 @@
 {{-- Floating Tools Bar --}}
-<div class="misutech_home_float_tools" aria-label="Công cụ nhanh">
+<div class="misutech_home_float_tools">
     {{-- Back to top button --}}
     <button class="misutech_home_float_button" type="button" data-scroll-top aria-label="Về đầu trang"
         title="Về đầu trang">
@@ -207,10 +207,14 @@
     </a>
 </nav>
 
-<div class="misutech_home_toast" role="status" aria-live="polite" aria-hidden="true"></div>
+{{-- Unified Global Toast Notification (Dùng chung cho toàn bộ website) --}}
+<div id="misutech_global_toast" class="misutech_toast misutech_home_toast misutech_product_toast" role="status" aria-live="polite" aria-hidden="true" hidden></div>
 
 {{-- Scripts --}}
-<script src="{{ asset('clients/js/main.js') }}?v={{ time() }}"></script>
+@php
+    $mainJsVersion = file_exists(public_path('clients/js/main.js')) ? filemtime(public_path('clients/js/main.js')) : '1.0';
+@endphp
+<script src="{{ asset('clients/js/main.js?v=' . $mainJsVersion) }}" defer></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const btnOpen = document.getElementById('btnOpenSupportPopup');

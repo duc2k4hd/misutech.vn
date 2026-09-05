@@ -267,6 +267,7 @@
 
                     <li class="nav-label">Hệ Thống</li>
                     <li><a href="{{ route('admin.settings.index') }}" aria-expanded="false"><i class="mdi mdi-settings"></i><span class="nav-text">Cài đặt hệ thống</span></a></li>
+                    <li><a href="{{ route('admin.sitemaps.index') }}" aria-expanded="false"><i class="mdi mdi-sitemap"></i><span class="nav-text">Cấu hình Sitemap</span></a></li>
                 </ul>
             </div>
         </div>

@@ -78,6 +78,8 @@
 
         if (backdrop) backdrop.classList.add("is_open");
         modal.classList.add("is_open");
+        document.documentElement.classList.add("misutech_modal_locked");
+        document.body.classList.add("misutech_modal_locked");
         document.body.style.overflow = "hidden";
         updateLiveCount();
     }
@@ -88,6 +90,8 @@
         });
         if (backdrop) backdrop.classList.remove("is_open");
         if (unlockScroll) {
+            document.documentElement.classList.remove("misutech_modal_locked");
+            document.body.classList.remove("misutech_modal_locked");
             document.body.style.overflow = "";
         }
     }
@@ -107,7 +111,16 @@
 
     if (backdrop) {
         backdrop.addEventListener("click", () => closeAllModals(true));
+        backdrop.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+        }, { passive: false });
     }
+
+    document.querySelectorAll(".misutech_modal_header, .misutech_modal_footer").forEach(el => {
+        el.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+        }, { passive: false });
+    });
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeAllModals(true);

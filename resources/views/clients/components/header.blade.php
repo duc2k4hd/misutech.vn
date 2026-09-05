@@ -65,7 +65,7 @@
         </button>
 
         <a class="misutech_home_logo" href="/" aria-label="Trang chủ MISUTECH">
-            <img src="{{ !empty($settings->site_logo) ? asset('storage/clients/imgs/settings/' . $settings->site_logo) : asset('clients/imgs/no-image.png') }}" alt="{{ !empty($settings->name) ? $settings->name : 'Logo MISUTECH' }}">
+            <img src="{{ !empty($settings->site_logo) ? asset('storage/clients/imgs/settings/' . $settings->site_logo) : asset('clients/imgs/no-image.png') }}" alt="{{ !empty($settings->name) ? $settings->name : 'Logo MISUTECH' }}" width="200" height="50" fetchpriority="high">
         </a>
         <form class="misutech_home_search" role="search" action="{{ route('shop.index') }}" method="GET">
             <input class="misutech_home_search_input" name="tim-kiem" type="search" placeholder="Bạn cần tìm sản phẩm gì?"
@@ -168,6 +168,7 @@
         <div class="misutech_home_nav_links">
             <a class="misutech_home_nav_link misutech_home_nav_hot {{ request()->routeIs('brands.*') || request()->is('thuong-hieu*') ? 'active' : '' }}" href="{{ route('brands.index') }}">Thương hiệu</a>
             <a class="misutech_home_nav_link {{ request()->routeIs('documents.*') || request()->is('tai-lieu*') ? 'active' : '' }}" href="{{ route('documents.index') }}">Tài liệu</a>
+            <a class="misutech_home_nav_link {{ request()->routeIs('series.*') || request()->is('series*') ? 'active' : '' }}" href="{{ route('series.index') }}">Dòng sản phẩm</a>
             <a class="misutech_home_nav_link {{ request()->routeIs('quote.*') || request()->is('bao-gia*') ? 'active' : '' }}" href="{{ route('quote.index') }}">Báo giá</a>
             <a class="misutech_home_nav_link {{ request()->routeIs('blogs.*') || request()->routeIs('posts.*') || request()->is('tin-tuc*') || request()->is('kien-thuc*') || request()->is('tin-cong-nghe*') ? 'active' : '' }}" href="{{ route('blogs.index') }}">Tin công nghệ</a>
             <a class="misutech_home_nav_link {{ request()->routeIs('contact.*') || request()->is('lien-he*') ? 'active' : '' }}" href="{{ route('contact.index') }}">Liên hệ</a>
@@ -288,6 +289,12 @@
                 <a href="{{ route('documents.index') }}" class="misutech_drawer_navitem {{ request()->routeIs('documents.*') ? 'active' : '' }}">
                     <span class="misutech_drawer_navicon">📑</span>
                     <span>Tài liệu kỹ thuật</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('series.index') }}" class="misutech_drawer_navitem {{ request()->routeIs('series.*') ? 'active' : '' }}">
+                    <span class="misutech_drawer_navicon">📦</span>
+                    <span>Dòng sản phẩm</span>
                 </a>
             </li>
             <li>

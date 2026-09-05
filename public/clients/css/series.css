@@ -8,6 +8,10 @@
     padding-bottom: 40px;
     font-size: 13.5px;
     line-height: 1.5;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 /* ─── Breadcrumb ───────────────────────────────────────────────────────── */
@@ -499,21 +503,35 @@
 .misutech_series_doc_item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
     padding: 10px 14px;
     background: #f8fafc;
     border: 1px solid #edf0f2;
-    border-radius: 4px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.doc_main_info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 .doc_icon {
-    font-size: 18px;
+    font-size: 20px;
     flex-shrink: 0;
+    line-height: 1;
 }
 
 .doc_meta {
-    flex-grow: 1;
+    flex: 1 1 auto;
     min-width: 0;
+    overflow: hidden;
 }
 
 .doc_title {
@@ -524,12 +542,17 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1.35;
 }
 
 .doc_ref {
     display: block;
     font-size: 11.5px;
     color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
 }
 
 .doc_btns {
@@ -540,12 +563,16 @@
 }
 
 .doc_btn {
-    padding: 4px 10px;
-    border-radius: 3px;
+    padding: 6px 12px;
+    border-radius: 4px;
     font-size: 12px;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.15s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .doc_btn.view_btn {
@@ -757,29 +784,290 @@
 
     .misutech_series_docs_list {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: 10px;
     }
 
-    .doc_item {
+    .misutech_series_doc_item {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        padding: 10px 12px;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px 14px;
+        width: 100%;
+        box-sizing: border-box;
     }
-    .doc_actions {
+
+    .doc_main_info {
+        width: 100%;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .doc_title {
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        font-size: 12.5px;
+        line-height: 1.4;
+    }
+
+    .doc_ref {
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        font-size: 11px;
+    }
+
+    .doc_btns {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 6px;
+        gap: 8px;
+        flex-shrink: 0;
     }
+
     .doc_btn {
         text-align: center;
-        padding: 6px 8px;
-        font-size: 11.5px;
+        padding: 8px 10px;
+        font-size: 12px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .misutech_series_related_grid {
         grid-template-columns: 1fr;
         gap: 8px;
+    }
+}
+
+/* ==========================================================================
+   MISUTECH - Series Hub (List Page - Simple, Minimal, Sharp, Industrial)
+   ========================================================================== */
+.misutech_series_hub_page {
+    background-color: var(--misutech_home_soft, #f4f9fb);
+    padding-bottom: 40px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--misutech_home_text, #1d2b34);
+}
+
+.misutech_series_hub_header {
+    background: var(--misutech_home_white, #ffffff);
+    border-bottom: 1px solid var(--misutech_home_line, #dbe7ed);
+    padding: 18px 0 14px;
+    margin-bottom: 14px;
+}
+
+.misutech_series_hub_title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--misutech_home_primary_deep, #005b87);
+    margin: 0 0 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.misutech_series_hub_subtitle {
+    font-size: 12.5px;
+    color: var(--misutech_home_muted, #6d7d87);
+    margin: 0;
+}
+
+.misutech_series_hub_filter_wrap {
+    background: var(--misutech_home_white, #ffffff);
+    border: 1px solid var(--misutech_home_line, #dbe7ed);
+    border-radius: 0;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+}
+
+.misutech_series_hub_form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.misutech_series_hub_input {
+    flex: 1 1 240px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--misutech_home_line, #dbe7ed);
+    background: #ffffff;
+    font-size: 13px;
+    color: var(--misutech_home_text, #1d2b34);
+    border-radius: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: inherit;
+}
+
+.misutech_series_hub_input:focus {
+    border-color: var(--misutech_home_primary, #009dde);
+}
+
+.misutech_series_hub_select {
+    flex: 0 1 180px;
+    height: 36px;
+    padding: 0 8px;
+    border: 1px solid var(--misutech_home_line, #dbe7ed);
+    background: #ffffff;
+    font-size: 13px;
+    color: var(--misutech_home_text, #1d2b34);
+    border-radius: 0;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.misutech_series_hub_select:focus {
+    border-color: var(--misutech_home_primary, #009dde);
+}
+
+.misutech_series_hub_btn {
+    height: 36px;
+    padding: 0 16px;
+    background: var(--misutech_home_primary, #009dde);
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+    font-family: inherit;
+}
+
+.misutech_series_hub_btn:hover {
+    background: var(--misutech_home_primary_dark, #007fba);
+}
+
+.misutech_series_hub_reset_btn {
+    height: 36px;
+    padding: 0 12px;
+    background: transparent;
+    color: var(--misutech_home_muted, #6d7d87);
+    border: 1px solid var(--misutech_home_line, #dbe7ed);
+    border-radius: 0;
+    font-size: 12.5px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.misutech_series_hub_reset_btn:hover {
+    color: var(--misutech_home_text, #1d2b34);
+    border-color: #94a3b8;
+}
+
+.misutech_series_hub_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.misutech_series_hub_card {
+    background: var(--misutech_home_white, #ffffff);
+    border: 1px solid var(--misutech_home_line, #dbe7ed);
+    border-radius: 0;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 0.15s ease;
+}
+
+.misutech_series_hub_card:hover {
+    border-color: var(--misutech_home_primary, #009dde);
+    color: inherit;
+}
+
+.misutech_series_hub_card_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 11.5px;
+    color: var(--misutech_home_muted, #6d7d87);
+}
+
+.misutech_series_hub_card_brand {
+    font-weight: 700;
+    color: var(--misutech_home_primary_deep, #005b87);
+    text-transform: uppercase;
+}
+
+.misutech_series_hub_card_count {
+    color: var(--misutech_home_muted, #6d7d87);
+    font-size: 11.5px;
+}
+
+.misutech_series_hub_card_name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--misutech_home_text, #1d2b34);
+    margin: 0 0 6px;
+    line-height: 1.35;
+    transition: color 0.15s ease;
+}
+
+.misutech_series_hub_card:hover .misutech_series_hub_card_name {
+    color: var(--misutech_home_primary, #009dde);
+}
+
+.misutech_series_hub_card_desc {
+    font-size: 12px;
+    color: var(--misutech_home_muted, #6d7d87);
+    margin: 0 0 10px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.misutech_series_hub_card_foot {
+    font-size: 12px;
+    color: var(--misutech_home_primary, #009dde);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 8px;
+}
+
+@media (max-width: 1024px) {
+    .misutech_series_hub_grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .misutech_series_hub_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .misutech_series_hub_select {
+        flex: 1 1 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .misutech_series_hub_grid {
+        grid-template-columns: 1fr;
+    }
+    .misutech_series_hub_input,
+    .misutech_series_hub_select,
+    .misutech_series_hub_btn,
+    .misutech_series_hub_reset_btn {
+        width: 100%;
+        flex: 1 1 100%;
     }
 }

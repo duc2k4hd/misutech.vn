@@ -330,45 +330,11 @@
 .misutech_home_empty[aria-hidden="false"] {
     display: block;
 }
-.misutech_home_toast {
-    position: fixed;
-    z-index: 999999 !important;
-    right: 24px;
-    bottom: 24px;
-    max-width: 340px;
-    padding: 12px 20px;
-    border-radius: 6px;
-    background: #003b70;
-    color: var(--misutech_home_white);
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.4;
-    box-shadow: 0 10px 30px rgba(0, 35, 67, 0.35);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(15px);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.misutech_home_toast.show,
-.misutech_home_toast[aria-hidden="false"],
-.misutech_home_toast:not([hidden]):not(:empty) {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.misutech_home_toast[hidden],
-.misutech_home_toast:empty {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-}
 
 .misutech_home_catalog_section {
     padding: 18px 0 25px;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 400px;
 }
 .misutech_home_catalog_section:nth-of-type(even) {
     background: #fbfcfd;

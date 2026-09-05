@@ -22,15 +22,18 @@ class ProductController extends Controller
             'thumbnailMedia',
             'galleryMedia',
             'catalogMedia',
-            'reviews' => fn($q) => $q->where('status', 'approved')->orWhereNull('status')->orderByDesc('created_at')->take(20),
+            'reviews' => fn($q) => $q->where(fn($sub) => $sub->where('status', 'approved')->orWhereNull('status'))
+                ->select(['id', 'product_id', 'user_id', 'author_name', 'rating', 'comment', 'created_at'])
+                ->orderByDesc('created_at')
+                ->take(20),
             'reviews.user:id,name',
         ])->where('slug', $slug)->firstOrFail();
 
         // Tăng lượt xem (chỉ đếm 1 lần trong phiên session để tối ưu tốc độ DB và chống F5 ảo)
         $viewKey = 'viewed_prod_' . $product->id;
         if (!session()->has($viewKey)) {
-            \Illuminate\Support\Facades\DB::table('products')->where('id', $product->id)->increment('views_count');
             session()->put($viewKey, true);
+            \Illuminate\Support\Facades\DB::table('products')->where('id', $product->id)->increment('views_count');
         }
 
         // Lưu lịch sử xem sản phẩm cho người dùng
@@ -41,107 +44,66 @@ class ProductController extends Controller
         array_unshift($viewedList, $product->id);
         session()->put('viewed_products', array_slice($viewedList, 0, 10));
 
-        // Danh sách tối đa 15 model mới nhất trong cùng Series (Cached)
+        // Danh sách Model trong cùng Series (Tối ưu cực nhanh ngay từ truy vấn gốc)
         $seriesProducts = collect();
         $embeddedSeriesModels = [];
 
         if ($product->series_id) {
-            $seriesData = \Illuminate\Support\Facades\Cache::remember("series_models_embedded_{$product->series_id}", 3600, function () use ($product) {
-                $seriesModels = Product::published()
-                    ->where('series_id', $product->series_id)
-                    ->with(['thumbnailMedia', 'galleryMedia', 'catalogMedia'])
-                    ->orderBy('sku', 'asc')
-                    ->orderBy('name', 'asc')
-                    ->get([
-                        'id', 'name', 'slug', 'sku', 'price', 'sale_price',
-                        'short_description', 'content', 'status', 'meta_title',
-                        'meta_description', 'series_id'
-                    ]);
+            $seriesModels = Product::published()
+                ->where('series_id', $product->series_id)
+                ->with('thumbnailMedia')
+                ->orderBy('sku', 'asc')
+                ->orderBy('name', 'asc')
+                ->get([
+                    'id', 'name', 'slug', 'sku', 'price', 'sale_price',
+                    'status', 'meta_title', 'meta_description', 'series_id'
+                ]);
 
-                $embedded = [];
-                $list = [];
-                foreach ($seriesModels as $m) {
-                    $discount = 0;
-                    if ($m->sale_price && $m->sale_price < $m->price && $m->price > 0) {
-                        $discount = round((1 - $m->sale_price / $m->price) * 100);
-                    }
-
-                    $itemData = [
-                        'id' => $m->id,
-                        'name' => $m->name,
-                        'slug' => $m->slug,
-                        'sku' => $m->sku,
-                        'price' => (float)$m->price,
-                        'price_formatted' => number_format($m->price, 0, ',', '.') . 'đ',
-                        'sale_price' => $m->sale_price ? (float)$m->sale_price : null,
-                        'sale_price_formatted' => $m->sale_price ? number_format($m->sale_price, 0, ',', '.') . 'đ' : null,
-                        'has_sale' => (bool)($m->sale_price && $m->sale_price < $m->price),
-                        'discount_percent' => $discount,
-                        'short_description' => $m->short_description,
-                        'content' => $m->content,
-                        'status' => $m->status,
-                        'is_active' => $m->status === 'active',
-                        'thumbnail_url' => $m->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png'),
-                        'gallery' => $m->galleryMedia->map(fn($g) => [
-                            'id' => $g->id,
-                            'url' => $g->url,
-                            'alt' => $g->alt ?? $m->name
-                        ])->values()->all(),
-                        'catalogs' => $m->catalogMedia->map(fn($c) => [
-                            'id' => $c->id,
-                            'url' => $c->url,
-                            'download_url' => route('documents.download', $c->id),
-                            'filename' => $c->original_name ?: ($c->filename ?: 'Tài liệu sản phẩm')
-                        ])->values()->all(),
-                        'meta_title' => ($m->meta_title ?? $m->name) . ' | MISUTECH',
-                        'meta_description' => $m->meta_description ?? '',
-                        'url' => route('product.show', $m->slug),
-                    ];
-                    $embedded[$m->slug] = $itemData;
-                    $list[] = $itemData;
+            $embedded = [];
+            $list = [];
+            foreach ($seriesModels as $m) {
+                $discount = 0;
+                if ($m->sale_price && $m->sale_price < $m->price && $m->price > 0) {
+                    $discount = round((1 - $m->sale_price / $m->price) * 100);
                 }
 
-                return [
-                    'embedded' => $embedded,
-                    'list' => $list
+                $itemData = [
+                    'id' => $m->id,
+                    'name' => $m->name,
+                    'slug' => $m->slug,
+                    'sku' => $m->sku,
+                    'price' => (float)$m->price,
+                    'price_formatted' => number_format($m->price, 0, ',', '.') . 'đ',
+                    'sale_price' => $m->sale_price ? (float)$m->sale_price : null,
+                    'sale_price_formatted' => $m->sale_price ? number_format($m->sale_price, 0, ',', '.') . 'đ' : null,
+                    'has_sale' => (bool)($m->sale_price && $m->sale_price < $m->price),
+                    'discount_percent' => $discount,
+                    'status' => $m->status,
+                    'is_active' => $m->status === 'active',
+                    'thumbnail_url' => $m->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png'),
+                    'meta_title' => ($m->meta_title ?? $m->name) . ' | MISUTECH',
+                    'meta_description' => $m->meta_description ?? '',
+                    'url' => route('product.show', $m->slug),
                 ];
-            });
+                $embedded[$m->slug] = $itemData;
+                $list[] = $itemData;
+            }
 
-            $embeddedSeriesModels = $seriesData['embedded'] ?? [];
-            $seriesProducts = collect($seriesData['list'] ?? [])->map(fn($i) => (object)$i);
+            $embeddedSeriesModels = $embedded;
+            $seriesProducts = collect($list)->map(fn($i) => (object)$i);
         }
 
-        // Sản phẩm liên quan: Lấy 10 sản phẩm cùng danh mục trong 1 query duy nhất
+        // Sản phẩm liên quan: 1 query duy nhất trực tiếp từ DB có index (cực nhanh <1ms)
         $relatedProducts = collect();
         if ($product->category_id) {
-            $relatedProductIds = \Illuminate\Support\Facades\Cache::remember("category_related_product_ids_{$product->category_id}", 1800, function () use ($product) {
-                return Product::published()
-                    ->where('category_id', $product->category_id)
-                    ->latest('id')
-                    ->take(15)
-                    ->pluck('id')
-                    ->toArray();
-            });
-
-            if (!empty($relatedProductIds)) {
-                $filteredIds = array_values(array_diff($relatedProductIds, [$product->id]));
-                $targetIds = array_slice($filteredIds, 0, 10);
-
-                if (!empty($targetIds)) {
-                    $relatedProductsKeyed = Product::published()
-                        ->select(['id', 'name', 'slug', 'price', 'sale_price', 'rating_average', 'reviews_count', 'category_id'])
-                        ->with('thumbnailMedia')
-                        ->whereIn('id', $targetIds)
-                        ->get()
-                        ->keyBy('id');
-
-                    foreach ($targetIds as $tId) {
-                        if (isset($relatedProductsKeyed[$tId])) {
-                            $relatedProducts->push($relatedProductsKeyed[$tId]);
-                        }
-                    }
-                }
-            }
+            $relatedProducts = Product::published()
+                ->where('category_id', $product->category_id)
+                ->where('id', '!=', $product->id)
+                ->select(['id', 'name', 'slug', 'price', 'sale_price', 'rating_average', 'reviews_count', 'category_id'])
+                ->with('thumbnailMedia')
+                ->latest('id')
+                ->take(10)
+                ->get();
         }
 
         // Điểm rating theo từng sao

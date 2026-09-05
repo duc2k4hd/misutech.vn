@@ -14,19 +14,22 @@
     let toastTimer;
 
     const showToast = (message) => {
-        if (!toast) return;
-        toast.textContent = message;
-        toast.removeAttribute("hidden");
-        toast.setAttribute("aria-hidden", "false");
-        toast.classList.add("show");
+        const toastEl = document.getElementById("misutech_global_toast") || document.querySelector(".misutech_toast, .misutech_home_toast, .misutech_product_toast");
+        if (!toastEl) return;
+        toastEl.textContent = message;
+        toastEl.removeAttribute("hidden");
+        toastEl.setAttribute("aria-hidden", "false");
+        toastEl.classList.add("show");
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => {
-            toast.classList.remove("show");
-            toast.setAttribute("aria-hidden", "true");
-            toast.setAttribute("hidden", "true");
-            toast.textContent = "";
+            toastEl.classList.remove("show");
+            toastEl.setAttribute("aria-hidden", "true");
+            toastEl.setAttribute("hidden", "true");
+            toastEl.textContent = "";
         }, 2200);
     };
+
+    window.showToast = showToast;
 
 
     let lastCartClickTime = 0;

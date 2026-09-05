@@ -25,7 +25,14 @@
         $hotline = $settings->hotline ?? ($settings->phone ?? '0866555212');
         $email = $settings->email ?? 'kinhdoanhhpt@haiphongtech.vn';
         $address = $settings->address ?? 'Số 252 Đường Đại Thắng, Tổ 4, Phường Dương Kinh, Thành phố Hải Phòng, Việt Nam';
+        $firstHeroBanner = $banners->get(1, collect())->first();
+        $firstHeroBannerUrl = $firstHeroBanner ? (Str::startsWith($firstHeroBanner->image, ['http://', 'https://']) ? $firstHeroBanner->image : asset('storage/clients/imgs/banners/' . $firstHeroBanner->image)) : null;
     @endphp
+
+    {{-- LCP Image Preload for Instant First Paint --}}
+    @if($firstHeroBannerUrl)
+        <link rel="preload" as="image" href="{{ $firstHeroBannerUrl }}" fetchpriority="high">
+    @endif
 
     {{-- Canonical & Language Alternates --}}
     <link rel="canonical" href="{{ $siteUrl }}">
@@ -147,6 +154,19 @@
                             ]
                         ]
                     ]
+                ],
+                [
+                    "@type" => "ItemList",
+                    "name" => "Sản phẩm nổi bật Misutech",
+                    "itemListElement" => $featuredProducts->take(10)->values()->map(function($prod, $idx) {
+                        return [
+                            "@type" => "ListItem",
+                            "position" => $idx + 1,
+                            "url" => route('product.show', $prod->slug),
+                            "name" => $prod->name,
+                            "image" => $prod->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png')
+                        ];
+                    })->all()
                 ]
             ]
         ];
@@ -157,11 +177,11 @@
 @endpush
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('clients/css/home.css') }}?v={{ file_exists(public_path('clients/css/home.css')) ? filemtime(public_path('clients/css/home.css')) : time() }}">
+    <link rel="stylesheet" href="{{ asset('clients/css/home.css') }}?v={{ file_exists(public_path('clients/css/home.css')) ? filemtime(public_path('clients/css/home.css')) : '1.0' }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('clients/js/home.js') }}?v={{ file_exists(public_path('clients/js/home.js')) ? filemtime(public_path('clients/js/home.js')) : time() }}"></script>
+    <script src="{{ asset('clients/js/home.js') }}?v={{ file_exists(public_path('clients/js/home.js')) ? filemtime(public_path('clients/js/home.js')) : '1.0' }}" defer></script>
 @endpush
 
 @section('content')
@@ -240,7 +260,9 @@
                             style="opacity: {{ $index === 0 ? '1' : '0' }}; transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out; transform: {{ $index === 0 ? 'scale(1)' : 'scale(1.05)' }}; pointer-events: {{ $index === 0 ? 'auto' : 'none' }}; z-index: {{ $index === 0 ? '1' : '0' }}; width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
                             <img src="{{ Str::startsWith($banner->image, ['http://', 'https://']) ? $banner->image : asset('storage/clients/imgs/banners/' . $banner->image) }}"
                                 alt="{{ $banner->title }}"
-                                @if($index === 0) fetchpriority="high" loading="eager" @else loading="lazy" decoding="async" @endif
+                                width="790"
+                                height="380"
+                                @if($index === 0) fetchpriority="high" loading="eager" decoding="async" @else loading="lazy" decoding="async" @endif
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;" />
                             <div class="misutech_home_hero_overlay">
                                 <div class="misutech_home_hero_copy">
@@ -283,7 +305,12 @@
                     <a class="misutech_home_side_banner" href="{{ $sideBanner1->link ?? '#' }}"
                         style="position: relative; border-radius: 4px; overflow: hidden; display: block;">
                         <img src="{{ Str::startsWith($sideBanner1->image, ['http://', 'https://']) ? $sideBanner1->image : asset('storage/clients/imgs/banners/' . $sideBanner1->image) }}"
-                            alt="{{ $sideBanner1->title }}" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover;" />
+                            alt="{{ $sideBanner1->title }}"
+                            width="290"
+                            height="185"
+                            loading="lazy"
+                            decoding="async"
+                            style="width: 100%; height: 100%; object-fit: cover;" />
                         <span class="misutech_home_side_banner_label">{{ $sideBanner1->title }}</span>
                     </a>
                 @endif
@@ -293,7 +320,12 @@
                     <a class="misutech_home_side_banner" href="{{ $sideBanner2->link ?? '#' }}"
                         style="position: relative; border-radius: 4px; overflow: hidden; display: block;">
                         <img src="{{ Str::startsWith($sideBanner2->image, ['http://', 'https://']) ? $sideBanner2->image : asset('storage/clients/imgs/banners/' . $sideBanner2->image) }}"
-                            alt="{{ $sideBanner2->title }}" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover;" />
+                            alt="{{ $sideBanner2->title }}"
+                            width="290"
+                            height="185"
+                            loading="lazy"
+                            decoding="async"
+                            style="width: 100%; height: 100%; object-fit: cover;" />
                         <span class="misutech_home_side_banner_label">{{ $sideBanner2->title }}</span>
                     </a>
                 @endif
@@ -307,7 +339,7 @@
                 <a class="misutech_home_quick_item" href="{{ route('categories.show', $category->slug) }}"
                     style="text-decoration: none; color: inherit;">
                     <span class="misutech_home_quick_icon">{!! !empty($category->icon)
-                        ? '<img src="' . asset('storage/clients/imgs/categories/' . $category->icon) . '" alt="' . e($category->name) . '">'
+                        ? '<img src="' . asset('storage/clients/imgs/categories/' . $category->icon) . '" alt="' . e($category->name) . '" width="36" height="36" loading="lazy" decoding="async">'
                         : '▣' !!}</span> {{ $category->name }}
                 </a>
             @endforeach
@@ -352,6 +384,8 @@
                             <a href="{{ route('product.show', $product->slug) }}">
                                 <img src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
                                     alt="{{ $product->name }}"
+                                    width="220"
+                                    height="220"
                                     loading="lazy"
                                     decoding="async"
                                     style="width:100%;height:100%;object-fit:cover;border-radius:4px;" />
@@ -429,6 +463,8 @@
                             <a href="{{ route('product.show', $product->slug) }}">
                                 <img src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
                                     alt="{{ $product->name }}"
+                                    width="220"
+                                    height="220"
                                     loading="lazy"
                                     decoding="async"
                                     style="width:100%;height:100%;object-fit:cover;border-radius:4px;" />
@@ -503,8 +539,12 @@
                             <div class="misutech_home_product_image">
                                 <a href="{{ route('product.show', $product->slug) }}">
                                     <img src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                                        alt="{{ $product->name ?? 'No image' }}"
-                                        loading="lazy" />
+                                        alt="{{ $product->name ?? 'Sản phẩm' }}"
+                                        width="220"
+                                        height="220"
+                                        loading="lazy"
+                                        decoding="async"
+                                        style="width:100%;height:100%;object-fit:cover;border-radius:4px;" />
                                 </a>
                             </div>
                             <h3 class="misutech_home_product_name">
@@ -561,6 +601,10 @@
                             @if (!empty($category->icon))
                                 <img src="{{ asset('storage/clients/imgs/categories/' . $category->icon) }}"
                                     alt="{{ $category->name }}"
+                                    width="35"
+                                    height="35"
+                                    loading="lazy"
+                                    decoding="async"
                                     style="max-width: 35px; max-height: 35px; object-fit: contain;">
                             @else
                                 <span style="font-size: 24px; color: #0052cc;">▣</span>
@@ -590,7 +634,7 @@
                                 @endphp
                                 <article class="misutech_home_article">
                                     <a href="{{ route('blogs.show', $post->slug) }}" class="misutech_home_article_image" title="{{ $post->title }}">
-                                        <img src="{{ $pThumbUrl }}" alt="{{ $post->title }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+                                        <img src="{{ $pThumbUrl }}" alt="{{ $post->title }}" width="120" height="80" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3/2;">
                                     </a>
                                     <div class="misutech_home_article_body">
                                         <h3 class="misutech_home_article_title">
@@ -634,3 +678,4 @@
         </div>
     </section>
 @endsection
+

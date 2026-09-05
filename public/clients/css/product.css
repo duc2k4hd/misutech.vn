@@ -600,18 +600,16 @@ body.misutech_product_no_scroll {
 .misutech_product_series_badge {
     font-size: 11px;
     background: #e2e8f0;
-    color: #475569;
+    color: #0f172a;
     padding: 2px 7px;
     border-radius: 10px;
-    font-weight: 600;
+    font-weight: 700;
 }
-
-
 
 .misutech_product_series_desc {
     margin: 8px 0 0;
     font-size: 12px;
-    color: #64748b;
+    color: #334155;
     line-height: 1.4;
 }
 
@@ -1468,8 +1466,8 @@ body.misutech_product_no_scroll {
 
 .misutech_product_side_subtitle {
     margin: 0;
-    font-size: 11px;
-    color: var(--misutech_home_muted, #6d7d87);
+    font-size: 11.5px;
+    color: #1e293b;
     line-height: 1.4;
 }
 
@@ -1581,8 +1579,8 @@ body.misutech_product_no_scroll {
 
 .misutech_product_trust_list p {
     margin: 0;
-    font-size: 11px;
-    color: var(--misutech_home_muted, #6d7d87);
+    font-size: 11.5px;
+    color: #334155;
     line-height: 1.3;
 }
 
@@ -1704,6 +1702,8 @@ body.misutech_product_no_scroll {
     padding: 30px 0;
     border-top: 1px solid #e1e2e3;
     border-bottom: 1px solid #eef0f1;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 180px;
 }
 
 .misutech_product_benefit_grid {
@@ -1948,6 +1948,8 @@ body.misutech_product_no_scroll {
 .misutech_product_related {
     padding: 10px 0;
     border-top: 1px solid #edf0f1;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 400px;
 }
 
 .misutech_product_related_grid {
@@ -2114,8 +2116,10 @@ body.misutech_product_no_scroll {
    ========================================================================= */
 .misutech_product_reviews {
     padding: 40px 0 50px;
-    border-top: 1px solid #edf0f2;
+    border-top: 1px solid #edf0f1;
     background: #ffffff;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 500px;
 }
 
 .misutech_reviews_section_header {
@@ -2125,7 +2129,7 @@ body.misutech_product_no_scroll {
 .misutech_reviews_section_subtitle {
     margin: 4px 0 0;
     font-size: 13px;
-    color: #64748b;
+    color: #334155;
 }
 
 .misutech_product_review_layout {
@@ -3498,20 +3502,6 @@ body.misutech_product_no_scroll {
 
 .misutech_product_quick_add {
     width: 180px;
-}
-
-.misutech_product_toast {
-    position: fixed;
-    z-index: 100;
-    right: 24px;
-    bottom: 24px;
-    max-width: 340px;
-    padding: 14px 20px;
-    color: var(--misutech_product_white);
-    border-radius: 4px;
-    background: var(--misutech_product_primary);
-    box-shadow: 0 9px 26px rgba(0, 59, 112, 0.28);
-    font-size: 1.1rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

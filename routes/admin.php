@@ -28,6 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::get('api/settings/{id}', [\App\Http\Controllers\Admins\SettingController::class, 'apiShow'])->name('api.settings.show');
     Route::delete('api/settings/{id}', [\App\Http\Controllers\Admins\SettingController::class, 'apiDestroy'])->name('api.settings.destroy');
 
+    // Sitemap Management & Auto Generator
+    Route::get('sitemaps', [\App\Http\Controllers\Admins\SitemapController::class, 'index'])->name('sitemaps.index');
+    Route::get('api/sitemaps', [\App\Http\Controllers\Admins\SitemapController::class, 'apiGetInfo'])->name('api.sitemaps.info');
+    Route::post('api/sitemaps/settings', [\App\Http\Controllers\Admins\SitemapController::class, 'apiSaveSettings'])->name('api.sitemaps.settings');
+    Route::post('api/sitemaps/generate', [\App\Http\Controllers\Admins\SitemapController::class, 'apiGenerate'])->name('api.sitemaps.generate');
+
     // Banners
     Route::get('banners', [\App\Http\Controllers\Admins\BannerController::class, 'index'])->name('banners.index');
     Route::get('api/banners', [\App\Http\Controllers\Admins\BannerController::class, 'apiList'])->name('api.banners.list');
