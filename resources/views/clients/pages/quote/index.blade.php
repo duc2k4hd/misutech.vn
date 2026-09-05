@@ -141,7 +141,7 @@
 @endpush
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('clients/css/quote.css') }}">
+    <link rel="stylesheet" href="{{ asset('clients/css/quote.css') }}?v={{ file_exists(public_path('clients/css/quote.css')) ? filemtime(public_path('clients/css/quote.css')) : time() }}">
 @endpush
 
 @section('content')

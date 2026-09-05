@@ -36,7 +36,7 @@
 }
 
 .misutech_blog_breadcrumb_list li a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .misutech_blog_breadcrumb_list .separator {
@@ -60,8 +60,8 @@
 /* ─── Header Card ──────────────────────────────────────────────────────── */
 .misutech_blog_header_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 20px 24px;
     margin-bottom: 20px;
 }
@@ -70,10 +70,10 @@
     display: inline-block;
     font-size: 11px;
     font-weight: 700;
-    color: #0284c7;
+    color: var(--misutech_home_primary_dark, #007fba);
     background: #e0f2fe;
     padding: 2px 8px;
-    border-radius: 3px;
+    border-radius: 0;
     margin-bottom: 6px;
     letter-spacing: 0.3px;
 }
@@ -96,8 +96,8 @@
 /* ─── Featured Post Card ───────────────────────────────────────────────── */
 .misutech_blog_featured_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     overflow: hidden;
     margin-bottom: 20px;
     display: grid;
@@ -147,10 +147,10 @@
 .blog_tag {
     font-size: 11.5px;
     font-weight: 700;
-    color: #003b70;
-    background: #e6f0fa;
+    color: var(--misutech_home_primary, #009dde);
+    background: var(--misutech_home_primary_soft, #f2fbfe);
     padding: 2px 8px;
-    border-radius: 3px;
+    border-radius: 0;
     text-decoration: none;
 }
 
@@ -173,7 +173,7 @@
 }
 
 .featured_title a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .featured_summary {
@@ -191,13 +191,13 @@
     display: inline-block;
     font-size: 13px;
     font-weight: 600;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     text-decoration: none;
     transition: color 0.15s ease;
 }
 
 .btn_read_more:hover {
-    color: #0284c7;
+    color: var(--misutech_home_primary_dark, #007fba);
     text-decoration: underline;
 }
 
@@ -210,8 +210,8 @@
 
 .misutech_blog_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -220,8 +220,8 @@
 }
 
 .misutech_blog_card:hover {
-    border-color: #003b70;
-    box-shadow: 0 4px 12px rgba(0, 59, 112, 0.06);
+    border-color: var(--misutech_home_primary, #009dde);
+    box-shadow: 0 4px 12px rgba(0, 157, 222, 0.08);
     transform: translateY(-2px);
 }
 
@@ -264,10 +264,10 @@
 .blog_card_category {
     font-size: 11px;
     font-weight: 700;
-    color: #003b70;
-    background: #e6f0fa;
+    color: var(--misutech_home_primary, #009dde);
+    background: var(--misutech_home_primary_soft, #f2fbfe);
     padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 0;
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
@@ -298,7 +298,7 @@
 }
 
 .blog_card_title a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .blog_card_summary {
@@ -324,12 +324,12 @@
 .btn_card_read {
     font-size: 12.5px;
     font-weight: 600;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     text-decoration: none;
 }
 
 .btn_card_read:hover {
-    color: #0284c7;
+    color: var(--misutech_home_primary_dark, #007fba);
     text-decoration: underline;
 }
 
@@ -341,8 +341,8 @@
 /* ─── Detail Post View ─────────────────────────────────────────────────── */
 .misutech_blog_detail_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 28px 32px;
     margin-bottom: 24px;
 }
@@ -350,17 +350,17 @@
 .blog_detail_header {
     margin-bottom: 20px;
     padding-bottom: 18px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #edf2f6;
 }
 
 .blog_detail_tag {
     display: inline-block;
     font-size: 12px;
     font-weight: 700;
-    color: #003b70;
-    background: #e6f0fa;
+    color: var(--misutech_home_primary, #009dde);
+    background: var(--misutech_home_primary_soft, #f2fbfe);
     padding: 3px 10px;
-    border-radius: 4px;
+    border-radius: 0;
     text-decoration: none;
     margin-bottom: 10px;
 }
@@ -404,10 +404,10 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     margin-bottom: 24px;
-    border-radius: 6px;
+    border-radius: 0;
     overflow: hidden;
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #edf2f6;
 }
 
 .blog_detail_featured_image img {
@@ -419,7 +419,7 @@
 
 .blog_detail_summary {
     background: #f8fafc;
-    border-left: 4px solid #003b70;
+    border-left: 4px solid var(--misutech_home_primary, #009dde);
     padding: 14px 18px;
     border-radius: 0 4px 4px 0;
     font-size: 13.5px;
@@ -431,8 +431,8 @@
 /* ─── Table of Contents (TOC) - Minimalist & Clean ──────────────────────── */
 .misutech_toc_box {
     background: #fbfcfd;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     margin: 20px 0 24px;
 }
 
@@ -465,7 +465,7 @@
 }
 
 .toc_toggle_btn:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .toc_body {
@@ -496,12 +496,12 @@
 }
 
 .toc_item a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     text-decoration: underline;
 }
 
 .toc_item a.active {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 600;
 }
 
@@ -545,7 +545,7 @@
     background: #ffffff;
     color: #0f172a;
     border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border-radius: 0;
     padding: 7px 12px;
     font-size: 12.5px;
     font-weight: 600;
@@ -586,15 +586,20 @@
     max-width: 300px;
     background: #ffffff;
     z-index: 1050;
-    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
+    visibility: hidden;
+    pointer-events: none;
     transform: translateX(-100%);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, visibility 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
 }
 
 .misutech_mobile_toc_drawer.active {
     transform: translateX(0);
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.1);
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .mobile_toc_header {
@@ -603,7 +608,7 @@
     justify-content: space-between;
     padding: 14px 16px;
     background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #edf2f6;
 }
 
 .mobile_toc_title {
@@ -653,7 +658,7 @@
 
 .mobile_toc_item a:hover,
 .mobile_toc_item a.active {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 600;
     text-decoration: underline;
 }
@@ -714,7 +719,7 @@
 .misutech_blog_content img {
     max-width: 100%;
     height: auto;
-    border-radius: 6px;
+    border-radius: 0;
     margin: 16px 0;
     display: block;
 }
@@ -728,7 +733,7 @@
 
 .misutech_blog_content table th,
 .misutech_blog_content table td {
-    border: 1px solid #e2e8f0;
+    border: 1px solid #edf2f6;
     padding: 8px 12px;
 }
 
@@ -765,7 +770,7 @@
     padding: 5px 12px;
     font-size: 12px;
     font-weight: 600;
-    border-radius: 4px;
+    border-radius: 0;
     text-decoration: none;
     border: 1px solid transparent;
     cursor: pointer;
@@ -785,7 +790,7 @@
 .btn_share.copy {
     background: #f1f5f9;
     color: #334155;
-    border-color: #cbd5e1;
+    border-color: var(--misutech_home_primary, #009dde);
 }
 
 .btn_share.copy:hover {
@@ -796,8 +801,8 @@
 /* ─── Related Posts ────────────────────────────────────────────────────── */
 .misutech_related_posts_section {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 20px 24px;
 }
 
@@ -807,7 +812,7 @@
     color: #0f172a;
     margin: 0 0 16px;
     padding-bottom: 8px;
-    border-bottom: 2px solid #003b70;
+    border-bottom: 2px solid var(--misutech_home_primary, #009dde);
     display: inline-block;
 }
 
@@ -819,13 +824,13 @@
 
 .related_post_card {
     border: 1px solid #f1f5f9;
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden;
     transition: all 0.15s ease;
 }
 
 .related_post_card:hover {
-    border-color: #cbd5e1;
+    border-color: var(--misutech_home_primary, #009dde);
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
@@ -873,7 +878,7 @@
 }
 
 .rel_title a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 /* ─── Sidebar Widgets ──────────────────────────────────────────────────── */
@@ -898,8 +903,8 @@
 /* Widget TOC trên Sidebar (Minimalist & Clean) */
 .sidebar_toc_widget {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 14px 16px;
     animation: sidebarTocFadeIn 0.2s ease-out;
 }
@@ -923,7 +928,7 @@
 
 .sidebar_toc_body::-webkit-scrollbar-thumb {
     background-color: #cbd5e1;
-    border-radius: 3px;
+    border-radius: 0;
 }
 
 .sidebar_toc_list {
@@ -948,12 +953,12 @@
 }
 
 .sidebar_toc_item a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     text-decoration: underline;
 }
 
 .sidebar_toc_item a.active {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 600;
 }
 
@@ -975,8 +980,8 @@
 
 .sidebar_widget {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 14px 16px;
 }
 
@@ -997,7 +1002,7 @@
     left: 0;
     width: 36px;
     height: 2px;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
 }
 
 .sidebar_search_form {
@@ -1010,29 +1015,29 @@
     height: 36px;
     padding: 6px 12px;
     border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 13px;
     color: #1e293b;
     outline: none;
 }
 
 .sidebar_search_form input:focus {
-    border-color: #003b70;
+    border-color: var(--misutech_home_primary, #009dde);
 }
 
 .sidebar_search_form button {
     width: 40px;
     height: 36px;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 0;
     cursor: pointer;
     transition: background 0.15s ease;
 }
 
 .sidebar_search_form button:hover {
-    background: #0284c7;
+    background: var(--misutech_home_primary_dark, #007fba);
 }
 
 .sidebar_cat_list,
@@ -1054,14 +1059,14 @@
     font-size: 13px;
     color: #475569;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 0;
     transition: all 0.15s ease;
 }
 
 .sidebar_cat_list a:hover,
 .sidebar_cat_list a.active {
     background: #f1f5f9;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 600;
 }
 
@@ -1105,7 +1110,7 @@
     max-width: 96px !important;
     aspect-ratio: 16 / 9 !important;
     height: auto !important;
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden !important;
     flex-shrink: 0;
     background: #f1f5f9;
@@ -1147,7 +1152,7 @@
 
 .pop_title a:hover,
 .recent_title a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .pop_date,
@@ -1159,7 +1164,7 @@
 /* Sidebar CTA Box */
 .sidebar_cta_box {
     background: #ffffff;
-    border-left: 4px solid #003b70;
+    border-left: 4px solid var(--misutech_home_primary, #009dde);
     text-align: center;
     padding: 22px 18px;
 }
@@ -1187,9 +1192,9 @@
 .btn_sidebar_call {
     display: block;
     padding: 8px 14px;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 13px;
     font-weight: 700;
     text-decoration: none;
@@ -1197,7 +1202,7 @@
 }
 
 .btn_sidebar_call:hover {
-    background: #0284c7;
+    background: var(--misutech_home_primary_dark, #007fba);
 }
 
 /* ─── Empty & Pagination ───────────────────────────────────────────────── */
@@ -1205,8 +1210,8 @@
     text-align: center;
     padding: 60px 20px;
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
 }
 
 .misutech_blog_empty .empty_icon {
@@ -1231,9 +1236,9 @@
 .btn_reset_blog {
     display: inline-block;
     padding: 8px 18px;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 13px;
     font-weight: 600;
     text-decoration: none;
@@ -1241,7 +1246,7 @@
 }
 
 .btn_reset_blog:hover {
-    background: #0284c7;
+    background: var(--misutech_home_primary_dark, #007fba);
 }
 
 .misutech_blog_pagination {
@@ -1278,7 +1283,7 @@
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #334155;
-    border-radius: 6px;
+    border-radius: 0;
     font-size: 13px;
     font-weight: 600;
     text-decoration: none;
@@ -1287,8 +1292,8 @@
 
 .misutech_blog_pagination .page-item.active .page-link,
 .misutech_blog_pagination .misutech_page_item.active .misutech_page_link {
-    background: #003b70;
-    border-color: #003b70;
+    background: var(--misutech_home_primary, #009dde);
+    border-color: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     font-weight: 700;
 }
@@ -1432,7 +1437,7 @@
     /* Chi tiết bài viết */
     .misutech_blog_detail_card {
         padding: 16px 14px;
-        border-radius: 6px;
+        border-radius: 0;
         margin-bottom: 16px;
     }
 
@@ -1561,6 +1566,6 @@
         height: 32px;
         padding: 0 6px;
         font-size: 12.5px;
-        border-radius: 4px;
+        border-radius: 0;
     }
 }

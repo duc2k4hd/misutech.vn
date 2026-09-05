@@ -2,11 +2,21 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Banner;
+use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Media;
+use App\Models\Post;
+use App\Models\Product;
+use App\Models\Series;
+use App\Models\Setting;
+use App\Models\SupportContact;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,11 +34,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
-        \Illuminate\Pagination\Paginator::useBootstrapFive();
+        Paginator::useBootstrapFive();
 
         // Tự động nhận diện HTTPS khi chạy trên Production hoặc qua SSL proxy/Cloudflare (tránh lỗi Mixed Content)
         if (request()->isSecure() || request()->header('X-Forwarded-Proto') === 'https' || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || config('app.env') === 'production') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            URL::forceScheme('https');
         }
 
         // Chia sẻ dữ liệu toàn cục cho View bằng View Composer
@@ -41,17 +51,21 @@ class AppServiceProvider extends ServiceProvider
             if ($sharedData === null) {
                 try {
                     // Query thẳng từ DB (không qua cache) — an toàn, nhanh, không bao giờ lỗi serialization
+                    // FIX: thêm type='product' + status='active' để không lẫn danh mục blog vào mega menu
                     $allCategories = Schema::hasTable('categories')
                         ? Category::whereNull('parent_id')
+                            ->where('type', 'product')
+                            ->where('status', 'active')
                             ->with('children.children')
                             ->orderBy('id', 'asc')
                             ->get()
                         : collect();
 
+                    // Sidebar chỉ hiển thị 9 danh mục đầu; "Xem tất cả" dùng $allCategories để show full
                     $mainCategories = $allCategories->take(9);
 
                     $settingsArray = Schema::hasTable('settings')
-                        ? \App\Models\Setting::all()->pluck('value', 'key')->toArray()
+                        ? Setting::all()->pluck('value', 'key')->toArray()
                         : [];
                     $settings = (object) $settingsArray;
 
@@ -66,11 +80,11 @@ class AppServiceProvider extends ServiceProvider
                     }
 
                     $global_banners = Schema::hasTable('banners')
-                        ? \App\Models\Banner::where('status', 'active')->get()
+                        ? Banner::where('status', 'active')->get()
                         : collect();
 
                     $supportContacts = Schema::hasTable('support_contacts')
-                        ? \App\Models\SupportContact::where('is_active', true)
+                        ? SupportContact::where('is_active', true)
                             ->where('show_in_popup', true)
                             ->orderBy('sort_order', 'asc')
                             ->get()
@@ -79,10 +93,10 @@ class AppServiceProvider extends ServiceProvider
                     $sharedData = compact('allCategories', 'mainCategories', 'settings', 'global_banners', 'supportContacts');
                 } catch (\Throwable $e) {
                     $sharedData = [
-                        'allCategories'   => collect(),
-                        'mainCategories'  => collect(),
-                        'settings'        => (object) [],
-                        'global_banners'  => collect(),
+                        'allCategories' => collect(),
+                        'mainCategories' => collect(),
+                        'settings' => (object) [],
+                        'global_banners' => collect(),
                         'supportContacts' => collect(),
                     ];
                 }
@@ -91,9 +105,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with($sharedData);
         });
 
-
         // Tự động xóa cache khi có thay đổi dữ liệu trong Admin
-        \App\Models\Product::saved(function ($product) {
+        Product::saved(function ($product) {
             Cache::forget('home_flash_sale_product_ids');
             Cache::forget('home_featured_product_ids');
             Cache::forget('home_category_sections_map');
@@ -112,7 +125,7 @@ class AppServiceProvider extends ServiceProvider
                 Cache::forget("category_related_product_ids_{$product->category_id}");
             }
         });
-        \App\Models\Product::deleted(function ($product) {
+        Product::deleted(function ($product) {
             Cache::forget('home_flash_sale_product_ids');
             Cache::forget('home_featured_product_ids');
             Cache::forget('home_category_sections_map');
@@ -132,7 +145,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        \App\Models\Category::saved(function () {
+        Category::saved(function () {
             Cache::forget('home_category_sections_map');
             Cache::forget('home_blog_sections_map');
             Cache::forget('shop_sidebar_categories');
@@ -142,7 +155,7 @@ class AppServiceProvider extends ServiceProvider
             Cache::forget('all_categories_hierarchy_product');
             Cache::forget('document_filter_categories');
         });
-        \App\Models\Category::deleted(function () {
+        Category::deleted(function () {
             Cache::forget('home_category_sections_map');
             Cache::forget('home_blog_sections_map');
             Cache::forget('shop_sidebar_categories');
@@ -153,66 +166,66 @@ class AppServiceProvider extends ServiceProvider
             Cache::forget('document_filter_categories');
         });
 
-        \App\Models\Series::saved(function ($series) {
+        Series::saved(function ($series) {
             Cache::forget("series_models_embedded_{$series->id}");
             Cache::forget("series_related_{$series->id}");
         });
-        \App\Models\Series::deleted(function ($series) {
+        Series::deleted(function ($series) {
             Cache::forget("series_models_embedded_{$series->id}");
             Cache::forget("series_related_{$series->id}");
         });
 
-        \App\Models\Brand::saved(function () {
+        Brand::saved(function () {
             Cache::forget('shop_filter_brands');
             Cache::forget('all_brands_page');
             Cache::forget('document_filter_brands');
         });
-        \App\Models\Brand::deleted(function () {
+        Brand::deleted(function () {
             Cache::forget('shop_filter_brands');
             Cache::forget('all_brands_page');
             Cache::forget('document_filter_brands');
         });
 
-        \App\Models\Media::saved(function () {
+        Media::saved(function () {
             Cache::forget('document_filter_brands');
             Cache::forget('document_filter_categories');
             Cache::forget('document_total_count');
         });
-        \App\Models\Media::deleted(function () {
+        Media::deleted(function () {
             Cache::forget('document_filter_brands');
             Cache::forget('document_filter_categories');
             Cache::forget('document_total_count');
         });
 
-        \App\Models\Banner::saved(function () {
+        Banner::saved(function () {
             Cache::forget('home_banners_grouped');
             Cache::forget('global_banners');
         });
-        \App\Models\Banner::deleted(function () {
+        Banner::deleted(function () {
             Cache::forget('home_banners_grouped');
             Cache::forget('global_banners');
         });
 
-        \App\Models\Post::saved(function () {
+        Post::saved(function () {
             Cache::forget('home_blog_sections_map');
             Cache::forget('blog_sidebar_categories');
             Cache::forget('blog_popular_post_ids');
             Cache::forget('blog_recent_post_ids');
         });
-        \App\Models\Post::deleted(function () {
+        Post::deleted(function () {
             Cache::forget('home_blog_sections_map');
             Cache::forget('blog_sidebar_categories');
             Cache::forget('blog_popular_post_ids');
             Cache::forget('blog_recent_post_ids');
         });
 
-        \App\Models\Setting::saved(function () {
+        Setting::saved(function () {
             Cache::forget('global_settings');
         });
-        \App\Models\SupportContact::saved(function () {
+        SupportContact::saved(function () {
             Cache::forget('global_support_contacts');
         });
-        \App\Models\SupportContact::deleted(function () {
+        SupportContact::deleted(function () {
             Cache::forget('global_support_contacts');
         });
     }

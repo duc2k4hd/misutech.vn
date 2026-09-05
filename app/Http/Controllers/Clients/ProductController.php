@@ -50,8 +50,8 @@ class ProductController extends Controller
                 $seriesModels = Product::published()
                     ->where('series_id', $product->series_id)
                     ->with(['thumbnailMedia', 'galleryMedia', 'catalogMedia'])
-                    ->orderByDesc('created_at')
-                    ->take(15)
+                    ->orderBy('sku', 'asc')
+                    ->orderBy('name', 'asc')
                     ->get([
                         'id', 'name', 'slug', 'sku', 'price', 'sale_price',
                         'short_description', 'content', 'status', 'meta_title',

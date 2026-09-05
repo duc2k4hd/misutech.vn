@@ -13,7 +13,7 @@
 /* ─── Breadcrumb ───────────────────────────────────────────────────────── */
 .misutech_doc_breadcrumb {
     background: #ffffff;
-    border-bottom: 1px solid #edf0f2;
+    border-bottom: 1px solid #edf2f6;
     padding: 10px 0;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .misutech_doc_breadcrumb_list li a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .misutech_doc_breadcrumb_list .separator {
@@ -55,8 +55,8 @@
 
 .misutech_doc_header_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 24px 28px;
     display: flex;
     align-items: center;
@@ -68,10 +68,11 @@
     display: inline-block;
     font-size: 11.5px;
     font-weight: 700;
-    color: #0284c7;
-    background: #e0f2fe;
+    color: var(--misutech_home_primary, #009dde);
+    background: var(--misutech_home_primary_soft, #f2fbfe);
+    border: 1px solid var(--misutech_home_primary_light, #e8f7fd);
     padding: 2px 8px;
-    border-radius: 3px;
+    border-radius: 0;
     margin-bottom: 6px;
     letter-spacing: 0.3px;
 }
@@ -96,8 +97,8 @@
     text-align: center;
     padding: 14px 22px;
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     flex-shrink: 0;
     min-width: 140px;
 }
@@ -106,7 +107,7 @@
     display: block;
     font-size: 24px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     line-height: 1.2;
 }
 
@@ -122,8 +123,8 @@
 
 .misutech_doc_filter_form {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 12px 18px;
     display: flex;
     flex-wrap: wrap;
@@ -157,8 +158,8 @@
     width: 100%;
     height: 36px;
     padding: 6px 12px 6px 32px;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     font-size: 13px;
     color: #1e293b;
     outline: none;
@@ -167,7 +168,7 @@
 }
 
 .filter_input_group.search_box input:focus {
-    border-color: #003b70;
+    border-color: var(--misutech_home_primary, #009dde);
     background: #ffffff;
 }
 
@@ -185,17 +186,18 @@
 .filter_input_group.select_box select {
     height: 36px;
     padding: 4px 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     background: #ffffff;
     font-size: 13px;
     color: #1e293b;
     outline: none;
     cursor: pointer;
+    transition: border-color 0.15s ease;
 }
 
 .filter_input_group.select_box select:focus {
-    border-color: #003b70;
+    border-color: var(--misutech_home_primary, #009dde);
 }
 
 .filter_actions {
@@ -207,27 +209,28 @@
 .btn_filter_submit {
     height: 36px;
     padding: 0 16px;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    border: none;
-    border-radius: 4px;
+    border: 1px solid var(--misutech_home_primary, #009dde);
+    border-radius: 0;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: all 0.15s ease;
 }
 
 .btn_filter_submit:hover {
-    background: #0284c7;
+    background: var(--misutech_home_primary_dark, #007fba);
+    border-color: var(--misutech_home_primary_dark, #007fba);
 }
 
 .btn_filter_reset {
     height: 36px;
     padding: 0 12px;
-    background: #f1f5f9;
+    background: #f8fafc;
     color: #64748b;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     font-size: 13px;
     font-weight: 500;
     text-decoration: none;
@@ -242,21 +245,17 @@
 }
 
 /* ─── Documents Grid ───────────────────────────────────────────────────── */
-.misutech_doc_list_section {
-    /* padding: 0 0 50px; */
-}
-
 .misutech_doc_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 16px;
     align-items: stretch;
 }
 
 .misutech_doc_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -269,8 +268,8 @@
 }
 
 .misutech_doc_card:hover {
-    border-color: #003b70;
-    box-shadow: 0 4px 16px rgba(0, 59, 112, 0.08);
+    border-color: var(--misutech_home_primary, #009dde);
+    box-shadow: 0 4px 16px rgba(0, 157, 222, 0.08);
     transform: translateY(-2px);
 }
 
@@ -288,7 +287,7 @@
     background: #fee2e2;
     color: #b91c1c;
     padding: 2px 8px;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 11px;
     font-weight: 700;
 }
@@ -325,8 +324,8 @@
 .doc_product_info {
     margin-top: auto;
     background: #f8fafc;
-    border: 1px solid #f1f5f9;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 8px 10px;
     min-width: 0;
     overflow: hidden;
@@ -350,7 +349,7 @@
 }
 
 .doc_product_info .product_link {
-    color: #003b70;
+    color: #1e293b;
     text-decoration: none;
     font-weight: 600;
     font-size: 12px;
@@ -359,11 +358,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 6px;
+    transition: color 0.15s ease;
 }
 
 .doc_product_info .product_link:hover {
-    color: #0284c7;
-    text-decoration: underline;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .doc_meta_tags {
@@ -377,10 +376,10 @@
 .meta_tag {
     font-size: 10.5px;
     padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 0;
     background: #ffffff;
     color: #475569;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #edf2f6;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -389,15 +388,15 @@
 }
 
 .meta_tag.sku_tag {
-    font-family: monospace;
+    font-family: var(--font-family);
     color: #0f172a;
     font-weight: 600;
 }
 
 .meta_tag.brand_tag {
-    background: #e0f2fe;
-    color: #0369a1;
-    border-color: #bae6fd;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
+    color: var(--misutech_home_primary, #009dde);
+    border-color: var(--misutech_home_primary_light, #e8f7fd);
     font-weight: 700;
     font-size: 10px;
 }
@@ -412,43 +411,47 @@
     grid-template-columns: 1fr 1fr;
     gap: 8px;
     padding-top: 12px;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid #edf2f6;
     margin-top: auto;
     flex-shrink: 0;
 }
 
 .btn_doc_view,
 .btn_doc_download {
-    padding: 6px 10px;
+    padding: 7px 10px;
     font-size: 12.5px;
     font-weight: 600;
     text-align: center;
-    border-radius: 4px;
+    border-radius: 0;
     text-decoration: none;
     transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn_doc_view {
     background: #ffffff;
     color: #334155;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #edf2f6;
 }
 
 .btn_doc_view:hover {
-    background: #f1f5f9;
-    color: #003b70;
-    border-color: #94a3b8;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
+    color: var(--misutech_home_primary, #009dde);
+    border-color: var(--misutech_home_primary, #009dde);
 }
 
 .btn_doc_download {
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    border: 1px solid #003b70;
+    border: 1px solid var(--misutech_home_primary, #009dde);
 }
 
 .btn_doc_download:hover {
-    background: #0284c7;
-    border-color: #0284c7;
+    background: var(--misutech_home_primary_dark, #007fba);
+    border-color: var(--misutech_home_primary_dark, #007fba);
+    box-shadow: 0 2px 8px rgba(0, 157, 222, 0.25);
 }
 
 /* ─── Empty State ──────────────────────────────────────────────────────── */
@@ -456,8 +459,8 @@
     text-align: center;
     padding: 60px 20px;
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
 }
 
 .misutech_doc_empty .empty_icon {
@@ -482,9 +485,9 @@
 .btn_reset_empty {
     display: inline-block;
     padding: 8px 20px;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 13px;
     font-weight: 600;
     text-decoration: none;
@@ -492,7 +495,7 @@
 }
 
 .btn_reset_empty:hover {
-    background: #0284c7;
+    background: var(--misutech_home_primary_dark, #007fba);
 }
 
 /* ─── Pagination ───────────────────────────────────────────────────────── */
@@ -527,10 +530,10 @@
     min-width: 36px;
     height: 36px;
     padding: 0 10px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #edf2f6;
     background: #ffffff;
     color: #334155;
-    border-radius: 6px;
+    border-radius: 0;
     font-size: 13px;
     font-weight: 600;
     text-decoration: none;
@@ -539,16 +542,17 @@
 
 .misutech_doc_pagination .page-item.active .page-link,
 .misutech_doc_pagination .misutech_page_item.active .misutech_page_link {
-    background: #003b70;
-    border-color: #003b70;
+    background: var(--misutech_home_primary, #009dde);
+    border-color: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     font-weight: 700;
 }
 
 .misutech_doc_pagination .page-item .page-link:hover:not(.active),
 .misutech_doc_pagination .misutech_page_link:hover:not(.dots) {
-    background: #f1f5f9;
-    border-color: #94a3b8;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
+    color: var(--misutech_home_primary, #009dde);
+    border-color: var(--misutech_home_primary, #009dde);
 }
 
 /* ─── Technical Support Help Box ───────────────────────────────────────── */
@@ -558,9 +562,9 @@
 
 .misutech_doc_help_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-left: 4px solid #003b70;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-left: 4px solid var(--misutech_home_primary, #009dde);
+    border-radius: 0;
     padding: 20px 24px;
     display: flex;
     align-items: center;
@@ -589,9 +593,9 @@
 .btn_help_call {
     display: inline-block;
     padding: 9px 18px;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 13.5px;
     font-weight: 700;
     text-decoration: none;
@@ -600,7 +604,7 @@
 }
 
 .btn_help_call:hover {
-    background: #0284c7;
+    background: var(--misutech_home_primary_dark, #007fba);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -651,7 +655,7 @@
         flex-direction: column;
         align-items: flex-start;
         padding: 16px 14px;
-        border-radius: 8px;
+        border-radius: 0;
         gap: 12px;
     }
 
@@ -685,7 +689,7 @@
         align-items: stretch;
         padding: 12px 14px;
         gap: 10px;
-        border-radius: 8px;
+        border-radius: 0;
     }
 
     .filter_input_group.search_box,
@@ -733,6 +737,6 @@
         height: 32px;
         padding: 0 6px;
         font-size: 12.5px;
-        border-radius: 4px;
+        border-radius: 0;
     }
 }

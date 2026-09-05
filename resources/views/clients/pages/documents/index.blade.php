@@ -163,7 +163,7 @@
 @endpush
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('clients/css/documents.css') }}">
+    <link rel="stylesheet" href="{{ asset('clients/css/documents.css') }}?v={{ file_exists(public_path('clients/css/documents.css')) ? filemtime(public_path('clients/css/documents.css')) : time() }}">
 @endpush
 
 @section('content')

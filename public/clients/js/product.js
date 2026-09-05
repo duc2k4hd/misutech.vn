@@ -60,13 +60,35 @@
     mainImage.classList.add("misutech_product_image_changing");
     imageTimer = window.setTimeout(() => {
       mainImage.src = newSource;
-      if (modalImage) modalImage.src = newSource;
       mainImage.classList.remove("misutech_product_image_changing");
     }, 100);
     productImages.forEach((item) => item.classList.remove("misutech_product_active"));
     button.classList.add("misutech_product_active");
     activeImageIndex = boundedIndex;
+
+    // Đồng bộ với Lightbox nếu đang mở
+    updateLightboxActive(boundedIndex);
   }
+
+  // =========================================================================
+  // LUXURY PRODUCT GALLERY LIGHTBOX (Swipe, Touch gestures, Zoom & Pan)
+  // =========================================================================
+  let lbZoom = 1;
+  let lbPanX = 0;
+  let lbPanY = 0;
+  let isPanning = false;
+  let panStartX = 0;
+  let panStartY = 0;
+  let isSwiping = false;
+  let swipeStartX = 0;
+  let swipeCurrentX = 0;
+
+  const lbCurrent = document.getElementById("misutech_lb_current");
+  const lbTotal = document.getElementById("misutech_lb_total");
+  const lbMainImg = document.getElementById("misutech_lb_main_img");
+  const lbWrapper = document.getElementById("misutech_lb_wrapper");
+  const lbStage = document.getElementById("misutech_lightbox_stage");
+  const lbThumbsTrack = document.getElementById("misutech_lb_thumbs_track");
 
   function rebindGalleryEvents() {
     productImages = Array.from(document.querySelectorAll(".misutech_product_thumbnail"));
@@ -76,11 +98,275 @@
     activeImageIndex = 0;
   }
 
+  function getGalleryList() {
+    productImages = Array.from(document.querySelectorAll(".misutech_product_thumbnail"));
+    return productImages.map((btn) => btn.dataset.image || btn.querySelector("img")?.src).filter(Boolean);
+  }
+
+  function syncLightboxThumbs() {
+    const list = getGalleryList();
+    if (!lbThumbsTrack) return;
+    lbThumbsTrack.innerHTML = "";
+    if (lbTotal) lbTotal.textContent = String(list.length || 1);
+
+    list.forEach((src, idx) => {
+      const thumbBtn = document.createElement("button");
+      thumbBtn.className = `misutech_lb_thumb_item ${idx === activeImageIndex ? "misutech_lb_active" : ""}`;
+      thumbBtn.type = "button";
+      thumbBtn.dataset.index = String(idx);
+      thumbBtn.dataset.src = src;
+      thumbBtn.setAttribute("aria-label", `Ảnh ${idx + 1}`);
+
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = `Thumbnail ${idx + 1}`;
+      img.draggable = false;
+      thumbBtn.appendChild(img);
+
+      thumbBtn.addEventListener("click", () => {
+        setMainImage(idx);
+        resetLbZoom();
+      });
+
+      lbThumbsTrack.appendChild(thumbBtn);
+    });
+  }
+
+  function updateLightboxActive(index) {
+    if (!lbMainImg) return;
+    const list = getGalleryList();
+    if (!list.length) return;
+    const safeIdx = (index + list.length) % list.length;
+    
+    lbMainImg.classList.add("is-animating-switch");
+    lbMainImg.src = list[safeIdx];
+    if (lbCurrent) lbCurrent.textContent = String(safeIdx + 1);
+
+    if (lbThumbsTrack) {
+      const thumbs = lbThumbsTrack.querySelectorAll(".misutech_lb_thumb_item");
+      thumbs.forEach((t, i) => {
+        const isActive = i === safeIdx;
+        t.classList.toggle("misutech_lb_active", isActive);
+        if (isActive) {
+          t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        }
+      });
+    }
+
+    window.setTimeout(() => {
+      if (lbMainImg) lbMainImg.classList.remove("is-animating-switch");
+    }, 250);
+  }
+
+  let lbRotation = 0;
+
+  function applyLbTransform() {
+    if (!lbMainImg) return;
+    if (lbZoom > 1 || lbRotation !== 0) {
+      if (lbZoom > 1) {
+        lbMainImg.classList.add("is-zoomed");
+      } else {
+        lbMainImg.classList.remove("is-zoomed");
+      }
+      lbMainImg.style.transform = `translate3d(${lbPanX}px, ${lbPanY}px, 0) scale(${lbZoom}) rotate(${lbRotation}deg)`;
+    } else {
+      lbMainImg.classList.remove("is-zoomed");
+      lbMainImg.style.transform = "";
+    }
+  }
+
+  function rotateLbImage() {
+    lbRotation = (lbRotation + 90) % 360;
+    applyLbTransform();
+  }
+
+  function resetLbZoom() {
+    lbZoom = 1;
+    lbPanX = 0;
+    lbPanY = 0;
+    lbRotation = 0;
+    isPanning = false;
+    isSwiping = false;
+    if (lbWrapper) lbWrapper.classList.remove("is-panning");
+    if (lbMainImg) {
+      lbMainImg.classList.remove("is-zoomed");
+      lbMainImg.style.transform = "";
+    }
+  }
+
+  function setLbZoom(newZoom) {
+    lbZoom = Math.max(1, Math.min(3.5, newZoom));
+    if (lbZoom === 1) {
+      lbPanX = 0;
+      lbPanY = 0;
+    }
+    applyLbTransform();
+  }
+
+  // Zoom & Rotate controls
+  document.getElementById("misutech_lb_zoom_in")?.addEventListener("click", () => setLbZoom(lbZoom + 0.5));
+  document.getElementById("misutech_lb_zoom_out")?.addEventListener("click", () => setLbZoom(lbZoom - 0.5));
+  document.getElementById("misutech_lb_zoom_reset")?.addEventListener("click", rotateLbImage);
+
+  // Fullscreen
+  document.getElementById("misutech_lb_fullscreen")?.addEventListener("click", () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+  });
+
+  // Prev / Next Navigation
+  document.getElementById("misutech_lb_prev")?.addEventListener("click", () => {
+    setMainImage(activeImageIndex - 1);
+    resetLbZoom();
+  });
+  document.getElementById("misutech_lb_next")?.addEventListener("click", () => {
+    setMainImage(activeImageIndex + 1);
+    resetLbZoom();
+  });
+
+  // Double click / Double tap to Zoom
+  let lastTapTime = 0;
+  lbWrapper?.addEventListener("click", (e) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapTime;
+    if (tapLength < 300 && tapLength > 0) {
+      // Double tap detected
+      e.preventDefault();
+      if (lbZoom > 1) {
+        resetLbZoom();
+      } else {
+        setLbZoom(2);
+      }
+    }
+    lastTapTime = currentTime;
+  });
+
+  // Wheel Zoom on Lightbox
+  lbStage?.addEventListener("wheel", (e) => {
+    if (!imageModal || imageModal.hidden) return;
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? 0.25 : -0.25;
+    setLbZoom(lbZoom + delta);
+  }, { passive: false });
+
+  // Touch & Mouse Drag / Swipe Handlers
+  if (lbStage) {
+    // Touch Start
+    lbStage.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        if (lbZoom > 1) {
+          isPanning = true;
+          panStartX = touch.clientX - lbPanX;
+          panStartY = touch.clientY - lbPanY;
+        } else {
+          isSwiping = true;
+          swipeStartX = touch.clientX;
+          swipeCurrentX = touch.clientX;
+        }
+      }
+    }, { passive: true });
+
+    // Touch Move
+    lbStage.addEventListener("touchmove", (e) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        if (isPanning && lbZoom > 1) {
+          lbPanX = touch.clientX - panStartX;
+          lbPanY = touch.clientY - panStartY;
+          applyLbTransform();
+        } else if (isSwiping && lbZoom === 1 && lbMainImg) {
+          swipeCurrentX = touch.clientX;
+          const diff = swipeCurrentX - swipeStartX;
+          // Hiệu ứng kéo vuốt mượt mà theo ngón tay
+          lbMainImg.style.transform = `translate3d(${diff * 0.75}px, 0, 0)`;
+        }
+      }
+    }, { passive: true });
+
+    // Touch End
+    lbStage.addEventListener("touchend", () => {
+      if (isPanning) {
+        isPanning = false;
+      }
+      if (isSwiping) {
+        isSwiping = false;
+        const diff = swipeCurrentX - swipeStartX;
+        if (lbMainImg) lbMainImg.style.transform = "";
+        if (Math.abs(diff) > 45) {
+          if (diff > 0) {
+            setMainImage(activeImageIndex - 1);
+          } else {
+            setMainImage(activeImageIndex + 1);
+          }
+        }
+      }
+    });
+
+    // Mouse Drag Panning when zoomed
+    lbStage.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      if (lbZoom > 1) {
+        isPanning = true;
+        panStartX = e.clientX - lbPanX;
+        panStartY = e.clientY - lbPanY;
+        lbWrapper?.classList.add("is-panning");
+      } else {
+        isSwiping = true;
+        swipeStartX = e.clientX;
+        swipeCurrentX = e.clientX;
+      }
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (isPanning && lbZoom > 1) {
+        lbPanX = e.clientX - panStartX;
+        lbPanY = e.clientY - panStartY;
+        applyLbTransform();
+      } else if (isSwiping && lbZoom === 1 && lbMainImg) {
+        swipeCurrentX = e.clientX;
+        const diff = swipeCurrentX - swipeStartX;
+        lbMainImg.style.transform = `translate3d(${diff * 0.65}px, 0, 0)`;
+      }
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (isPanning) {
+        isPanning = false;
+        lbWrapper?.classList.remove("is-panning");
+      }
+      if (isSwiping) {
+        isSwiping = false;
+        const diff = swipeCurrentX - swipeStartX;
+        if (lbMainImg) lbMainImg.style.transform = "";
+        if (Math.abs(diff) > 60) {
+          if (diff > 0) {
+            setMainImage(activeImageIndex - 1);
+          } else {
+            setMainImage(activeImageIndex + 1);
+          }
+        }
+      }
+    });
+  }
+
   function openModal(name) {
     const target = document.querySelector(`[data-modal="${name}"]`);
     if (!target) return;
     target.hidden = false;
+    target.removeAttribute("hidden");
+    target.style.display = name === "image" ? "flex" : "grid";
     document.body.classList.add("misutech_product_no_scroll");
+
+    if (name === "image") {
+      syncLightboxThumbs();
+      resetLbZoom();
+      updateLightboxActive(activeImageIndex);
+    }
+
     const closeButton = target.querySelector("[data-close-modal]");
     if (closeButton) closeButton.focus();
   }
@@ -88,6 +374,11 @@
   function closeModal(target) {
     if (!target) return;
     target.hidden = true;
+    target.setAttribute("hidden", "");
+    target.style.display = "none";
+    if (target.dataset?.modal === "image") {
+      resetLbZoom();
+    }
     if (!document.querySelector(".misutech_product_modal:not([hidden])")) {
       document.body.classList.remove("misutech_product_no_scroll");
     }
@@ -357,6 +648,49 @@
       });
     });
 
+    // Instant Live Quick Search Filter for Series Models
+    const modelSearchInput = document.getElementById("misutechModelSearchInput");
+    const modelSearchClear = document.getElementById("misutechModelSearchClear");
+    const modelBtns = Array.from(document.querySelectorAll("#misutechSeriesModelsContainer .misutech_product_model_btn"));
+    const modelEmptyMsg = document.getElementById("misutechSeriesSearchEmpty");
+    const modelBadge = document.getElementById("misutechSeriesBadge");
+    const totalModelCount = modelBtns.length;
+
+    if (modelSearchInput) {
+      modelSearchInput.addEventListener("input", () => {
+        const q = modelSearchInput.value.trim().toLowerCase();
+        if (modelSearchClear) {
+          modelSearchClear.hidden = (q === "");
+        }
+
+        let visibleCount = 0;
+        modelBtns.forEach((btn) => {
+          const searchVal = btn.dataset.search || btn.textContent.toLowerCase();
+          const isMatch = (q === "" || searchVal.includes(q));
+          btn.style.display = isMatch ? "flex" : "none";
+          if (isMatch) visibleCount++;
+        });
+
+        if (modelEmptyMsg) {
+          modelEmptyMsg.hidden = (visibleCount > 0);
+        }
+
+        if (modelBadge) {
+          if (q === "") {
+            modelBadge.textContent = `${totalModelCount} model`;
+          } else {
+            modelBadge.textContent = `${visibleCount}/${totalModelCount} model`;
+          }
+        }
+      });
+
+      modelSearchClear?.addEventListener("click", () => {
+        modelSearchInput.value = "";
+        modelSearchInput.dispatchEvent(new Event("input"));
+        modelSearchInput.focus();
+      });
+    }
+
     // Handle Browser Back / Forward buttons (popstate)
     window.addEventListener("popstate", function (e) {
       if (e.state && e.state.slug) {
@@ -416,7 +750,22 @@
     });
   });
 
-  document.querySelector("[data-open-image]")?.addEventListener("click", () => openModal("image"));
+  // Mở Lightbox xem toàn bộ ảnh
+  document.querySelectorAll("[data-open-image], [data-open-modal='image'], .misutech_product_main_image_button, #misutech_main_img").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal("image");
+    });
+  });
+
+  // Ủy quyền sự kiện (Event Delegation) cho nút mở ảnh
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest("[data-open-image], [data-open-modal='image'], .misutech_product_main_image_button, .misutech_product_zoom_hint");
+    if (trigger) {
+      e.preventDefault();
+      openModal("image");
+    }
+  });
 
   document.querySelectorAll("[data-quantity-change]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -789,8 +1138,26 @@
       document.querySelectorAll(".misutech_product_modal:not([hidden])").forEach(closeModal);
       closeCart();
     }
-    if (event.key === "ArrowLeft" && imageModal && !imageModal.hidden) setMainImage(activeImageIndex - 1);
-    if (event.key === "ArrowRight" && imageModal && !imageModal.hidden) setMainImage(activeImageIndex + 1);
+    const isLbOpen = imageModal && !imageModal.hidden;
+    if (isLbOpen) {
+      if (event.key === "ArrowLeft") {
+        setMainImage(activeImageIndex - 1);
+        resetLbZoom();
+      } else if (event.key === "ArrowRight") {
+        setMainImage(activeImageIndex + 1);
+        resetLbZoom();
+      } else if (event.key === "+" || event.key === "=") {
+        setLbZoom(lbZoom + 0.5);
+      } else if (event.key === "-") {
+        setLbZoom(lbZoom - 0.5);
+      } else if (event.key === "0") {
+        resetLbZoom();
+      } else if (event.key === "r" || event.key === "R") {
+        rotateLbImage();
+      } else if (event.key === "f" || event.key === "F") {
+        document.getElementById("misutech_lb_fullscreen")?.click();
+      }
+    }
   });
 
   // Tự động tối ưu bảng trong nội dung mô tả sản phẩm (30/70 cho 2 cột & cuộn ngang mượt cho >= 3 cột)

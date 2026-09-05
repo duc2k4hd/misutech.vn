@@ -209,11 +209,25 @@
             event.currentTarget.reset();
         });
 
-    document
-        .querySelector("[data-scroll-top]")
-        ?.addEventListener("click", () =>
-            window.scrollTo({ top: 0, behavior: "smooth" }),
-        );
+    const scrollTopBtn = document.querySelector("[data-scroll-top]");
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        const checkScrollTopVisibility = () => {
+            if (window.scrollY > 280) {
+                scrollTopBtn.classList.add("is-visible");
+            } else {
+                scrollTopBtn.classList.remove("is-visible");
+            }
+        };
+
+        window.addEventListener("scroll", checkScrollTopVisibility, { passive: true });
+        checkScrollTopVisibility();
+    }
+
     document
         .querySelector("[data-chat]")
         ?.addEventListener("click", () =>

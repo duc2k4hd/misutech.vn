@@ -78,7 +78,7 @@
                 </div>
             @else
                 <div class="misutech_home_product_price_line">
-                    <strong class="misutech_home_product_price" style="color: #003b70;">Liên hệ báo giá</strong>
+                    <strong class="misutech_home_product_price" style="color: var(--misutech_home_primary, #009dde);">Liên hệ báo giá</strong>
                 </div>
             @endif
         </div>

@@ -38,17 +38,41 @@ class CategoryController extends Controller
         }
 
         if ($request->filled('brands')) {
-            $brands = is_array($request->input('brands')) ? $request->input('brands') : explode(',', $request->input('brands'));
-            $query->whereHas('brand', function ($q) use ($brands) {
-                $q->whereIn('slug', $brands);
-            });
+            $brands = is_array($request->input('brands')) ? $request->input('brands') : array_filter(explode(',', (string)$request->input('brands')));
+            if (!empty($brands)) {
+                $query->whereHas('brand', function ($q) use ($brands) {
+                    $q->whereIn('slug', $brands);
+                });
+            }
         }
 
-        if ($request->filled('min_price')) {
-            $query->whereRaw('COALESCE(sale_price, price) >= ?', [$request->input('min_price')]);
-        }
-        if ($request->filled('max_price')) {
-            $query->whereRaw('COALESCE(sale_price, price) <= ?', [$request->input('max_price')]);
+        // 4. Price ranges (Preset brackets like 2000000-3000000,5000000-8000000)
+        if ($request->filled('price_ranges')) {
+            $ranges = is_array($request->input('price_ranges')) ? $request->input('price_ranges') : array_filter(explode(',', (string)$request->input('price_ranges')));
+            if (!empty($ranges)) {
+                $query->where(function($q) use ($ranges) {
+                    foreach ($ranges as $range) {
+                        $parts = explode('-', $range);
+                        if (count($parts) === 2) {
+                            $min = (float)$parts[0];
+                            $max = (float)$parts[1];
+                            $q->orWhere(function($subQ) use ($min, $max) {
+                                $subQ->whereRaw('COALESCE(sale_price, price) >= ?', [$min]);
+                                if ($max > 0 && $max < 999999999) {
+                                    $subQ->whereRaw('COALESCE(sale_price, price) <= ?', [$max]);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        } else {
+            if ($request->filled('min_price')) {
+                $query->whereRaw('COALESCE(sale_price, price) >= ?', [$request->input('min_price')]);
+            }
+            if ($request->filled('max_price')) {
+                $query->whereRaw('COALESCE(sale_price, price) <= ?', [$request->input('max_price')]);
+            }
         }
 
         $sort = $request->input('sort', 'featured');
@@ -58,6 +82,15 @@ class CategoryController extends Controller
                 break;
             case 'price-desc':
                 $query->orderByRaw('COALESCE(sale_price, price) desc');
+                break;
+            case 'newest':
+                $query->orderBy('published_at', 'desc')->orderBy('id', 'desc');
+                break;
+            case 'discount':
+                $query->orderByRaw('(CASE WHEN sale_price > 0 AND sale_price < price THEN (price - sale_price) ELSE 0 END) desc');
+                break;
+            case 'bestseller':
+                $query->orderBy('reviews_count', 'desc')->orderBy('id', 'desc');
                 break;
             case 'name':
                 $query->orderBy('name', 'asc');
@@ -96,7 +129,7 @@ class CategoryController extends Controller
         
         $query = $this->buildProductQuery($request);
         $totalProducts = (clone $query)->count();
-        $products = $query->take(21)->get();
+        $products = $query->take(24)->get();
         
         $maxPrice = ShopController::getMaxPrice();
         

@@ -15,7 +15,7 @@
                 </svg>
                 Hotline : {{ $settings->hotline ?? '0866.555.212' }}
             </a>
-            <a class="misutech_home_topbar_item" href="{{ $settings->deals_url ?? '#misutech_home_flash' }}">
+            <a class="misutech_home_topbar_item" href="{{ $settings->deals_url ?? '#' }}">
                 <svg class="misutech_home_topbar_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                     <path fill="currentColor"
                         d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1zm0 5.586l7 7L13.586 9l-7-7H2v4.586z" />
@@ -102,12 +102,10 @@
             <ul class="misutech_home_category_menu">
                 @foreach ($mainCategories as $category)
                     <li class="misutech_home_category_item">
-                        <a href="/danh-muc/{{ $category->slug }}" class="misutech_home_category_label"
-                            style="text-decoration: none; color: inherit; width: 100%; display: flex; justify-content: space-between;">
-                            <span><span class="misutech_home_category_icon">▣</span>
-                                {{ $category->name }}</span>
+                        <a href="/danh-muc/{{ $category->slug }}" class="misutech_home_category_label">
+                            <span class="misutech_home_category_name_text">{{ $category->name }}</span>
                             @if ($category->children->count() > 0)
-                                <span>›</span>
+                                <span class="misutech_home_category_arrow_icon">›</span>
                             @endif
                         </a>
 
@@ -115,18 +113,20 @@
                             <div class="misutech_home_mega_menu">
                                 <div class="misutech_home_mega_grid">
                                     @foreach ($category->children as $child)
-                                        <div class="misutech_home_mega_column">
+                                        <div class="misutech_home_mega_column {{ $child->children->count() > 0 ? 'has-subitems' : 'no-subitems' }}">
                                             <h4 class="misutech_home_mega_title">
-                                                <span>🔥</span> <a
-                                                    href="/danh-muc/{{ $child->slug }}">{{ $child->name }}</a>
+                                                <a href="{{ route('categories.show', $child->slug) }}">
+                                                    <span class="misutech_mega_title_text">{{ $child->name }}</span>
+                                                    <span class="misutech_mega_title_arrow">›</span>
+                                                </a>
                                             </h4>
-                                            <ul class="misutech_home_mega_list">
-                                                @foreach ($child->children as $grandchild)
-                                                    <li><a
-                                                            href="/danh-muc/{{ $grandchild->slug }}">{{ $grandchild->name }}</a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
+                                            @if ($child->children->count() > 0)
+                                                <ul class="misutech_home_mega_list">
+                                                    @foreach ($child->children as $grandchild)
+                                                        <li><a href="{{ route('categories.show', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }}</a></li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
@@ -136,27 +136,28 @@
                 @endforeach
 
                 <li class="misutech_home_category_item">
-                    <span class="misutech_home_category_label"
-                        style="width: 100%; display: flex; justify-content: space-between;">
-                        <span><span class="misutech_home_category_icon">＋</span> Xem tất cả</span>
-                        <span>›</span>
-                    </span>
+                    <a href="{{ route('shop.index') }}" class="misutech_home_category_label misutech_home_category_all_link">
+                        <span class="misutech_home_category_name_text">+ Xem tất cả danh mục</span>
+                        <span class="misutech_home_category_arrow_icon">›</span>
+                    </a>
 
                     <div class="misutech_home_mega_menu">
                         <div class="misutech_home_mega_grid">
                             @foreach ($allCategories as $allCat)
-                                <div class="misutech_home_mega_column">
+                                <div class="misutech_home_mega_column {{ $allCat->children->count() > 0 ? 'has-subitems' : 'no-subitems' }}">
                                     <h4 class="misutech_home_mega_title">
-                                        <span>🔥</span> <a
-                                            href="/danh-muc/{{ $allCat->slug }}">{{ $allCat->name }}</a>
+                                        <a href="{{ route('categories.show', $allCat->slug) }}">
+                                            <span class="misutech_mega_title_text">{{ $allCat->name }}</span>
+                                            <span class="misutech_mega_title_arrow">›</span>
+                                        </a>
                                     </h4>
-                                    <ul class="misutech_home_mega_list">
-                                        @foreach ($allCat->children as $child)
-                                            <li><a
-                                                    href="/danh-muc/{{ $child->slug }}">{{ $child->name }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                                    @if ($allCat->children->count() > 0)
+                                        <ul class="misutech_home_mega_list">
+                                            @foreach ($allCat->children as $child)
+                                                <li><a href="{{ route('categories.show', $child->slug) }}">{{ $child->name }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>

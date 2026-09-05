@@ -1,78 +1,97 @@
 /* ==========================================================================
-   MISUTECH INSTANT QUOTE GENERATOR CSS
+   MISUTECH INSTANT QUOTE GENERATOR CSS (Clean, Industrial, Professional B2B)
    ========================================================================== */
 
 .misutech_quote_page {
-    background-color: #f1f5f9;
-    padding-bottom: 20px;
-    font-family: inherit;
+    background-color: #f8fafc;
+    padding-bottom: 30px;
+    font-size: 13.5px;
+    line-height: 1.5;
 }
 
-/* Breadcrumb */
+/* ─── Breadcrumb ───────────────────────────────────────────────────────── */
 .misutech_quote_breadcrumb {
     background: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px 0;
+    border-bottom: 1px solid #edf2f6;
+    padding: 10px 0;
     font-size: 13px;
 }
+
 .misutech_quote_breadcrumb_list {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
 }
+
 .misutech_quote_breadcrumb_list li a {
     color: #64748b;
     text-decoration: none;
+    transition: color 0.15s ease;
 }
+
 .misutech_quote_breadcrumb_list li a:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
+
+.misutech_quote_breadcrumb_list li.separator {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
 .misutech_quote_breadcrumb_list li.current {
-    color: #003b70;
+    color: #0f172a;
     font-weight: 600;
 }
 
-/* Header Intro */
+/* ─── Header Intro ─────────────────────────────────────────────────────── */
 .misutech_quote_intro {
-    background: linear-gradient(135deg, #003b70 0%, #001e3d 100%);
-    color: #ffffff;
-    border-radius: 12px;
-    padding: 28px 24px;
-    margin: 20px 0 25px 0;
-    box-shadow: 0 4px 15px rgba(0, 59, 112, 0.15);
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
+    padding: 24px 28px;
+    margin: 20px 0 24px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
 }
+
 .quote_intro_text h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     margin: 0 0 8px 0;
-    color: #ffffff;
+    color: #0f172a;
+    line-height: 1.35;
 }
+
 .quote_intro_text p {
     margin: 0;
-    font-size: 13px;
-    color: #cbd5e1;
-    line-height: 1.5;
+    font-size: 13.5px;
+    color: #475569;
+    line-height: 1.6;
+    max-width: 860px;
 }
+
 .quote_badge {
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffd277;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
+    color: var(--misutech_home_primary, #009dde);
+    border: 1px solid var(--misutech_home_primary_light, #e8f7fd);
     font-size: 11px;
     font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
+    padding: 2px 8px;
+    border-radius: 0;
     display: inline-block;
     margin-bottom: 6px;
+    letter-spacing: 0.3px;
     text-transform: uppercase;
 }
 
-/* Main Two-Column Layout */
+/* ─── Main Two-Column Layout ───────────────────────────────────────────── */
 .misutech_quote_layout {
     display: grid;
     grid-template-columns: 420px minmax(0, 1fr);
@@ -83,28 +102,29 @@
     box-sizing: border-box;
 }
 
-/* Left Panel: Builder & Search */
+/* ─── Left Panel: Builder & Search ─────────────────────────────────────── */
 .misutech_quote_builder {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     min-width: 0;
     max-width: 100%;
 }
+
 .quote_card {
     background: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
+    border-radius: 0;
+    border: 1px solid #edf2f6;
     padding: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
 }
+
 .quote_card_title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    color: #003b70;
+    color: #0f172a;
     margin: 0 0 14px 0;
     display: flex;
     align-items: center;
@@ -112,13 +132,14 @@
     flex-wrap: wrap;
     gap: 6px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #edf2f6;
 }
 
-/* Form Controls */
+/* ─── Form Controls ────────────────────────────────────────────────────── */
 .q_form_group {
     margin-bottom: 12px;
 }
+
 .q_form_group label {
     display: block;
     font-size: 12px;
@@ -126,49 +147,61 @@
     color: #475569;
     margin-bottom: 5px;
 }
+
 .q_form_group label .req {
     color: #ef4444;
 }
+
 .q_input {
     width: 100%;
-    padding: 9px 12px;
+    padding: 8px 12px;
     font-size: 13px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     outline: none;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     box-sizing: border-box;
     font-family: inherit;
+    background: #f8fafc;
+    color: #1e293b;
 }
+
 .q_input:focus {
-    border-color: #003b70;
-    box-shadow: 0 0 0 3px rgba(0, 59, 112, 0.1);
+    border-color: var(--misutech_home_primary, #009dde);
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 157, 222, 0.12);
 }
+
 .q_row_2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
 
-/* Instant Search Box */
+/* ─── Instant Search Box ───────────────────────────────────────────────── */
 .quote_search_wrapper {
     position: relative;
 }
+
 .quote_search_input_wrap {
     position: relative;
 }
+
 .quote_search_icon {
     position: absolute;
-    left: 12px;
+    left: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: #94a3b8;
     pointer-events: none;
+    font-size: 13px;
 }
+
 .quote_search_input {
-    padding-left: 36px !important;
+    padding-left: 32px !important;
     background: #f8fafc;
 }
+
 .quote_search_spinner {
     position: absolute;
     right: 12px;
@@ -177,58 +210,65 @@
     display: none;
     width: 16px;
     height: 16px;
-    border: 2px solid #e2e8f0;
-    border-top-color: #003b70;
+    border: 2px solid #edf2f6;
+    border-top-color: var(--misutech_home_primary, #009dde);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }
+
 @keyframes spin {
     to { transform: translateY(-50%) rotate(360deg); }
 }
 
-/* Search Dropdown Results */
+/* ─── Search Dropdown Results ──────────────────────────────────────────── */
 .quote_search_results {
     position: absolute;
-    top: calc(100% + 5px);
+    top: calc(100% + 4px);
     left: 0;
     right: 0;
     background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    border: 1px solid #edf2f6;
+    border-radius: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     max-height: 320px;
     overflow-y: auto;
     z-index: 100;
     display: none;
 }
+
 .search_item {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 10px 14px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #edf2f6;
     cursor: pointer;
     transition: background 0.15s ease;
 }
+
 .search_item:last-child {
     border-bottom: none;
 }
+
 .search_item:hover {
-    background: #f0f7ff;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
 }
+
 .search_item_img {
     width: 38px;
     height: 38px;
-    border-radius: 4px;
+    border-radius: 0;
     object-fit: contain;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #edf2f6;
     background: #ffffff;
     flex-shrink: 0;
 }
+
 .search_item_info {
     flex: 1;
     min-width: 0;
 }
+
 .search_item_name {
     font-size: 12px;
     font-weight: 600;
@@ -237,6 +277,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .search_item_meta {
     font-size: 11px;
     color: #64748b;
@@ -244,23 +285,31 @@
     gap: 8px;
     margin-top: 2px;
 }
+
 .search_item_price {
     font-size: 12px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     flex-shrink: 0;
 }
+
 .search_item_add_btn {
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     border: none;
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 11px;
+    border-radius: 0;
+    padding: 4px 10px;
+    font-size: 11.5px;
     font-weight: 600;
     cursor: pointer;
     flex-shrink: 0;
+    transition: background 0.15s ease;
 }
+
+.search_item_add_btn:hover {
+    background: var(--misutech_home_primary_dark, #007fba);
+}
+
 .search_empty {
     padding: 18px;
     text-align: center;
@@ -268,10 +317,10 @@
     font-size: 12px;
 }
 
-/* Custom Item Form */
+/* ─── Custom Item Form ─────────────────────────────────────────────────── */
 .quote_custom_item_toggle {
     font-size: 12px;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 600;
     cursor: pointer;
     background: none;
@@ -280,17 +329,23 @@
     text-decoration: underline;
     margin-top: 8px;
     display: inline-block;
+    transition: color 0.15s ease;
 }
+
+.quote_custom_item_toggle:hover {
+    color: var(--misutech_home_primary_dark, #007fba);
+}
+
 .quote_custom_item_form {
     display: none;
     margin-top: 10px;
-    padding: 12px;
+    padding: 14px;
     background: #f8fafc;
-    border-radius: 6px;
+    border-radius: 0;
     border: 1px dashed #cbd5e1;
 }
 
-/* Right Panel: Live Quote Sheet Preview */
+/* ─── Right Panel: Live Quote Sheet Preview ─────────────────────────────── */
 .misutech_quote_preview_wrap {
     display: flex;
     flex-direction: column;
@@ -299,73 +354,82 @@
     max-width: 100%;
 }
 
-/* Sticky Action Bar */
+/* ─── Sticky Action Bar ────────────────────────────────────────────────── */
 .quote_action_bar {
     background: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    padding: 14px 20px;
+    border-radius: 0;
+    border: 1px solid #edf2f6;
+    padding: 12px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
+
 .action_bar_left {
     font-size: 13px;
     color: #475569;
     font-weight: 500;
 }
+
 .action_bar_right {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
+
 .btn_quote_pdf {
-    background: #ff6b00;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 9px 18px;
+    border: 1px solid var(--misutech_home_primary, #009dde);
+    border-radius: 0;
+    padding: 8px 16px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: background 0.2s ease;
+    transition: all 0.15s ease;
 }
+
 .btn_quote_pdf:hover {
-    background: #e65c00;
+    background: var(--misutech_home_primary_dark, #007fba);
+    border-color: var(--misutech_home_primary_dark, #007fba);
+    box-shadow: 0 2px 8px rgba(0, 157, 222, 0.25);
 }
+
 .btn_quote_print {
-    background: #003b70;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 9px 16px;
+    background: #ffffff;
+    color: var(--misutech_home_primary, #009dde);
+    border: 1px solid var(--misutech_home_primary, #009dde);
+    border-radius: 0;
+    padding: 8px 16px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: background 0.2s ease;
+    transition: all 0.15s ease;
 }
+
 .btn_quote_print:hover {
-    background: #00274d;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
 }
+
 .btn_quote_clear {
-    background: #ffffff;
+    background: #f8fafc;
     color: #64748b;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    padding: 9px 14px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
+    padding: 8px 14px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
 }
+
 .btn_quote_clear:hover {
-    background: #f1f5f9;
+    background: #e2e8f0;
     color: #0f172a;
 }
 
@@ -374,14 +438,14 @@
    ========================================================================== */
 .quote_paper {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 35px 35px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
     color: #1e293b;
     font-size: 13px;
     line-height: 1.5;
-    min-height: 800px;
+    min-height: 750px;
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
@@ -392,28 +456,33 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    border-bottom: 2px solid #003b70;
+    border-bottom: 2px solid var(--misutech_home_primary, #009dde);
     padding-bottom: 18px;
     margin-bottom: 20px;
 }
+
 .paper_company_info {
     max-width: 60%;
 }
+
 .paper_company_name {
     font-size: 16px;
     font-weight: 800;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     margin: 0 0 4px 0;
     text-transform: uppercase;
 }
+
 .paper_company_detail {
     font-size: 11.5px;
     color: #475569;
     line-height: 1.45;
 }
+
 .paper_logo_wrap {
     text-align: right;
 }
+
 .paper_logo {
     max-height: 50px;
     width: auto;
@@ -425,13 +494,15 @@
     text-align: center;
     margin-bottom: 20px;
 }
+
 .paper_doc_title {
     font-size: 20px;
     font-weight: 800;
-    color: #003b70;
+    color: #0f172a;
     margin: 0 0 4px 0;
     letter-spacing: 0.02em;
 }
+
 .paper_doc_meta {
     font-size: 12px;
     color: #64748b;
@@ -440,8 +511,8 @@
 /* Customer Information Box */
 .paper_customer_box {
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 12px 16px;
     margin-bottom: 20px;
     display: grid;
@@ -449,8 +520,9 @@
     gap: 8px 20px;
     font-size: 12px;
 }
+
 .paper_customer_row strong {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     min-width: 100px;
     display: inline-block;
 }
@@ -463,65 +535,79 @@
     max-width: 100%;
     display: block;
 }
+
 .paper_table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12.5px;
 }
+
 .paper_table th {
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     font-weight: 700;
     padding: 9px 8px;
     text-align: center;
-    border: 1px solid #002d57;
+    border: 1px solid var(--misutech_home_primary, #009dde);
     font-size: 12px;
 }
+
 .paper_table td {
     padding: 8px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #edf2f6;
     vertical-align: middle;
 }
+
 .paper_table tbody tr:nth-child(even) {
     background: #fbfcfd;
 }
+
 .paper_table tbody tr:hover {
-    background: #f0f7ff;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
 }
+
 .tbl_center {
     text-align: center;
 }
+
 .tbl_right {
     text-align: right;
 }
+
 .tbl_name {
     font-weight: 600;
     color: #0f172a;
 }
+
 .tbl_brand {
     font-size: 11px;
     color: #64748b;
     display: block;
 }
+
 .tbl_qty_input,
 .tbl_price_input {
     width: 60px;
     padding: 4px 6px;
     font-size: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     text-align: center;
     outline: none;
     box-sizing: border-box;
+    background: #ffffff;
 }
+
 .tbl_price_input {
     width: 100px;
     text-align: right;
 }
+
 .tbl_qty_input:focus,
 .tbl_price_input:focus {
-    border-color: #003b70;
+    border-color: var(--misutech_home_primary, #009dde);
 }
+
 .tbl_btn_del {
     background: none;
     border: none;
@@ -529,9 +615,10 @@
     cursor: pointer;
     font-size: 14px;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 0;
     transition: background 0.15s;
 }
+
 .tbl_btn_del:hover {
     background: #fee2e2;
 }
@@ -552,52 +639,60 @@
     margin-top: 15px;
     align-items: start;
 }
+
 .paper_terms {
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 12px 16px;
     font-size: 11.5px;
     color: #475569;
     line-height: 1.5;
 }
+
 .paper_terms h5 {
     margin: 0 0 6px 0;
     font-size: 12px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
+
 .paper_terms ul {
     margin: 0;
     padding-left: 16px;
 }
+
 .paper_terms li {
     margin-bottom: 3px;
 }
 
 /* Totals Box */
 .paper_totals {
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     overflow: hidden;
 }
+
 .paper_total_row {
     display: flex;
     justify-content: space-between;
     padding: 8px 14px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #edf2f6;
     font-size: 12.5px;
 }
+
 .paper_total_row:last-child {
     border-bottom: none;
 }
+
 .paper_total_row.highlight {
-    background: #f0f7ff;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
     font-size: 14px;
     font-weight: 800;
-    color: #003b70;
-    border-top: 2px solid #003b70;
+    color: var(--misutech_home_primary, #009dde);
+    border-top: 2px solid var(--misutech_home_primary, #009dde);
 }
+
 .paper_in_words {
     font-size: 11.5px;
     font-style: italic;
@@ -616,24 +711,27 @@
     text-align: center;
     font-size: 12px;
 }
+
 .sig_box h5 {
     margin: 0 0 4px 0;
     font-size: 12px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     text-transform: uppercase;
 }
+
 .sig_box p {
     margin: 0 0 60px 0;
     font-size: 11px;
     color: #64748b;
 }
+
 .sig_name {
     font-weight: 700;
     color: #0f172a;
 }
 
-/* Print Specific Rules */
+/* ─── Print Specific Rules ─────────────────────────────────────────────── */
 @media print {
     body * {
         visibility: hidden;
@@ -726,7 +824,7 @@
         align-items: flex-start;
         padding: 16px 14px;
         margin: 12px 0 16px;
-        border-radius: 8px;
+        border-radius: 0;
         gap: 12px;
         width: 100%;
         box-sizing: border-box;
@@ -747,7 +845,7 @@
 
     .quote_card {
         padding: 14px 12px;
-        border-radius: 8px;
+        border-radius: 0;
         width: 100%;
         box-sizing: border-box;
     }
@@ -768,6 +866,7 @@
         padding: 12px;
         box-sizing: border-box;
         width: 100%;
+        border-radius: 0;
     }
     .action_bar_left {
         text-align: center;
@@ -787,11 +886,12 @@
         justify-content: center;
         text-align: center;
         white-space: nowrap;
+        border-radius: 0;
     }
 
     .quote_paper {
         padding: 14px 10px !important;
-        border-radius: 8px;
+        border-radius: 0;
         width: 100% !important;
         max-width: 100% !important;
         min-height: auto !important;

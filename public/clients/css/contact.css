@@ -11,7 +11,7 @@
 /* Breadcrumb */
 .misutech_contact_breadcrumb {
     background: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #edf2f6;
     padding: 12px 0;
     font-size: 13px;
 }
@@ -29,26 +29,26 @@
     transition: color 0.2s ease;
 }
 .misutech_contact_breadcrumb_list li a:hover {
-    color: var(--misutech_home_primary, #003b70);
+    color: var(--misutech_home_primary, var(--misutech_home_primary, #009dde));
 }
 .misutech_contact_breadcrumb_list li.separator {
     color: #94a3b8;
 }
 .misutech_contact_breadcrumb_list li.current {
-    color: var(--misutech_home_primary, #003b70);
+    color: var(--misutech_home_primary, var(--misutech_home_primary, #009dde));
     font-weight: 600;
 }
 
 /* Header Section */
 .misutech_contact_header_card {
-    background: linear-gradient(135deg, #003b70 0%, #002244 100%);
+    background: linear-gradient(135deg, var(--misutech_home_primary, #009dde) 0%, var(--misutech_home_primary_dark, #007fba) 100%);
     color: #ffffff;
-    border-radius: 12px;
+    border-radius: 0;
     padding: 36px 30px;
     margin-top: 24px;
     margin-bottom: 30px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 59, 112, 0.12);
+    box-shadow: 0 4px 15px rgba(0, 157, 222, 0.12);
 }
 .contact_header_badge {
     display: inline-block;
@@ -58,7 +58,7 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     padding: 4px 12px;
-    border-radius: 20px;
+    border-radius: 0;
     margin-bottom: 10px;
     text-transform: uppercase;
 }
@@ -88,19 +88,19 @@
 /* Info Cards */
 .misutech_contact_info_box {
     background: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
+    border-radius: 0;
+    border: 1px solid #edf2f6;
     padding: 30px 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .misutech_contact_info_title {
     font-size: 18px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     margin-top: 0;
     margin-bottom: 20px;
     padding-bottom: 12px;
-    border-bottom: 2px solid #f1f5f9;
+    border-bottom: 2px solid #edf2f6;
 }
 .misutech_contact_list {
     display: flex;
@@ -115,9 +115,9 @@
 .contact_item_icon {
     width: 40px;
     height: 40px;
-    border-radius: 8px;
-    background: #f0f7ff;
-    color: #003b70;
+    border-radius: 0;
+    background: var(--misutech_home_primary_soft, #f2fbfe);
+    color: var(--misutech_home_primary, #009dde);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -141,21 +141,21 @@
     text-decoration: none;
 }
 .contact_item_content a:hover {
-    color: #ff6b00;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 /* Commitments Box */
 .misutech_contact_commitments {
     margin-top: 24px;
     background: #f8fafc;
-    border-radius: 8px;
+    border-radius: 0;
     padding: 16px;
     border: 1px dashed #cbd5e1;
 }
 .misutech_contact_commitments h4 {
     margin: 0 0 12px 0;
     font-size: 14px;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 700;
 }
 .commit_list {
@@ -169,15 +169,15 @@
 /* Contact Form Box */
 .misutech_contact_form_box {
     background: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
+    border-radius: 0;
+    border: 1px solid #edf2f6;
     padding: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .misutech_contact_form_title {
     font-size: 18px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     margin-top: 0;
     margin-bottom: 8px;
 }
@@ -209,7 +209,7 @@
     padding: 10px 14px;
     font-size: 14px;
     border: 1px solid #cbd5e1;
-    border-radius: 6px;
+    border-radius: 0;
     outline: none;
     transition: all 0.2s ease;
     background: #ffffff;
@@ -217,21 +217,21 @@
     font-family: inherit;
 }
 .contact_form_control:focus {
-    border-color: #003b70;
-    box-shadow: 0 0 0 3px rgba(0, 59, 112, 0.1);
+    border-color: var(--misutech_home_primary, #009dde);
+    box-shadow: 0 0 0 3px rgba(0, 157, 222, 0.1);
 }
 textarea.contact_form_control {
     resize: vertical;
     min-height: 110px;
 }
 .contact_submit_btn {
-    background: #ff6b00;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     font-size: 15px;
     font-weight: 700;
     padding: 12px 24px;
     border: none;
-    border-radius: 6px;
+    border-radius: 0;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.1s ease;
     display: inline-flex;
@@ -241,7 +241,7 @@ textarea.contact_form_control {
     width: 100%;
 }
 .contact_submit_btn:hover {
-    background: #e65c00;
+    background: var(--misutech_home_primary_dark, #007fba);
     transform: translateY(-1px);
 }
 .contact_submit_btn:active {
@@ -251,7 +251,7 @@ textarea.contact_form_control {
 /* Alert Message */
 .contact_alert {
     padding: 12px 16px;
-    border-radius: 6px;
+    border-radius: 0;
     font-size: 14px;
     margin-bottom: 18px;
     display: flex;
@@ -272,22 +272,22 @@ textarea.contact_form_control {
 /* Map Section */
 .misutech_contact_map_wrap {
     background: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
+    border-radius: 0;
+    border: 1px solid #edf2f6;
     overflow: hidden;
     margin-bottom: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .misutech_contact_map_header {
     padding: 18px 24px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #edf2f6;
     background: #f8fafc;
 }
 .misutech_contact_map_header h3 {
     margin: 0;
     font-size: 16px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 .misutech_contact_map_iframe {
     width: 100%;
@@ -299,15 +299,15 @@ textarea.contact_form_control {
 /* FAQ Section */
 .misutech_contact_faq {
     background: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
+    border-radius: 0;
+    border: 1px solid #edf2f6;
     padding: 24px 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .misutech_contact_faq_title {
     font-size: 18px;
     font-weight: 700;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     margin-top: 0;
     margin-bottom: 18px;
 }
@@ -318,14 +318,14 @@ textarea.contact_form_control {
 }
 .faq_item {
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 16px 20px;
 }
 .faq_item h4 {
     margin: 0 0 8px 0;
     font-size: 14px;
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 700;
 }
 .faq_item p {
@@ -379,7 +379,7 @@ textarea.contact_form_control {
         padding: 20px 14px;
         margin-top: 12px;
         margin-bottom: 16px;
-        border-radius: 8px;
+        border-radius: 0;
     }
     .contact_header_title {
         font-size: 18px;
@@ -399,7 +399,7 @@ textarea.contact_form_control {
     .misutech_contact_info_box,
     .misutech_contact_form_box {
         padding: 18px 14px;
-        border-radius: 8px;
+        border-radius: 0;
     }
     .misutech_contact_info_title,
     .misutech_contact_form_title {
@@ -436,7 +436,7 @@ textarea.contact_form_control {
     }
 
     .misutech_contact_map_wrap {
-        border-radius: 8px;
+        border-radius: 0;
         margin-bottom: 20px;
     }
     .misutech_contact_map_header {
@@ -451,7 +451,7 @@ textarea.contact_form_control {
 
     .misutech_contact_faq {
         padding: 18px 14px;
-        border-radius: 8px;
+        border-radius: 0;
     }
     .misutech_contact_faq_title {
         font-size: 16px;

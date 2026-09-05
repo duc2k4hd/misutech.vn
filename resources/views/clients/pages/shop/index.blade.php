@@ -214,7 +214,7 @@
     <section
         style="background-image:url({{ asset('storage/clients/imgs/banners/banner-category.png') }}); background-repeat: no-repeat; background-size: cover; background-position: center;"
         class="misutech_home_page_intro">
-        <div class="misutech_home_container misutech_home_page_intro_inner">
+        <div class="misutech_catalog_container misutech_home_page_intro_inner">
             <h1 class="misutech_home_page_title">Cửa hàng MISUTECH</h1>
             <nav class="misutech_home_breadcrumb" aria-label="Breadcrumb">
                 <a class="misutech_home_breadcrumb_link" href="{{ route('home.index') }}">Trang chủ</a>
@@ -225,7 +225,7 @@
     </section>
 
     <section class="misutech_home_categories" id="misutech_home_categories" aria-label="Product categories">
-        <div class="misutech_home_container misutech_home_category_carousel">
+        <div class="misutech_catalog_container misutech_home_category_carousel">
             <button class="misutech_home_category_arrow" type="button" data-category-direction="-1"
                 aria-label="Danh mục trước">‹</button>
             <div class="misutech_home_category_track_wrapper" style="overflow: hidden; width: 100%;">
@@ -254,54 +254,12 @@
     </section>
 
     <section class="misutech_home_catalog" id="misutech_home_products">
-        <div class="misutech_home_container misutech_home_catalog_layout">
-            <aside class="misutech_home_filters" aria-label="Bộ lọc sản phẩm">
-                <h2 class="misutech_home_filter_title"><span class="misutech_home_filter_title_icon">☷</span> LỌC THEO
-                </h2>
-                <button class="misutech_home_clear_filters" type="button">♲ XÓA TẤT CẢ</button>
-
-                <section class="misutech_home_filter_group">
-                    <div class="misutech_home_filter_group_header">
-                        <h3 class="misutech_home_filter_group_title">⌃ &nbsp; GIÁ</h3>
-                        <button class="misutech_home_filter_reset" type="button" data-reset="price">ĐẶT LẠI</button>
-                    </div>
-                    <div class="misutech_home_price_slider">
-                        <input class="misutech_home_price_range" type="range" min="0" max="{{ $maxPrice }}"
-                            value="0" data-price="min" aria-label="Giá thấp nhất">
-                        <input class="misutech_home_price_range" type="range" min="0" max="{{ $maxPrice }}"
-                            value="{{ $maxPrice }}" data-price="max" aria-label="Giá cao nhất">
-                    </div>
-                    <div class="misutech_home_price_ticks">
-                        <span>0</span><span>{{ round($maxPrice * 0.25) }}</span><span>{{ round($maxPrice * 0.5) }}</span><span>{{ round($maxPrice * 0.75) }}</span><span>{{ $maxPrice }}</span>
-                    </div>
-                    <div class="misutech_home_price_inputs"><input class="misutech_home_price_input" type="number"
-                            min="0" max="{{ $maxPrice }}" value="0" data-price-input="min"
-                            aria-label="Giá thấp nhất value"><span>—</span><input class="misutech_home_price_input"
-                            type="number" min="0" max="{{ $maxPrice }}" value="{{ $maxPrice }}"
-                            data-price-input="max" aria-label="Giá cao nhất value"></div>
-                </section>
-
-                <section class="misutech_home_filter_group">
-                    <div class="misutech_home_filter_group_header">
-                        <h3 class="misutech_home_filter_group_title">⌃ &nbsp; THƯƠNG HIỆU</h3>
-                        <button class="misutech_home_filter_reset" type="button" data-reset="brand">ĐẶT LẠI</button>
-                    </div>
-                    @php
-                        $selectedBrands = array_filter(explode(',', (string)request('brands', '')));
-                    @endphp
-                    @foreach ($brands as $brand)
-                        <label class="misutech_home_checkbox_label">
-                            <input class="misutech_home_filter_checkbox" type="checkbox" name="brand"
-                                value="{{ $brand->slug }}" data-filter="brand"
-                                {{ in_array($brand->slug, $selectedBrands) ? 'checked' : '' }}>
-                            <span class="misutech_home_checkbox_box"></span>{{ $brand->name }}
-                            <b>({{ $brand->products_count }})</b>
-                        </label>
-                    @endforeach
-                </section>
-            </aside>
+        <div class="misutech_catalog_container misutech_home_catalog_layout">
+            @include('clients.components.product_filters')
 
             <div class="misutech_home_product_area">
+                @include('clients.components.product_filter_bar')
+
                 <div class="misutech_home_product_toolbar">
                     <label class="misutech_home_sort_label">Sắp xếp theo
                         <select class="misutech_home_sort_select" aria-label="Sắp xếp sản phẩm">
@@ -312,16 +270,28 @@
                         </select>
                     </label>
                     <div class="misutech_home_view_modes" role="group" aria-label="Product view">
-                        <button class="misutech_home_view_button" type="button" data-columns="3" aria-pressed="true"
-                            aria-label="Lưới 3 cột">▦</button>
-                        <button class="misutech_home_view_button" type="button" data-columns="2" aria-pressed="false"
-                            aria-label="Lưới 2 cột">▦</button>
+                        <button class="misutech_home_view_button" type="button" data-columns="4" aria-pressed="true"
+                            aria-label="Lưới 4 cột hoặc 2 cột trên di động">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M1 1h6v6H1V1zm8 0h6v6H9V1zm-8 8h6v6H1V9zm8 0h6v6H9V9z"/>
+                            </svg>
+                        </button>
+                        <button class="misutech_home_view_button" type="button" data-columns="3" aria-pressed="false"
+                            aria-label="1 cột sản phẩm trên di động hoặc 3 cột trên máy tính">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M1 1h4.2v14H1V1zm4.9 0h4.2v14H5.9V1zm4.9 0H15v14h-4.2V1z"/>
+                            </svg>
+                        </button>
                         <button class="misutech_home_view_button" type="button" data-columns="1" aria-pressed="false"
-                            aria-label="Dạng danh sách">☷</button>
+                            aria-label="Dạng danh sách nằm ngang">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M1 2h14v2.5H1V2zm0 4.75h14v2.5H1v-2.5zm0 4.75h14V14H1v-2.5z"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
-                <div class="misutech_home_product_grid" data-grid-columns="3">
+                <div class="misutech_home_product_grid" data-grid-columns="4">
                     @forelse($products as $product)
                         <article class="misutech_home_product_card" data-name="{{ $product->name }}"
                             data-price="{{ $product->price }}"
@@ -412,7 +382,7 @@
                                         </div>
                                     @else
                                         <div class="misutech_home_product_price_line">
-                                            <strong class="misutech_home_product_price" style="color: #003b70;">Liên hệ báo giá</strong>
+                                            <strong class="misutech_home_product_price" style="color: var(--misutech_home_primary, #009dde);">Liên hệ báo giá</strong>
                                         </div>
                                     @endif
                                 </div>
@@ -566,7 +536,7 @@
         </div>
     </section>
 
-    @if (count($viewedProducts) > 0)
+    @if (!empty($viewedProducts) && count($viewedProducts) > 0)
         <section class="misutech_home_recently_viewed">
             <div class="misutech_home_container">
                 <div class="misutech_home_recent_header">

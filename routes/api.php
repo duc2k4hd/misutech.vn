@@ -12,6 +12,10 @@ Route::prefix('v1')->group(function () {
     Route::get('/products/load-more', [ShopController::class, 'loadMore'])
         ->middleware('throttle:120,1')
         ->name('api.products.load-more');
+
+    Route::get('/products/count', [ShopController::class, 'countProducts'])
+        ->middleware('throttle:120,1')
+        ->name('api.products.count');
         
     // Adding web middleware here allows session access for mock cart functionality
     Route::post('/cart/add', [ShopController::class, 'addCart'])

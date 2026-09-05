@@ -1,52 +1,151 @@
-@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Roboto:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 :root {
-    --misutech_home_primary: #003b70;
-    --misutech_home_primary_dark: #00294e;
-    --misutech_home_secondary: #858e96;
-    --misutech_home_accent: #ffcc00;
-    --misutech_home_orange: #ff5a24;
-    --misutech_home_text: #1f2a33;
-    --misutech_home_muted: #68747e;
-    --misutech_home_line: #dce2e7;
-    --misutech_home_soft: #f3f6f8;
+    --font-family: "Open Sans", sans-serif;
+    /* =========================
+       HOME COLORS
+    ========================== */
+
+    /* Màu thương hiệu chính */
+    --misutech_home_primary: #009dde;
+
+    /* Xanh đậm dùng hover / active */
+    --misutech_home_primary_dark: #007fba;
+
+    /* Xanh rất đậm dùng header, footer, title nổi bật */
+    --misutech_home_primary_deep: #005b87;
+
+    /* Xanh nhạt */
+    --misutech_home_primary_light: #e8f7fd;
+
+    /* Xanh nền nhẹ */
+    --misutech_home_primary_soft: #f2fbfe;
+
+    /* Màu phụ */
+    --misutech_home_secondary: #647783;
+
+    /* Điểm nhấn vàng */
+    --misutech_home_accent: #ffc928;
+
+    /* Cam CTA / sale */
+    --misutech_home_orange: #ff7139;
+
+    /* Text chính */
+    --misutech_home_text: #1d2b34;
+
+    /* Text phụ */
+    --misutech_home_muted: #6d7d87;
+
+    /* Border */
+    --misutech_home_line: #dbe7ed;
+
+    /* Background nhẹ */
+    --misutech_home_soft: #f4f9fb;
+
+    /* Trắng */
     --misutech_home_white: #ffffff;
-    --misutech_home_shadow: 0 8px 26px rgba(0, 59, 112, 0.09);
-    --misutech_home_ink: #202020;
-    --misutech_home_surface: #f4f4f4;
-    --misutech_home_danger: #f0654d;
-    --misutech_product_primary: #003b70;
-    --misutech_product_primary_dark: #002c54;
-    --misutech_product_secondary: #858e96;
-    --misutech_product_text: #2c2c2c;
-    --misutech_product_muted: #747c83;
-    --misutech_product_light: #f2f3f4;
-    --misutech_product_border: #e7e8eb;
+
+    /* Shadow theo màu primary */
+    --misutech_home_shadow:
+        0 8px 28px rgba(0, 157, 222, 0.12);
+
+    /* Text rất đậm */
+    --misutech_home_ink: #17242c;
+
+    /* Surface card */
+    --misutech_home_surface: #f7fafb;
+
+    /* Error */
+    --misutech_home_danger: #ef5350;
+
+
+    /* =========================
+       PRODUCT COLORS
+    ========================== */
+
+    /* Đồng bộ với màu thương hiệu */
+    --misutech_product_primary: #009dde;
+
+    /* Hover */
+    --misutech_product_primary_dark: #007fba;
+
+    /* Xanh đậm cho tiêu đề / badge */
+    --misutech_product_primary_deep: #005b87;
+
+    /* Màu phụ */
+    --misutech_product_secondary: #647783;
+
+    /* Text */
+    --misutech_product_text: #263640;
+
+    /* Text phụ */
+    --misutech_product_muted: #73838d;
+
+    /* Nền sản phẩm */
+    --misutech_product_light: #f3f9fb;
+
+    /* Border */
+    --misutech_product_border: #dce8ed;
+
+    /* White */
     --misutech_product_white: #ffffff;
-    --misutech_product_accent: #fd6666;
+
+    /* Sale / discount */
+    --misutech_product_accent: #ff6363;
+
+
+    /* =========================
+       GLOBAL
+    ========================== */
+
     color-scheme: light;
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font-family);
 }
 
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 115px;
+    font-family: var(--font-family);
 }
 
 body {
     margin: 0;
+    position: relative;
+    font-family: var(--font-family);
     color: var(--misutech_home_text);
     background: var(--misutech_home_white);
+    -webkit-text-size-adjust: 100%;
+}
+
+img,
+video,
+iframe,
+svg {
+    max-width: 100%;
+}
+
+main,
+section,
+header,
+footer {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 button,
-input {
-    font: inherit;
+input,
+optgroup,
+select,
+textarea {
+    font-family: var(--font-family);
+    font-size: inherit;
 }
 
 button {
@@ -323,16 +422,19 @@ a {
 }
 
 .misutech_home_nav_categories {
-    align-self: stretch;
+    /* align-self: stretch; */
     width: 255px;
     border: 0;
-    background: var(--misutech_home_secondary);
-    color: var(--misutech_home_white);
+    /* background: var(--misutech_home_secondary); */
+    color: var(--misutech_home_black);
     display: flex;
     align-items: center;
     gap: 11px;
     padding: 0 18px;
-    font-weight: 800;
+    font-weight: 500;
+    height: 48px;
+    min-height: 100%;
+    position: relative;
 }
 
 .misutech_home_nav_links {
@@ -401,10 +503,9 @@ a {
 /* Lớp bóng mờ (Backdrop Overlay) khi mở Menu Danh mục sản phẩm */
 .misutech_menu_backdrop {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(15, 23, 42, 0.5);
     backdrop-filter: blur(2px);
     z-index: 990;
@@ -767,50 +868,75 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .misutech_home_float_button {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 0;
     border-radius: 50%;
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
-    box-shadow: 0 8px 24px rgba(0, 59, 112, 0.35);
+    box-shadow: 0 4px 14px rgba(0, 157, 222, 0.25);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
     position: relative;
 }
 
 .misutech_home_float_button:hover {
-    transform: scale(1.08);
+    background: var(--misutech_home_primary_dark, #007fba);
+    transform: translateY(-2px);
+}
+
+.misutech_home_float_button[data-scroll-top] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px) scale(0.9);
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+}
+
+.misutech_home_float_button[data-scroll-top].is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.misutech_home_float_button[data-scroll-top].is-visible:hover {
+    background: var(--misutech_home_primary_dark, #007fba);
+    transform: translateY(-2px) scale(1.05);
 }
 
 .misutech_float_contact_btn {
-    width: 54px;
-    height: 54px;
-    background: linear-gradient(135deg, #0088cc 0%, #003b70 100%);
-    box-shadow: 0 8px 25px rgba(0, 136, 204, 0.4);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--misutech_home_primary, #009dde);
+    box-shadow: 0 4px 16px rgba(0, 157, 222, 0.3);
     animation: misutech_float_pulse 2.2s infinite;
 }
 
+.misutech_float_contact_btn:hover {
+    background: var(--misutech_home_primary_dark, #007fba);
+}
+
 .misutech_float_contact_btn img {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .misutech_float_badge_pulse {
     position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 14px;
-    height: 14px;
+    top: -2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
     background: #22c55e;
     border: 2px solid #ffffff;
     border-radius: 50%;
@@ -818,15 +944,15 @@ a {
 
 @keyframes misutech_float_pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.6);
+        box-shadow: 0 0 0 0 rgba(0, 157, 222, 0.5);
     }
 
     70% {
-        box-shadow: 0 0 0 16px rgba(0, 136, 204, 0);
+        box-shadow: 0 0 0 12px rgba(0, 157, 222, 0);
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(0, 136, 204, 0);
+        box-shadow: 0 0 0 0 rgba(0, 157, 222, 0);
     }
 }
 
@@ -857,16 +983,16 @@ a {
 
 .misutech_support_popup {
     background: #ffffff;
-    border-radius: 14px;
+    border-radius: 0;
     width: 100%;
     max-width: 440px;
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 40px rgba(0, 30, 60, 0.25);
-    border: 1px solid #cbd5e1;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+    border: 1px solid #edf2f6;
     overflow: hidden;
-    transform: scale(0.94) translateY(15px);
+    transform: scale(0.96) translateY(10px);
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -875,7 +1001,7 @@ a {
 }
 
 .support_popup_header {
-    background: #003b70;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     padding: 14px 18px;
     display: flex;
@@ -895,16 +1021,16 @@ a {
 .support_header_title p {
     margin: 0;
     font-size: 11.5px;
-    color: #cbd5e1;
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .support_popup_close {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.15);
     border: none;
     color: #ffffff;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -914,7 +1040,7 @@ a {
 }
 
 .support_popup_close:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .support_popup_body {
@@ -934,20 +1060,20 @@ a {
 
 .support_person_card {
     background: #ffffff;
-    border: 1px solid #f1f5f9;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 8px 10px;
     transition: background 0.15s ease;
 }
 
 .support_person_card:hover {
-    background: #f8fafc;
+    background: var(--misutech_home_surface, #f7fafb);
 }
 
 .support_person_name {
     font-size: 13px;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--misutech_home_ink, #17242c);
     margin-bottom: 5px;
 }
 
@@ -955,8 +1081,9 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #f8fafc;
-    border-radius: 4px;
+    background: var(--misutech_home_surface, #f7fafb);
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     padding: 5px 10px;
     gap: 8px;
 }
@@ -964,7 +1091,7 @@ a {
 .support_call_link {
     font-size: 12.5px;
     font-weight: 600;
-    color: #334155;
+    color: var(--misutech_home_text, #1d2b34);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -972,19 +1099,19 @@ a {
 }
 
 .support_call_link:hover {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .support_zalo_icon_link {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: #0284c7;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff !important;
     font-size: 11px;
     font-weight: 600;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: 0;
     text-decoration: none !important;
     transition: opacity 0.15s ease;
 }
@@ -1002,14 +1129,14 @@ a {
 /* Warranty & Technical Banner Card - Soft Tone */
 .support_warranty_card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
     overflow: hidden;
     margin-top: 2px;
 }
 
 .support_warranty_header {
-    background: #0284c7;
+    background: var(--misutech_home_primary, #009dde);
     color: #ffffff;
     padding: 6px 10px;
     font-size: 12.5px;
@@ -1024,17 +1151,26 @@ a {
     background: #ffffff;
 }
 
+.support_other_dept_card {
+    border-left: 3px solid var(--misutech_home_primary, #009dde);
+}
+
+.support_other_dept_label {
+    font-size: 12px;
+    color: var(--misutech_home_primary, #009dde);
+}
+
 .support_popup_footer {
     background: #ffffff;
     border-top: 1px solid #f1f5f9;
     padding: 10px 16px;
     text-align: center;
     font-size: 12px;
-    color: #64748b;
+    color: var(--misutech_home_muted, #6d7d87);
 }
 
 .support_popup_footer a {
-    color: #003b70;
+    color: var(--misutech_home_primary, #009dde);
     font-weight: 700;
     text-decoration: none;
 }
@@ -1043,32 +1179,65 @@ a {
 
 .misutech_home_category_menu {
     margin: 0;
-    padding: 7px 0;
+    padding: 6px 0;
     list-style: none;
     background: var(--misutech_home_white);
-    border-radius: 4px;
-    box-shadow: var(--misutech_home_shadow);
+    border-radius: 0;
+    border: 1px solid #edf2f6;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
     position: relative;
+    width: 255px;
+    box-sizing: border-box;
 }
 
 .misutech_home_category_item {
-    min-height: 34px;
+    min-height: 38px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 0 16px;
+    padding: 0;
     border-left: 3px solid transparent;
     font-size: 13px;
-    transition: 0.2s ease;
+    font-weight: 500;
+    color: #334155;
+    transition: all 0.15s ease;
     position: static;
 }
 
 .misutech_home_category_item:hover {
-    border-left-color: var(--misutech_home_primary);
-    background: #eef6fd;
-    color: var(--misutech_home_primary);
-    padding-left: 19px;
+    border-left-color: var(--misutech_home_primary, #009dde);
+    background: var(--misutech_home_primary_soft, #f2fbfe);
+    color: var(--misutech_home_primary, #009dde);
+}
+
+.misutech_home_category_label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    box-sizing: border-box;
+}
+
+.misutech_home_category_name_text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.misutech_home_category_arrow_icon {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-left: 6px;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.misutech_home_category_item:hover .misutech_home_category_arrow_icon {
+    color: var(--misutech_home_primary, #009dde);
+    transform: translateX(2px);
 }
 
 /* CSS MEGA MENU */
@@ -1077,27 +1246,27 @@ a {
     top: 0;
     bottom: 0;
     left: 100%;
-    width: 840px;
+    width: 820px;
+    min-height: 100%;
     height: 100%;
     max-height: 100%;
-    overflow: hidden;
     background: #ffffff !important;
     z-index: 1006;
-    box-shadow: 4px 10px 28px rgba(0, 0, 0, 0.14);
+    box-shadow: 8px 16px 36px rgba(0, 0, 0, 0.08);
     display: none;
-    border-radius: 0 4px 4px 0;
-    border: 1px solid #e2e8f0;
-    border-left: none;
+    border-radius: 0;
+    border: 1px solid #edf2f6;
+    border-left: 1px solid #f1f5f9;
 }
 
-/* Cầu nối vô hình chống rớt hover khi lia chuột qua */
+/* Cầu nối vô hình chống rớt hover */
 .misutech_home_mega_menu::before {
     content: "";
     position: absolute;
     top: 0;
     bottom: 0;
-    left: -10px;
-    width: 10px;
+    left: -14px;
+    width: 14px;
     background: transparent;
 }
 
@@ -1105,25 +1274,24 @@ a {
     display: block;
 }
 
+/* Multi-column Masonry Layout: Tự động xếp gọn chặt chẽ không để lại khoảng trống thừa */
 .misutech_home_mega_grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 32px;
-    row-gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     height: 100%;
     max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 12px 24px;
+    padding: 16px 18px;
     box-sizing: border-box;
-    align-content: start;
     background: #ffffff;
     scrollbar-width: thin;
     scrollbar-color: #cbd5e1 transparent;
+    gap: 20px;
 }
 
 .misutech_home_mega_grid::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
 }
 
 .misutech_home_mega_grid::-webkit-scrollbar-track {
@@ -1132,87 +1300,123 @@ a {
 
 .misutech_home_mega_grid::-webkit-scrollbar-thumb {
     background: #cbd5e1;
-    border-radius: 4px;
 }
 
+/* Category Card Block */
 .misutech_home_mega_column {
-    margin-bottom: 0;
+    display: inline-block;
+    width: 100%;
+    height: fit-content;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    margin-bottom: 12px;
+    background: #f8fafc;
+    border: 1px solid #edf2f6;
+    border-radius: 0;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
 }
 
+.misutech_home_mega_column:hover {
+    background: #ffffff;
+    border-color: var(--misutech_home_primary, #009dde);
+    box-shadow: 0 4px 12px rgba(0, 157, 222, 0.08);
+}
+
+/* Category Card Title */
 .misutech_home_mega_title {
-    color: var(--misutech_home_primary);
-    font-size: 14px;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.35;
 }
 
-.misutech_home_mega_title span {
-    color: #f53d2d;
-    /* Màu cam/đỏ cho icon giống ảnh mẫu */
+.misutech_home_mega_column.has-subitems .misutech_home_mega_title {
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #edf2f6;
 }
 
 .misutech_home_mega_title a {
-    color: var(--misutech_home_primary);
+    color: #0f172a;
     text-decoration: none;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.misutech_mega_title_text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.misutech_mega_title_arrow {
+    font-size: 12px;
+    color: #94a3b8;
+    transition: transform 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
 }
 
 .misutech_home_mega_title a:hover {
-    color: #f53d2d;
+    color: var(--misutech_home_primary, #009dde);
 }
 
+.misutech_home_mega_title a:hover .misutech_mega_title_arrow {
+    color: var(--misutech_home_primary, #009dde);
+    transform: translateX(2px);
+}
+
+/* Category Card Child Links List */
 .misutech_home_mega_list {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.misutech_home_mega_list li a {
-    display: inline-block;
-    color: #555;
-    text-decoration: none;
-    padding: 4px 0;
-    transition: all 0.2s ease;
-}
-
-.misutech_home_mega_list li a:hover {
-    color: #f53d2d;
-    transform: translateX(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
 }
 
 .misutech_home_mega_list li {
     list-style: none;
-    margin-bottom: 6px;
-    position: relative;
-    padding-left: 10px;
+    margin: 0;
+    padding: 0;
 }
 
-.misutech_home_mega_list li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #999;
-}
-
-.misutech_home_mega_list a {
-    color: var(--misutech_home_text);
-    text-decoration: none;
-    font-size: 13px;
-    transition: 0.2s;
-}
-
-.misutech_home_mega_list a:hover {
-    color: var(--misutech_home_primary);
-}
-
-
-.misutech_home_category_label {
+.misutech_home_mega_list li a {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+    padding: 3px 0;
+}
+
+.misutech_home_mega_list li a::before {
+    content: "•";
+    color: #cbd5e1;
+    font-size: 10px;
+    line-height: 1;
+    transition: color 0.15s ease;
+}
+
+.misutech_home_mega_list li a:hover {
+    color: var(--misutech_home_primary, #009dde);
+    transform: translateX(3px);
+}
+
+.misutech_home_mega_list li a:hover::before {
+    color: var(--misutech_home_primary, #009dde);
 }
 
 .misutech_home_category_icon {
@@ -1442,8 +1646,12 @@ a {
    ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
     .misutech_home_container {
-        width: min(100% - 24px, 1024px);
-        margin-inline: auto;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-sizing: border-box !important;
+        margin-inline: 0 !important;
     }
 
     /* Topbar */
@@ -1697,8 +1905,10 @@ a {
     background: #ffffff;
     z-index: 99999;
     transform: translateX(-100%);
-    transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1);
-    box-shadow: 6px 0 30px rgba(0, 0, 0, 0.22);
+    transition: transform 0.32s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.32s ease, box-shadow 0.32s ease;
+    box-shadow: none;
+    visibility: hidden;
+    pointer-events: none;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -1706,6 +1916,9 @@ a {
 
 .misutech_mobile_drawer.is-open {
     transform: translateX(0);
+    box-shadow: 6px 0 30px rgba(0, 0, 0, 0.22);
+    visibility: visible;
+    pointer-events: auto;
 }
 
 /* Drawer Header */
@@ -2385,5 +2598,146 @@ a {
         min-width: 14px;
         padding: 0;
         font-size: 12px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════
+       MOBILE FIXED BOTTOM NAVIGATION BAR
+       ═══════════════════════════════════════════════════════════════════════════ */
+    body {
+        padding-bottom: 56px;
+    }
+
+    .misutech_home_float_tools {
+        bottom: 72px !important;
+        right: 14px !important;
+    }
+
+    .misutech_float_contact_btn {
+        display: none !important;
+    }
+
+    .misutech_mobile_bottom_nav {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: 56px !important;
+        background: #ffffff !important;
+        border-top: 1px solid #edf2f6 !important;
+        z-index: 9999 !important;
+        box-shadow: 0 -3px 16px rgba(0, 0, 0, 0.08) !important;
+        padding: 0 4px !important;
+        box-sizing: border-box !important;
+        align-items: center !important;
+        justify-content: space-around !important;
+        user-select: none !important;
+    }
+
+    .misutech_mb_nav_item {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-decoration: none !important;
+        color: #475569 !important;
+        flex: 1 !important;
+        height: 100% !important;
+        gap: 3px !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        transition: color 0.15s ease !important;
+        position: relative !important;
+    }
+
+    .misutech_mb_nav_item.active,
+    .misutech_mb_nav_item:hover {
+        color: var(--misutech_home_primary, #009dde) !important;
+        font-weight: 600 !important;
+    }
+
+    .misutech_mb_nav_icon {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+        font-size: 20px !important;
+        line-height: 1 !important;
+    }
+
+    .misutech_mb_ai_icon {
+        color: #8b5cf6 !important;
+    }
+
+    .misutech_mb_cart_badge {
+        position: absolute !important;
+        top: -5px !important;
+        right: -8px !important;
+        background: #ef4444 !important;
+        color: #ffffff !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        min-width: 16px !important;
+        height: 16px !important;
+        padding: 0 4px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+    }
+
+    .misutech_mb_nav_center {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 62px !important;
+        height: 100% !important;
+        position: relative !important;
+        flex-shrink: 0 !important;
+    }
+
+    .misutech_mb_center_call_btn {
+        position: absolute !important;
+        top: -16px !important;
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%) !important;
+        color: #ffffff !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 3px solid #ffffff !important;
+        box-shadow: 0 4px 14px rgba(255, 71, 87, 0.45) !important;
+        cursor: pointer !important;
+        outline: none !important;
+        z-index: 10000 !important;
+        animation: mbCallPulse 2.2s infinite ease-in-out !important;
+        padding: 0 !important;
+    }
+
+    @keyframes mbCallPulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 4px 14px rgba(255, 71, 87, 0.45);
+        }
+        50% {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.65);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 4px 14px rgba(255, 71, 87, 0.45);
+        }
+    }
+}
+
+/* Ẩn Mobile Bottom Nav trên Desktop */
+@media (min-width: 768px) {
+    .misutech_mobile_bottom_nav {
+        display: none !important;
     }
 }

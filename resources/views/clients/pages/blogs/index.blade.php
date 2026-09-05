@@ -227,7 +227,7 @@
 @endpush
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('clients/css/blogs.css') }}">
+    <link rel="stylesheet" href="{{ asset('clients/css/blogs.css') }}?v={{ time() }}">
 @endpush
 
 @section('content')
