@@ -11,12 +11,22 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Category;
+
 class ProductController extends Controller
 {
+    /**
+     * Cột sản phẩm thẻ gọn nhẹ cho Sản phẩm liên quan (tránh nạp content nặng vào RAM)
+     */
+    const RELATED_CARD_COLUMNS = [
+        'id', 'name', 'slug', 'price', 'sale_price',
+        'rating_average', 'reviews_count', 'category_id', 'series_id'
+    ];
+
     public function show(Request $request, $slug)
     {
         $product = Product::published()->with([
-            'category:id,name,slug',
+            'category:id,name,slug,parent_id',
             'brand:id,name,slug',
             'series:id,name,slug',
             'thumbnailMedia',
@@ -84,7 +94,27 @@ class ProductController extends Controller
                     'meta_title' => ($m->meta_title ?? $m->name) . ' | MISUTECH',
                     'meta_description' => $m->meta_description ?? '',
                     'url' => route('product.show', $m->slug),
+                    'is_full_data' => false,
                 ];
+
+                // Nếu là sản phẩm hiện tại, nhúng sẵn toàn bộ full data (content, gallery, catalog) để 0ms switch
+                if ($m->id === $product->id) {
+                    $itemData['content'] = $product->content;
+                    $itemData['short_description'] = $product->short_description;
+                    $itemData['gallery'] = $product->galleryMedia->map(fn($g) => [
+                        'id' => $g->id,
+                        'url' => $g->url,
+                        'alt' => $g->alt ?? $product->name,
+                    ])->values()->toArray();
+                    $itemData['catalogs'] = $product->catalogMedia->map(fn($c) => [
+                        'id' => $c->id,
+                        'url' => $c->url,
+                        'filename' => $c->filename ?? 'Tài liệu sản phẩm',
+                        'download_url' => route('documents.download', $c->id),
+                    ])->values()->toArray();
+                    $itemData['is_full_data'] = true;
+                }
+
                 $embedded[$m->slug] = $itemData;
                 $list[] = $itemData;
             }
@@ -93,18 +123,8 @@ class ProductController extends Controller
             $seriesProducts = collect($list)->map(fn($i) => (object)$i);
         }
 
-        // Sản phẩm liên quan: 1 query duy nhất trực tiếp từ DB có index (cực nhanh <1ms)
-        $relatedProducts = collect();
-        if ($product->category_id) {
-            $relatedProducts = Product::published()
-                ->where('category_id', $product->category_id)
-                ->where('id', '!=', $product->id)
-                ->select(['id', 'name', 'slug', 'price', 'sale_price', 'rating_average', 'reviews_count', 'category_id'])
-                ->with('thumbnailMedia')
-                ->latest('id')
-                ->take(10)
-                ->get();
-        }
+        // Lấy chính xác 10 sản phẩm liên quan (5 trước, 5 sau cùng danh mục nhỏ nhất, ưu tiên cùng series, bù trừ và mở rộng lên danh mục cha)
+        $relatedProducts = $this->getRelatedProducts($product);
 
         // Điểm rating theo từng sao
         $ratingBars = [];
@@ -130,6 +150,7 @@ class ProductController extends Controller
                 'id' => $m->id,
                 'url' => $m->url,
                 'filename' => $m->filename ?? 'Tài liệu sản phẩm',
+                'download_url' => route('documents.download', $m->id),
             ]);
 
             $discountPercent = 0;
@@ -159,6 +180,7 @@ class ProductController extends Controller
                 'meta_title' => ($product->meta_title ?? $product->name) . ' | MISUTECH',
                 'meta_description' => $product->meta_description ?? '',
                 'url' => route('product.show', $product->slug),
+                'is_full_data' => true,
             ]);
         }
 
@@ -243,5 +265,102 @@ class ProductController extends Controller
             'pending'   => true,
             'message'   => 'Cảm ơn bạn đã gửi đánh giá! Đánh giá của bạn đã được tiếp nhận và sẽ được hiển thị công khai sau khi ban quản trị kiểm duyệt nội dung.',
         ]);
+    }
+
+    /**
+     * Lấy chính xác 10 sản phẩm liên quan (5 trước, 5 sau cùng danh mục nhỏ nhất, ưu tiên cùng series, tự bù trừ và mở rộng lên danh mục cha nếu thiếu).
+     * Tối ưu hóa cực nhanh (<1ms), chỉ select các cột thẻ cần thiết và eager-load thumbnailMedia.
+     */
+    protected function getRelatedProducts($product)
+    {
+        if (!$product->category_id) {
+            return collect();
+        }
+
+        $targetCount = 10;
+        $halfTarget = 5;
+        $catId = $product->category_id;
+        $currentId = $product->id;
+        $columns = self::RELATED_CARD_COLUMNS;
+
+        // 1. Lấy sản phẩm trước (id < currentId) và sản phẩm sau (id > currentId) trong cùng danh mục nhỏ nhất
+        $beforeProds = Product::published()
+            ->where('category_id', $catId)
+            ->where('id', '<', $currentId)
+            ->select($columns)
+            ->with('thumbnailMedia')
+            ->orderBy('id', 'desc')
+            ->take($targetCount)
+            ->get();
+
+        $afterProds = Product::published()
+            ->where('category_id', $catId)
+            ->where('id', '>', $currentId)
+            ->select($columns)
+            ->with('thumbnailMedia')
+            ->orderBy('id', 'asc')
+            ->take($targetCount)
+            ->get();
+
+        $countBefore = $beforeProds->count();
+        $countAfter = $afterProds->count();
+
+        // 2. Thuật toán bù trừ: Cân bằng 5 trước + 5 sau, nếu một bên thiếu thì bên kia bù vào để đủ 10
+        $takeBefore = $halfTarget;
+        $takeAfter = $halfTarget;
+
+        if ($countBefore < $halfTarget) {
+            $takeBefore = $countBefore;
+            $takeAfter = min($targetCount - $takeBefore, $countAfter);
+        } elseif ($countAfter < $halfTarget) {
+            $takeAfter = $countAfter;
+            $takeBefore = min($targetCount - $takeAfter, $countBefore);
+        }
+
+        $selectedBefore = $beforeProds->take($takeBefore)->reverse()->values();
+        $selectedAfter = $afterProds->take($takeAfter)->values();
+
+        $collected = $selectedBefore->concat($selectedAfter);
+
+        // Ưu tiên đưa sản phẩm cùng series lên đầu danh sách nếu có
+        if ($product->series_id && $collected->isNotEmpty()) {
+            $collected = $collected->sortByDesc(function ($p) use ($product) {
+                return $p->series_id == $product->series_id ? 1 : 0;
+            })->values();
+        }
+
+        // 3. Nếu danh mục nhỏ nhất không đủ 10 sản phẩm -> Mở rộng lên các danh mục cha cấp trên (từ cha trực tiếp đến gốc)
+        if ($collected->count() < $targetCount) {
+            $alreadyIds = $collected->pluck('id')->push($currentId)->toArray();
+            $needed = $targetCount - $collected->count();
+
+            $currentCategory = $product->category;
+            while ($currentCategory && $currentCategory->parent_id && $needed > 0) {
+                $parentCategory = Category::find($currentCategory->parent_id);
+                if (!$parentCategory) break;
+
+                // Lấy tất cả ID con cháu của danh mục cha (đã được cache in-memory 0 query)
+                $parentChildCatIds = $parentCategory->getAllChildrenIds();
+
+                $parentProducts = Product::published()
+                    ->whereIn('category_id', $parentChildCatIds)
+                    ->whereNotIn('id', $alreadyIds)
+                    ->select($columns)
+                    ->with('thumbnailMedia')
+                    ->latest('id')
+                    ->take($needed)
+                    ->get();
+
+                if ($parentProducts->isNotEmpty()) {
+                    $collected = $collected->concat($parentProducts);
+                    $alreadyIds = array_merge($alreadyIds, $parentProducts->pluck('id')->toArray());
+                    $needed = $targetCount - $collected->count();
+                }
+
+                $currentCategory = $parentCategory;
+            }
+        }
+
+        return $collected->take($targetCount);
     }
 }

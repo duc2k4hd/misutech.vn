@@ -17,14 +17,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ $faviconUrl }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ $faviconUrl }}">
     <link rel="icon" href="{{ $faviconUrl }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('admins/vendor/owl-carousel/css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admins/vendor/owl-carousel/css/owl.theme.default.min.css') }}">
-    <link href="{{ asset('admins/vendor/jqvmap/css/jqvmap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admins/css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('admins/vendor/owl-carousel/css/owl.carousel.min.css?v='. time()) }}">
+    <link rel="stylesheet" href="{{ asset('admins/vendor/owl-carousel/css/owl.theme.default.min.css?v='. time()) }}">
+    <link href="{{ asset('admins/vendor/jqvmap/css/jqvmap.min.css?v='. time()) }}" rel="stylesheet">
+    <link href="{{ asset('admins/css/style.css?v='. time()) }}" rel="stylesheet">
 
     <!-- Common Admin Vendor Styles -->
-    <link rel="stylesheet" href="{{ asset('admins/vendor/toastr/css/toastr.min.css') }}">
-    <link href="{{ asset('admins/vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('admins/vendor/toastr/css/toastr.min.css?v='. time()) }}">
+    <link href="{{ asset('admins/vendor/sweetalert2/dist/sweetalert2.min.css?v='. time()) }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/2.8.2/slimselect.min.css" rel="stylesheet">
 
     @yield('styles')
@@ -356,9 +356,14 @@
         });
 
         // Chặn popup cảnh báo khó chịu của DataTables trên toàn bộ hệ thống
-        if ($.fn && $.fn.dataTable) {
+        if (typeof $.fn !== 'undefined' && typeof $.fn.dataTable !== 'undefined') {
             $.fn.dataTable.ext.errMode = 'none';
         }
+        $(document).ready(function() {
+            if (typeof $.fn !== 'undefined' && typeof $.fn.dataTable !== 'undefined') {
+                $.fn.dataTable.ext.errMode = 'none';
+            }
+        });
         $(document).on('error.dt', function(e, settings, techNote, message) {
             console.warn('DataTables warning (handled):', message);
         });

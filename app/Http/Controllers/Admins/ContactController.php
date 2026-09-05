@@ -16,9 +16,6 @@ class ContactController extends Controller
         return view('admins.pages.contacts.index');
     }
 
-    /**
-     * API Lấy danh sách liên hệ kèm phân trang & bộ lọc.
-     */
     public function apiList(Request $request)
     {
         try {
@@ -39,14 +36,22 @@ class ContactController extends Controller
                 $query->where('status', $request->status);
             }
 
-            $contacts = $query->orderBy('created_at', 'desc')->get();
+            $sort = $request->input('sort', 'latest');
+            if ($sort === 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
 
-            // Thống kê nhanh
+            $contacts = $query->get();
+
+            // Thống kê nhanh đầy đủ trạng thái
             $stats = [
                 'total'     => Contact::count(),
                 'pending'   => Contact::where('status', 'pending')->count(),
                 'contacted' => Contact::where('status', 'contacted')->count(),
                 'completed' => Contact::where('status', 'completed')->count(),
+                'cancelled' => Contact::where('status', 'cancelled')->count(),
             ];
 
             return response()->json([
@@ -57,9 +62,9 @@ class ContactController extends Controller
             \Log::error('Contact apiList error: ' . $e->getMessage());
             return response()->json([
                 'data'  => [],
-                'stats' => ['total' => 0, 'pending' => 0, 'contacted' => 0, 'completed' => 0],
+                'stats' => ['total' => 0, 'pending' => 0, 'contacted' => 0, 'completed' => 0, 'cancelled' => 0],
                 'error' => $e->getMessage()
-            ]);
+            ], 200);
         }
     }
 

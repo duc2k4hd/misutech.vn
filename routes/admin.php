@@ -21,9 +21,11 @@ Route::middleware('auth')->group(function () {
     Route::get('api/global-search', [DashboardController::class, 'globalSearch'])->name('global_search');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Settings
+    // Settings (Cấu hình hệ thống)
     Route::get('settings', [\App\Http\Controllers\Admins\SettingController::class, 'index'])->name('settings.index');
-    Route::get('api/settings', [\App\Http\Controllers\Admins\SettingController::class, 'apiList'])->name('api.settings.list');
+    Route::match(['get', 'post'], 'api/settings-list', [\App\Http\Controllers\Admins\SettingController::class, 'apiList'])->name('api.settings.list');
+    Route::get('api/settings', [\App\Http\Controllers\Admins\SettingController::class, 'apiList']);
+    Route::post('api/settings-save-all', [\App\Http\Controllers\Admins\SettingController::class, 'apiSaveAll'])->name('api.settings.save_all');
     Route::post('api/settings', [\App\Http\Controllers\Admins\SettingController::class, 'apiStore'])->name('api.settings.store');
     Route::get('api/settings/{id}', [\App\Http\Controllers\Admins\SettingController::class, 'apiShow'])->name('api.settings.show');
     Route::delete('api/settings/{id}', [\App\Http\Controllers\Admins\SettingController::class, 'apiDestroy'])->name('api.settings.destroy');
@@ -36,14 +38,17 @@ Route::middleware('auth')->group(function () {
 
     // Banners
     Route::get('banners', [\App\Http\Controllers\Admins\BannerController::class, 'index'])->name('banners.index');
-    Route::get('api/banners', [\App\Http\Controllers\Admins\BannerController::class, 'apiList'])->name('api.banners.list');
+    Route::match(['get', 'post'], 'api/banners-list', [\App\Http\Controllers\Admins\BannerController::class, 'apiList'])->name('api.banners.list');
+    Route::get('api/banners', [\App\Http\Controllers\Admins\BannerController::class, 'apiList']);
     Route::post('api/banners', [\App\Http\Controllers\Admins\BannerController::class, 'apiStore'])->name('api.banners.store');
     Route::get('api/banners/{id}', [\App\Http\Controllers\Admins\BannerController::class, 'apiShow'])->name('api.banners.show');
     Route::delete('api/banners/{id}', [\App\Http\Controllers\Admins\BannerController::class, 'apiDestroy'])->name('api.banners.destroy');
+    Route::post('api/banners/toggle-status/{id}', [\App\Http\Controllers\Admins\BannerController::class, 'apiToggleStatus'])->name('api.banners.toggle');
     
     // Support & Hotline Contacts (Sale, Warranty, Custom Departments)
     Route::get('support-contacts', [\App\Http\Controllers\Admins\SupportContactController::class, 'index'])->name('support_contacts.index');
-    Route::get('api/support-contacts', [\App\Http\Controllers\Admins\SupportContactController::class, 'apiList'])->name('api.support_contacts.list');
+    Route::match(['get', 'post'], 'api/support-contacts-list', [\App\Http\Controllers\Admins\SupportContactController::class, 'apiList'])->name('api.support_contacts.list');
+    Route::get('api/support-contacts', [\App\Http\Controllers\Admins\SupportContactController::class, 'apiList']);
     Route::post('api/support-contacts', [\App\Http\Controllers\Admins\SupportContactController::class, 'apiStore'])->name('api.support_contacts.store');
     Route::get('api/support-contacts/{id}', [\App\Http\Controllers\Admins\SupportContactController::class, 'apiShow'])->name('api.support_contacts.show');
     Route::delete('api/support-contacts/{id}', [\App\Http\Controllers\Admins\SupportContactController::class, 'apiDestroy'])->name('api.support_contacts.destroy');
@@ -51,7 +56,7 @@ Route::middleware('auth')->group(function () {
 
     // Quotes Management (Báo giá dự án & sản phẩm)
     Route::get('quotes', [\App\Http\Controllers\Admins\QuoteController::class, 'index'])->name('quotes.index');
-    Route::get('api/quotes', [\App\Http\Controllers\Admins\QuoteController::class, 'apiList'])->name('api.quotes.list');
+    Route::match(['get', 'post'], 'api/quotes', [\App\Http\Controllers\Admins\QuoteController::class, 'apiList'])->name('api.quotes.list');
     Route::get('api/quotes/{id}', [\App\Http\Controllers\Admins\QuoteController::class, 'apiShow'])->name('api.quotes.show');
     Route::put('api/quotes/{id}/status', [\App\Http\Controllers\Admins\QuoteController::class, 'apiUpdateStatus'])->name('api.quotes.status');
     Route::delete('api/quotes/{id}', [\App\Http\Controllers\Admins\QuoteController::class, 'apiDestroy'])->name('api.quotes.destroy');
@@ -59,7 +64,7 @@ Route::middleware('auth')->group(function () {
 
     // Contacts Management (Yêu cầu liên hệ & Tư vấn)
     Route::get('contacts', [\App\Http\Controllers\Admins\ContactController::class, 'index'])->name('contacts.index');
-    Route::get('api/contacts', [\App\Http\Controllers\Admins\ContactController::class, 'apiList'])->name('api.contacts.list');
+    Route::match(['get', 'post'], 'api/contacts', [\App\Http\Controllers\Admins\ContactController::class, 'apiList'])->name('api.contacts.list');
     Route::get('api/contacts/{id}', [\App\Http\Controllers\Admins\ContactController::class, 'apiShow'])->name('api.contacts.show');
     Route::put('api/contacts/{id}/status', [\App\Http\Controllers\Admins\ContactController::class, 'apiUpdateStatus'])->name('api.contacts.status');
     Route::delete('api/contacts/{id}', [\App\Http\Controllers\Admins\ContactController::class, 'apiDestroy'])->name('api.contacts.destroy');
@@ -92,7 +97,8 @@ Route::middleware('auth')->group(function () {
 
     // Brands (Thương hiệu / Hãng sản xuất)
     Route::get('brands', [\App\Http\Controllers\Admins\BrandController::class, 'index'])->name('brands.index');
-    Route::get('api/brands', [\App\Http\Controllers\Admins\BrandController::class, 'apiList'])->name('api.brands.list');
+    Route::match(['get', 'post'], 'api/brands-list', [\App\Http\Controllers\Admins\BrandController::class, 'apiList'])->name('api.brands.list');
+    Route::get('api/brands', [\App\Http\Controllers\Admins\BrandController::class, 'apiList']);
     Route::post('api/brands', [\App\Http\Controllers\Admins\BrandController::class, 'apiStore'])->name('api.brands.store');
     Route::get('api/brands/{id}', [\App\Http\Controllers\Admins\BrandController::class, 'apiShow'])->name('api.brands.show');
     Route::put('api/brands/{id}', [\App\Http\Controllers\Admins\BrandController::class, 'apiUpdate'])->name('api.brands.update');
@@ -100,7 +106,8 @@ Route::middleware('auth')->group(function () {
 
     // Series (Dòng sản phẩm)
     Route::get('series', [\App\Http\Controllers\Admins\SeriesController::class, 'index'])->name('series.index');
-    Route::get('api/series', [\App\Http\Controllers\Admins\SeriesController::class, 'apiList'])->name('api.series.list');
+    Route::match(['get', 'post'], 'api/series-list', [\App\Http\Controllers\Admins\SeriesController::class, 'apiList'])->name('api.series.list');
+    Route::match(['get', 'post'], 'api/series', [\App\Http\Controllers\Admins\SeriesController::class, 'apiList']);
     Route::post('api/series', [\App\Http\Controllers\Admins\SeriesController::class, 'apiStore'])->name('api.series.store');
     Route::get('api/series/{id}', [\App\Http\Controllers\Admins\SeriesController::class, 'apiShow'])->name('api.series.show');
     Route::put('api/series/{id}', [\App\Http\Controllers\Admins\SeriesController::class, 'apiUpdate'])->name('api.series.update');

@@ -31,22 +31,46 @@ class SupportContactController extends Controller
                 $query->where(function($q) use ($kw) {
                     $q->where('name', 'like', "%{$kw}%")
                       ->orWhere('phone', 'like', "%{$kw}%")
-                      ->orWhere('department', 'like', "%{$kw}%");
+                      ->orWhere('zalo_phone', 'like', "%{$kw}%")
+                      ->orWhere('department', 'like', "%{$kw}%")
+                      ->orWhere('note', 'like', "%{$kw}%");
                 });
             }
 
-            if ($request->filled('department_type')) {
+            if ($request->filled('department_type') && $request->department_type !== 'all') {
                 $query->where('department_type', $request->department_type);
             }
 
-            $contacts = $query->orderBy('sort_order', 'asc')
-                ->orderBy('id', 'desc')
-                ->get();
+            $sort = $request->input('sort', 'sort_order');
+            if ($sort === 'latest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($sort === 'name') {
+                $query->orderBy('name', 'asc');
+            } else {
+                $query->orderBy('sort_order', 'asc')->orderBy('id', 'desc');
+            }
 
-            return response()->json(['data' => array_values($contacts->toArray())]);
+            $contacts = $query->get();
+
+            $stats = [
+                'total'       => SupportContact::count(),
+                'sale'        => SupportContact::where('department_type', 'sale')->count(),
+                'technical'   => SupportContact::whereIn('department_type', ['warranty', 'technical'])->count(),
+                'popup'       => SupportContact::where('show_in_popup', true)->count(),
+                'active'      => SupportContact::where('is_active', true)->count(),
+            ];
+
+            return response()->json([
+                'data'  => array_values($contacts->toArray()),
+                'stats' => $stats
+            ]);
         } catch (\Throwable $e) {
             \Log::error('SupportContact apiList error: ' . $e->getMessage());
-            return response()->json(['data' => [], 'error' => $e->getMessage()]);
+            return response()->json([
+                'data'  => [],
+                'stats' => ['total' => 0, 'sale' => 0, 'technical' => 0, 'popup' => 0, 'active' => 0],
+                'error' => $e->getMessage()
+            ], 200);
         }
     }
 

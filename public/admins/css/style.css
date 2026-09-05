@@ -10238,7 +10238,7 @@ svg.pulse-svg {
   left: 0; }
 
 [direction="rtl"] .content-body {
-  margin-right: 17.1875rem;
+  margin-right: 19rem;
   margin-left: auto; }
   [direction="rtl"] .content-body .page-titles {
     text-align: right; }
@@ -10300,7 +10300,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   top: 0.625rem; }
 
 .content-body {
-  margin-left: 17.1875rem;
+  margin-left: 19rem;
   z-index: 0;
   transition: all .2s ease; }
   @media only screen and (min-width: 1200px) and (max-width: 1350px) {

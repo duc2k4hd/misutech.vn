@@ -46,7 +46,7 @@
         $effectivePrice = (float) $product->price;
     }
 
-    // Breadcrumbs Schema
+    // Breadcrumbs Schema: 1. Trang chủ -> 2. Danh mục gần sản phẩm nhất -> 3. Tên sản phẩm
     $breadcrumbItems = [
         [
             '@type' => 'ListItem',
@@ -56,16 +56,8 @@
                 'name' => 'Trang chủ',
             ],
         ],
-        [
-            '@type' => 'ListItem',
-            'position' => 2,
-            'item' => [
-                '@id' => route('shop.index'),
-                'name' => 'Cửa hàng',
-            ],
-        ],
     ];
-    $pos = 3;
+    $pos = 2;
     if ($product->category) {
         $breadcrumbItems[] = [
             '@type' => 'ListItem',
@@ -76,22 +68,12 @@
             ],
         ];
     }
-    if ($product->series) {
-        $breadcrumbItems[] = [
-            '@type' => 'ListItem',
-            'position' => $pos++,
-            'item' => [
-                '@id' => route('series.show', $product->series->slug),
-                'name' => $product->series->name,
-            ],
-        ];
-    }
     $breadcrumbItems[] = [
         '@type' => 'ListItem',
         'position' => $pos,
         'item' => [
             '@id' => $productUrl,
-            'name' => $cleanProdTitle,
+            'name' => $product->name,
         ],
     ];
 

@@ -20,52 +20,67 @@ class BrandController extends Controller
     }
 
     /**
-     * Return JSON data for DataTables.
+     * Return JSON data with stats for Brand management.
      */
     public function apiList(Request $request): JsonResponse
     {
         try {
             $query = Brand::withCount(['products', 'series']);
 
-            $search = $request->input('search.value');
-            if (!empty($search)) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('slug', 'like', "%{$search}%");
+            if ($request->filled('keyword')) {
+                $kw = trim($request->keyword);
+                $query->where(function ($q) use ($kw) {
+                    $q->where('name', 'like', "%{$kw}%")
+                      ->orWhere('slug', 'like', "%{$kw}%")
+                      ->orWhere('content', 'like', "%{$kw}%");
                 });
             }
 
-            $total    = Brand::count();
-            $filtered = $query->count();
-
-            $perPage = (int) $request->input('length', 10);
-            if ($perPage === -1) {
-                $perPage = $filtered > 0 ? $filtered : 10;
-            } elseif ($perPage <= 0) {
-                $perPage = 10;
+            if ($request->filled('filter_type') && $request->filter_type !== 'all') {
+                if ($request->filter_type === 'has_products') {
+                    $query->has('products');
+                } elseif ($request->filter_type === 'no_products') {
+                    $query->doesntHave('products');
+                } elseif ($request->filter_type === 'has_series') {
+                    $query->has('series');
+                }
             }
 
-            $start   = max(0, (int) $request->input('start', 0));
-            $page    = max(1, (int) ($start / $perPage) + 1);
+            $sort = $request->input('sort', 'latest');
+            if ($sort === 'name_asc') {
+                $query->orderBy('name', 'asc');
+            } elseif ($sort === 'name_desc') {
+                $query->orderBy('name', 'desc');
+            } elseif ($sort === 'products_desc') {
+                $query->orderByDesc('products_count');
+            } elseif ($sort === 'series_desc') {
+                $query->orderByDesc('series_count');
+            } elseif ($sort === 'oldest') {
+                $query->orderBy('id', 'asc');
+            } else {
+                $query->orderBy('id', 'desc');
+            }
 
-            $brands = $query->orderByDesc('id')
-                ->paginate($perPage, ['*'], 'page', $page);
+            $brands = $query->get();
+
+            $stats = [
+                'total'          => Brand::count(),
+                'has_products'   => Brand::has('products')->count(),
+                'total_products' => \App\Models\Product::count(),
+                'total_series'   => \App\Models\Series::count(),
+            ];
 
             return response()->json([
-                'draw'            => intval($request->input('draw', 1)),
-                'recordsTotal'    => $total,
-                'recordsFiltered' => $filtered,
-                'data'            => array_values($brands->items()),
+                'data'  => array_values($brands->toArray()),
+                'stats' => $stats
             ]);
         } catch (\Throwable $e) {
             \Log::error('Brand apiList error: ' . $e->getMessage());
             return response()->json([
-                'draw'            => intval($request->input('draw', 1)),
-                'recordsTotal'    => 0,
-                'recordsFiltered' => 0,
-                'data'            => [],
-                'error'           => $e->getMessage()
-            ]);
+                'data'  => [],
+                'stats' => ['total' => 0, 'has_products' => 0, 'total_products' => 0, 'total_series' => 0],
+                'error' => $e->getMessage()
+            ], 200);
         }
     }
 

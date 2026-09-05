@@ -17,13 +17,12 @@ class QuoteController extends Controller
         return view('admins.pages.quotes.index');
     }
 
-    /**
-     * API Lấy danh sách báo giá kèm bộ lọc.
-     */
     public function apiList(Request $request)
     {
         try {
-            $query = Quote::with('items');
+            $query = Quote::with(['items' => function($q) {
+                $q->orderBy('id', 'asc');
+            }]);
 
             if ($request->filled('keyword')) {
                 $kw = trim($request->keyword);
@@ -32,7 +31,11 @@ class QuoteController extends Controller
                       ->orWhere('customer_name', 'like', "%{$kw}%")
                       ->orWhere('customer_phone', 'like', "%{$kw}%")
                       ->orWhere('customer_company', 'like', "%{$kw}%")
-                      ->orWhere('customer_email', 'like', "%{$kw}%");
+                      ->orWhere('customer_email', 'like', "%{$kw}%")
+                      ->orWhereHas('items', function($iq) use ($kw) {
+                          $iq->where('product_name', 'like', "%{$kw}%")
+                             ->orWhere('product_sku', 'like', "%{$kw}%");
+                      });
                 });
             }
 
@@ -40,9 +43,20 @@ class QuoteController extends Controller
                 $query->where('status', $request->status);
             }
 
-            $quotes = $query->orderBy('created_at', 'desc')->get();
+            $sort = $request->input('sort', 'latest');
+            if ($sort === 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            } elseif ($sort === 'amount_desc') {
+                $query->orderBy('total_amount', 'desc');
+            } elseif ($sort === 'amount_asc') {
+                $query->orderBy('total_amount', 'asc');
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
 
-            // Thống kê nhanh
+            $quotes = $query->get();
+
+            // Thống kê nhanh và đếm từng trạng thái
             $stats = [
                 'total'          => Quote::count(),
                 'total_amount'   => (float) Quote::sum('total_amount'),
@@ -50,6 +64,7 @@ class QuoteController extends Controller
                 'sent'           => Quote::where('status', 'sent')->count(),
                 'confirmed'      => Quote::where('status', 'confirmed')->count(),
                 'completed'      => Quote::where('status', 'completed')->count(),
+                'cancelled'      => Quote::where('status', 'cancelled')->count(),
             ];
 
             return response()->json([
@@ -60,9 +75,9 @@ class QuoteController extends Controller
             \Log::error('Quote apiList error: ' . $e->getMessage());
             return response()->json([
                 'data'  => [],
-                'stats' => ['total' => 0, 'total_amount' => 0, 'draft' => 0, 'sent' => 0, 'confirmed' => 0, 'completed' => 0],
+                'stats' => ['total' => 0, 'total_amount' => 0, 'draft' => 0, 'sent' => 0, 'confirmed' => 0, 'completed' => 0, 'cancelled' => 0],
                 'error' => $e->getMessage()
-            ]);
+            ], 200);
         }
     }
 

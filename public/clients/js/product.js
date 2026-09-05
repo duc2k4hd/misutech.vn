@@ -447,6 +447,8 @@
   // =========================================================================
 
   function renderModelData(data, targetUrl, pushState = true) {
+    if (!data) return;
+
     // 1. Update Title & Meta in Document Head
     if (data.meta_title) document.title = data.meta_title;
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -456,22 +458,22 @@
 
     // 2. Update Breadcrumb & Heading
     const breadcrumbCurrent = document.getElementById("misutech_breadcrumb_current");
-    if (breadcrumbCurrent) breadcrumbCurrent.textContent = data.name;
+    if (breadcrumbCurrent && data.name) breadcrumbCurrent.textContent = data.name;
 
     const productTitle = document.getElementById("misutech_product_title");
-    if (productTitle) productTitle.textContent = data.name;
+    if (productTitle && data.name) productTitle.textContent = data.name;
 
     // 3. Update Price Box
     const priceBox = document.getElementById("misutech_product_price_box");
     if (priceBox) {
       if (data.has_sale) {
         priceBox.innerHTML = `
-          <span class="misutech_product_price_sale">${data.sale_price_formatted}</span>
-          <span class="misutech_product_price_original">${data.price_formatted}</span>
-          <span class="misutech_product_price_badge">-${data.discount_percent}%</span>
+          <span class="misutech_product_price_sale">${data.sale_price_formatted || (Number(data.sale_price).toLocaleString('vi-VN') + 'đ')}</span>
+          <span class="misutech_product_price_original">${data.price_formatted || (Number(data.price).toLocaleString('vi-VN') + 'đ')}</span>
+          <span class="misutech_product_price_badge">-${data.discount_percent || 0}%</span>
         `;
       } else {
-        priceBox.innerHTML = `<span class="misutech_product_price_sale">${data.price_formatted}</span>`;
+        priceBox.innerHTML = `<span class="misutech_product_price_sale">${data.price_formatted || (Number(data.price).toLocaleString('vi-VN') + 'đ')}</span>`;
       }
     }
 
@@ -479,6 +481,7 @@
     const summaryEl = document.getElementById("misutech_product_summary");
     if (summaryEl) {
       summaryEl.innerHTML = data.short_description || "";
+      summaryEl.style.display = data.short_description ? "" : "none";
     }
 
     // 5. Update SKU
@@ -498,14 +501,20 @@
     }
 
     // 7. Update Button Product IDs
-    document.querySelectorAll("[data-product-id]").forEach((btn) => {
-      btn.dataset.productId = data.id;
-    });
+    if (data.id) {
+      document.querySelectorAll("[data-product-id]").forEach((btn) => {
+        btn.dataset.productId = data.id;
+      });
+    }
 
     // 8. Update Description Tab Content
     const descPanel = document.getElementById("misutech_tab_panel_description");
     if (descPanel) {
-      descPanel.innerHTML = data.content || '<p class="misutech_product_no_content">Chưa có mô tả chi tiết cho sản phẩm này.</p>';
+      if (data.content && data.content.trim() !== "") {
+        descPanel.innerHTML = `<div class="misutech_product_content_body">${data.content}</div>`;
+      } else if (data.is_full_data) {
+        descPanel.innerHTML = '<p class="misutech_product_no_content">Chưa có mô tả chi tiết cho sản phẩm này.</p>';
+      }
     }
 
     // 9. Update Documents Tab Content (Embedded PDF Viewers)
@@ -540,7 +549,7 @@
         });
         docsHtml += "</div>";
         docPanel.innerHTML = docsHtml;
-      } else {
+      } else if (data.is_full_data) {
         docPanel.innerHTML = '<p class="misutech_product_no_content">Chưa có tài liệu catalog cho sản phẩm này.</p>';
       }
     }
@@ -551,15 +560,15 @@
 
     if (mainImage) {
       mainImage.src = thumbUrl;
-      mainImage.alt = data.name;
+      mainImage.alt = data.name || '';
     }
     if (modalImage) {
       modalImage.src = thumbUrl;
-      modalImage.alt = data.name;
+      modalImage.alt = data.name || '';
     }
 
     const thumbWrapper = document.getElementById("misutech_product_thumbnails_wrapper");
-    if (thumbWrapper) {
+    if (thumbWrapper && (data.gallery || data.is_full_data)) {
       let thumbsHtml = `
         <button class="misutech_product_thumbnail misutech_product_active"
             type="button"
@@ -567,7 +576,7 @@
             aria-label="Ảnh chính">
             <img class="misutech_product_thumbnail_image"
                 src="${thumbUrl}"
-                alt="${data.name}"
+                alt="${data.name || ''}"
                 onerror="this.src='${fallbackImage}'">
         </button>
       `;
@@ -580,7 +589,7 @@
                 aria-label="Ảnh ${i + 2}">
                 <img class="misutech_product_thumbnail_image"
                     src="${img.url || fallbackImage}"
-                    alt="${img.alt || data.name}"
+                    alt="${img.alt || data.name || ''}"
                     onerror="this.src='${fallbackImage}'">
             </button>
           `;
@@ -588,22 +597,46 @@
       }
       thumbWrapper.innerHTML = thumbsHtml;
       rebindGalleryEvents();
+      syncLightboxThumbs();
     }
 
     // 11. Update URL via HTML5 History API (Preserves direct URL access & SEO)
-    if (pushState) {
-      const nextUrl = targetUrl || data.url || `/san-pham/${data.slug}`;
-      window.history.pushState({ slug: data.slug, name: data.name }, data.name, nextUrl);
+    const currentUrl = targetUrl || data.url || `/san-pham/${data.slug}`;
+    if (pushState && currentUrl) {
+      window.history.pushState({ slug: data.slug, name: data.name }, data.name || '', currentUrl);
     }
 
-    // 12. Update Share Modal input URL
+    // 12. Update Canonical & OpenGraph tags
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink && currentUrl) canonicalLink.setAttribute("href", currentUrl);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && data.meta_title) ogTitle.setAttribute("content", data.meta_title);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl && currentUrl) ogUrl.setAttribute("content", currentUrl);
+
+    const ogImg = document.querySelector('meta[property="og:image"]');
+    if (ogImg && thumbUrl) ogImg.setAttribute("content", thumbUrl);
+
+    // 13. Update Share Links
     const shareInput = document.querySelector(".misutech_product_copy_input");
-    if (shareInput) {
+    if (shareInput && currentUrl) {
       shareInput.value = window.location.href;
+    }
+    const shareFb = document.querySelector(".misutech_product_share_fb");
+    if (shareFb && currentUrl) {
+      shareFb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+    }
+    const shareTw = document.querySelector(".misutech_product_share_twitter");
+    if (shareTw && currentUrl) {
+      shareTw.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(data.name || '')}`;
     }
   }
 
   async function switchProductModel(slug, targetUrl, pushState = true) {
+    if (!slug) return;
+
     // 1. Highlight nút active tức thì
     document.querySelectorAll(".misutech_product_model_btn").forEach((btn) => {
       const isTarget = btn.dataset.slug === slug;
@@ -615,20 +648,29 @@
       }
     });
 
-    // 2. KIỂM TRA IN-MEMORY CACHE (0ms Latency - Không tốn tài nguyên Server)
-    if (localModelStore[slug]) {
-      renderModelData(localModelStore[slug], targetUrl, pushState);
+    const cachedData = localModelStore[slug];
+
+    // 2. Render ngay lập tức dữ liệu đã có trong bộ nhớ (Tiêu đề, SKU, Giá, Ảnh, Tình trạng) -> 0ms delay
+    if (cachedData) {
+      renderModelData(cachedData, targetUrl, pushState);
+    }
+
+    // 3. Nếu dữ liệu đã ĐẦY ĐỦ (đã có content / is_full_data === true), dừng lại ngay!
+    if (cachedData && cachedData.is_full_data) {
       return;
     }
 
-    // 3. FALLBACK: Fetch AJAX nếu chưa có trong cache, kèm AbortController chống spam
+    // 4. Nếu chưa có FULL DATA (chưa có nội dung mô tả chi tiết, catalog, gallery), fetch AJAX ngay lập tức
     if (currentAbortController) {
-      currentAbortController.abort(); // Hủy request cũ nếu người dùng spam click
+      currentAbortController.abort(); // Hủy request cũ nếu người dùng click liên tục
     }
     currentAbortController = new AbortController();
 
-    const productGrid = document.querySelector(".misutech_product_product_grid");
-    if (productGrid) productGrid.style.opacity = "0.75";
+    // Hiển thị trạng thái tải nhẹ ở tab mô tả
+    const descPanel = document.getElementById("misutech_tab_panel_description");
+    if (descPanel && (!cachedData || !cachedData.content)) {
+      descPanel.innerHTML = '<div style="padding: 40px 20px; text-align: center; color: #64748b; font-size: 14px;"><i class="fa fa-spinner fa-spin mr-2" style="font-size: 18px; color: #003b70;"></i> Đang tải thông tin mô tả chi tiết...</div>';
+    }
 
     try {
       const response = await fetch(`/san-pham/${slug}?ajax=1`, {
@@ -643,15 +685,14 @@
       const data = await response.json();
 
       if (data && data.success) {
-        localModelStore[slug] = data; // Cache lại ngay
-        renderModelData(data, targetUrl, pushState);
+        data.is_full_data = true;
+        localModelStore[slug] = Object.assign(localModelStore[slug] || {}, data);
+        renderModelData(localModelStore[slug], targetUrl, pushState);
       }
     } catch (err) {
       if (err.name !== "AbortError") {
         console.error("Model fetch error:", err);
       }
-    } finally {
-      if (productGrid) productGrid.style.opacity = "1";
     }
   }
 
