@@ -1763,6 +1763,9 @@
                 header: true,
                 preview: 1, // Read only first line of data
                 skipEmptyLines: true,
+                transformHeader: function(header) {
+                    return header.replace(/^\uFEFF/, '').trim();
+                },
                 complete: function(results) {
                     if(results.meta && results.meta.fields) {
                         csvHeaders = results.meta.fields;
@@ -1846,6 +1849,9 @@
             Papa.parse(file, {
                 header: true,
                 skipEmptyLines: true,
+                transformHeader: function(header) {
+                    return header.replace(/^\uFEFF/, '').trim();
+                },
                 complete: function(results) {
                     const originalData = results.data;
                     const totalRows = originalData.length;
@@ -1936,7 +1942,10 @@
                             },
                             error: function(xhr) {
                                 console.error('Batch error', xhr);
-                                toastr.error('Lỗi khi xử lý lô ' + (currentBatch + 1));
+                                let errMsg = (xhr.responseJSON && xhr.responseJSON.message) 
+                                    ? xhr.responseJSON.message 
+                                    : ('Lỗi khi xử lý lô ' + (currentBatch + 1));
+                                toastr.error(errMsg);
                             },
                             complete: function() {
                                 currentBatch++;

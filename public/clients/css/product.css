@@ -1440,7 +1440,9 @@ body.misutech_product_no_scroll {
     min-width: 0;
     max-width: 100%;
     width: 100%;
-    position: relative;
+    position: sticky;
+    top: 120px;
+    z-index: 2;
     overflow: hidden;
     box-sizing: border-box;
 }
@@ -1733,6 +1735,10 @@ body.misutech_product_no_scroll {
     .misutech_product_tabs_layout {
         grid-template-columns: 1fr;
         gap: 24px;
+    }
+
+    .misutech_product_tabs_main {
+        position: static;
     }
 
     .misutech_product_tabs_sidebar {
@@ -3237,6 +3243,10 @@ body.misutech_product_no_scroll {
         gap: 24px;
     }
 
+    .misutech_product_tabs_main {
+        position: static;
+    }
+
     .misutech_product_tabs_sidebar {
         position: static;
         display: grid;
@@ -3599,6 +3609,10 @@ body.misutech_product_no_scroll {
         display: table !important;
         min-width: 520px !important;
         width: max-content !important;
+    }
+
+    .misutech_product_tabs_main {
+        position: static;
     }
 
     .misutech_product_tabs_sidebar {

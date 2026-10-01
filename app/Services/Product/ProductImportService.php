@@ -266,9 +266,9 @@ class ProductImportService
 
             $cleanRow = ['sku' => $sku];
 
-            // Tên: tự động cắt nếu dài hơn 100 ký tự (cắt bỏ phần đuôi)
+            // Tên: tự động cắt nếu dài hơn 500 ký tự (đồng bộ với DB varchar(500))
             if (array_key_exists('name', $row)) {
-                $cleanRow['name'] = mb_substr(trim((string)$row['name']), 0, 100);
+                $cleanRow['name'] = mb_substr(trim((string)$row['name']), 0, 500);
             }
 
             // Slug
@@ -299,7 +299,7 @@ class ProductImportService
                 $cleanRow['meta_title'] = $row['meta_title'] !== '' ? mb_substr(trim((string)$row['meta_title']), 0, 500) : null;
             }
             if (array_key_exists('meta_description', $row)) {
-                $cleanRow['meta_description'] = $row['meta_description'] !== '' ? $row['meta_description'] : null;
+                $cleanRow['meta_description'] = $row['meta_description'] !== '' ? trim((string)$row['meta_description']) : null;
             }
 
             // Trạng thái
