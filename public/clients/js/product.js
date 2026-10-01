@@ -41,22 +41,12 @@
   }
 
   function showToast(message) {
-    if (typeof window.showToast === "function") {
-      window.showToast(message);
-      return;
-    }
-    const toastEl = document.getElementById("misutech_global_toast") || document.querySelector(".misutech_toast, .misutech_home_toast, .misutech_product_toast");
-    if (!toastEl) return;
     window.clearTimeout(toastTimer);
-    toastEl.textContent = message;
-    toastEl.removeAttribute("hidden");
-    toastEl.setAttribute("aria-hidden", "false");
-    toastEl.classList.add("show");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.hidden = false;
     toastTimer = window.setTimeout(() => {
-      toastEl.classList.remove("show");
-      toastEl.setAttribute("aria-hidden", "true");
-      toastEl.setAttribute("hidden", "true");
-      toastEl.textContent = "";
+      toast.hidden = true;
     }, 2300);
   }
 
@@ -70,35 +60,13 @@
     mainImage.classList.add("misutech_product_image_changing");
     imageTimer = window.setTimeout(() => {
       mainImage.src = newSource;
+      if (modalImage) modalImage.src = newSource;
       mainImage.classList.remove("misutech_product_image_changing");
     }, 100);
     productImages.forEach((item) => item.classList.remove("misutech_product_active"));
     button.classList.add("misutech_product_active");
     activeImageIndex = boundedIndex;
-
-    // Đồng bộ với Lightbox nếu đang mở
-    updateLightboxActive(boundedIndex);
   }
-
-  // =========================================================================
-  // LUXURY PRODUCT GALLERY LIGHTBOX (Swipe, Touch gestures, Zoom & Pan)
-  // =========================================================================
-  let lbZoom = 1;
-  let lbPanX = 0;
-  let lbPanY = 0;
-  let isPanning = false;
-  let panStartX = 0;
-  let panStartY = 0;
-  let isSwiping = false;
-  let swipeStartX = 0;
-  let swipeCurrentX = 0;
-
-  const lbCurrent = document.getElementById("misutech_lb_current");
-  const lbTotal = document.getElementById("misutech_lb_total");
-  const lbMainImg = document.getElementById("misutech_lb_main_img");
-  const lbWrapper = document.getElementById("misutech_lb_wrapper");
-  const lbStage = document.getElementById("misutech_lightbox_stage");
-  const lbThumbsTrack = document.getElementById("misutech_lb_thumbs_track");
 
   function rebindGalleryEvents() {
     productImages = Array.from(document.querySelectorAll(".misutech_product_thumbnail"));
@@ -108,275 +76,11 @@
     activeImageIndex = 0;
   }
 
-  function getGalleryList() {
-    productImages = Array.from(document.querySelectorAll(".misutech_product_thumbnail"));
-    return productImages.map((btn) => btn.dataset.image || btn.querySelector("img")?.src).filter(Boolean);
-  }
-
-  function syncLightboxThumbs() {
-    const list = getGalleryList();
-    if (!lbThumbsTrack) return;
-    lbThumbsTrack.innerHTML = "";
-    if (lbTotal) lbTotal.textContent = String(list.length || 1);
-
-    list.forEach((src, idx) => {
-      const thumbBtn = document.createElement("button");
-      thumbBtn.className = `misutech_lb_thumb_item ${idx === activeImageIndex ? "misutech_lb_active" : ""}`;
-      thumbBtn.type = "button";
-      thumbBtn.dataset.index = String(idx);
-      thumbBtn.dataset.src = src;
-      thumbBtn.setAttribute("aria-label", `Ảnh ${idx + 1}`);
-
-      const img = document.createElement("img");
-      img.src = src;
-      img.alt = `Thumbnail ${idx + 1}`;
-      img.draggable = false;
-      thumbBtn.appendChild(img);
-
-      thumbBtn.addEventListener("click", () => {
-        setMainImage(idx);
-        resetLbZoom();
-      });
-
-      lbThumbsTrack.appendChild(thumbBtn);
-    });
-  }
-
-  function updateLightboxActive(index) {
-    if (!lbMainImg) return;
-    const list = getGalleryList();
-    if (!list.length) return;
-    const safeIdx = (index + list.length) % list.length;
-    
-    lbMainImg.classList.add("is-animating-switch");
-    lbMainImg.src = list[safeIdx];
-    if (lbCurrent) lbCurrent.textContent = String(safeIdx + 1);
-
-    if (lbThumbsTrack) {
-      const thumbs = lbThumbsTrack.querySelectorAll(".misutech_lb_thumb_item");
-      thumbs.forEach((t, i) => {
-        const isActive = i === safeIdx;
-        t.classList.toggle("misutech_lb_active", isActive);
-        if (isActive) {
-          t.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-        }
-      });
-    }
-
-    window.setTimeout(() => {
-      if (lbMainImg) lbMainImg.classList.remove("is-animating-switch");
-    }, 250);
-  }
-
-  let lbRotation = 0;
-
-  function applyLbTransform() {
-    if (!lbMainImg) return;
-    if (lbZoom > 1 || lbRotation !== 0) {
-      if (lbZoom > 1) {
-        lbMainImg.classList.add("is-zoomed");
-      } else {
-        lbMainImg.classList.remove("is-zoomed");
-      }
-      lbMainImg.style.transform = `translate3d(${lbPanX}px, ${lbPanY}px, 0) scale(${lbZoom}) rotate(${lbRotation}deg)`;
-    } else {
-      lbMainImg.classList.remove("is-zoomed");
-      lbMainImg.style.transform = "";
-    }
-  }
-
-  function rotateLbImage() {
-    lbRotation = (lbRotation + 90) % 360;
-    applyLbTransform();
-  }
-
-  function resetLbZoom() {
-    lbZoom = 1;
-    lbPanX = 0;
-    lbPanY = 0;
-    lbRotation = 0;
-    isPanning = false;
-    isSwiping = false;
-    if (lbWrapper) lbWrapper.classList.remove("is-panning");
-    if (lbMainImg) {
-      lbMainImg.classList.remove("is-zoomed");
-      lbMainImg.style.transform = "";
-    }
-  }
-
-  function setLbZoom(newZoom) {
-    lbZoom = Math.max(1, Math.min(3.5, newZoom));
-    if (lbZoom === 1) {
-      lbPanX = 0;
-      lbPanY = 0;
-    }
-    applyLbTransform();
-  }
-
-  // Zoom & Rotate controls
-  document.getElementById("misutech_lb_zoom_in")?.addEventListener("click", () => setLbZoom(lbZoom + 0.5));
-  document.getElementById("misutech_lb_zoom_out")?.addEventListener("click", () => setLbZoom(lbZoom - 0.5));
-  document.getElementById("misutech_lb_zoom_reset")?.addEventListener("click", rotateLbImage);
-
-  // Fullscreen
-  document.getElementById("misutech_lb_fullscreen")?.addEventListener("click", () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen?.().catch(() => {});
-    } else {
-      document.exitFullscreen?.().catch(() => {});
-    }
-  });
-
-  // Prev / Next Navigation
-  document.getElementById("misutech_lb_prev")?.addEventListener("click", () => {
-    setMainImage(activeImageIndex - 1);
-    resetLbZoom();
-  });
-  document.getElementById("misutech_lb_next")?.addEventListener("click", () => {
-    setMainImage(activeImageIndex + 1);
-    resetLbZoom();
-  });
-
-  // Double click / Double tap to Zoom
-  let lastTapTime = 0;
-  lbWrapper?.addEventListener("click", (e) => {
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTapTime;
-    if (tapLength < 300 && tapLength > 0) {
-      // Double tap detected
-      e.preventDefault();
-      if (lbZoom > 1) {
-        resetLbZoom();
-      } else {
-        setLbZoom(2);
-      }
-    }
-    lastTapTime = currentTime;
-  });
-
-  // Wheel Zoom on Lightbox
-  lbStage?.addEventListener("wheel", (e) => {
-    if (!imageModal || imageModal.hidden) return;
-    e.preventDefault();
-    const delta = e.deltaY < 0 ? 0.25 : -0.25;
-    setLbZoom(lbZoom + delta);
-  }, { passive: false });
-
-  // Touch & Mouse Drag / Swipe Handlers
-  if (lbStage) {
-    // Touch Start
-    lbStage.addEventListener("touchstart", (e) => {
-      if (e.touches.length === 1) {
-        const touch = e.touches[0];
-        if (lbZoom > 1) {
-          isPanning = true;
-          panStartX = touch.clientX - lbPanX;
-          panStartY = touch.clientY - lbPanY;
-        } else {
-          isSwiping = true;
-          swipeStartX = touch.clientX;
-          swipeCurrentX = touch.clientX;
-        }
-      }
-    }, { passive: true });
-
-    // Touch Move
-    lbStage.addEventListener("touchmove", (e) => {
-      if (e.touches.length === 1) {
-        const touch = e.touches[0];
-        if (isPanning && lbZoom > 1) {
-          lbPanX = touch.clientX - panStartX;
-          lbPanY = touch.clientY - panStartY;
-          applyLbTransform();
-        } else if (isSwiping && lbZoom === 1 && lbMainImg) {
-          swipeCurrentX = touch.clientX;
-          const diff = swipeCurrentX - swipeStartX;
-          // Hiệu ứng kéo vuốt mượt mà theo ngón tay
-          lbMainImg.style.transform = `translate3d(${diff * 0.75}px, 0, 0)`;
-        }
-      }
-    }, { passive: true });
-
-    // Touch End
-    lbStage.addEventListener("touchend", () => {
-      if (isPanning) {
-        isPanning = false;
-      }
-      if (isSwiping) {
-        isSwiping = false;
-        const diff = swipeCurrentX - swipeStartX;
-        if (lbMainImg) lbMainImg.style.transform = "";
-        if (Math.abs(diff) > 45) {
-          if (diff > 0) {
-            setMainImage(activeImageIndex - 1);
-          } else {
-            setMainImage(activeImageIndex + 1);
-          }
-        }
-      }
-    });
-
-    // Mouse Drag Panning when zoomed
-    lbStage.addEventListener("mousedown", (e) => {
-      if (e.button !== 0) return;
-      if (lbZoom > 1) {
-        isPanning = true;
-        panStartX = e.clientX - lbPanX;
-        panStartY = e.clientY - lbPanY;
-        lbWrapper?.classList.add("is-panning");
-      } else {
-        isSwiping = true;
-        swipeStartX = e.clientX;
-        swipeCurrentX = e.clientX;
-      }
-    });
-
-    window.addEventListener("mousemove", (e) => {
-      if (isPanning && lbZoom > 1) {
-        lbPanX = e.clientX - panStartX;
-        lbPanY = e.clientY - panStartY;
-        applyLbTransform();
-      } else if (isSwiping && lbZoom === 1 && lbMainImg) {
-        swipeCurrentX = e.clientX;
-        const diff = swipeCurrentX - swipeStartX;
-        lbMainImg.style.transform = `translate3d(${diff * 0.65}px, 0, 0)`;
-      }
-    });
-
-    window.addEventListener("mouseup", () => {
-      if (isPanning) {
-        isPanning = false;
-        lbWrapper?.classList.remove("is-panning");
-      }
-      if (isSwiping) {
-        isSwiping = false;
-        const diff = swipeCurrentX - swipeStartX;
-        if (lbMainImg) lbMainImg.style.transform = "";
-        if (Math.abs(diff) > 60) {
-          if (diff > 0) {
-            setMainImage(activeImageIndex - 1);
-          } else {
-            setMainImage(activeImageIndex + 1);
-          }
-        }
-      }
-    });
-  }
-
   function openModal(name) {
     const target = document.querySelector(`[data-modal="${name}"]`);
     if (!target) return;
     target.hidden = false;
-    target.removeAttribute("hidden");
-    target.style.display = name === "image" ? "flex" : "grid";
     document.body.classList.add("misutech_product_no_scroll");
-
-    if (name === "image") {
-      syncLightboxThumbs();
-      resetLbZoom();
-      updateLightboxActive(activeImageIndex);
-    }
-
     const closeButton = target.querySelector("[data-close-modal]");
     if (closeButton) closeButton.focus();
   }
@@ -384,11 +88,6 @@
   function closeModal(target) {
     if (!target) return;
     target.hidden = true;
-    target.setAttribute("hidden", "");
-    target.style.display = "none";
-    if (target.dataset?.modal === "image") {
-      resetLbZoom();
-    }
     if (!document.querySelector(".misutech_product_modal:not([hidden])")) {
       document.body.classList.remove("misutech_product_no_scroll");
     }
@@ -396,12 +95,8 @@
 
   function openCart() {
     if (!cartDrawer) return;
-    cartDrawer.hidden = false;
-    // Force a microtick so CSS transitions work if drawer was hidden
-    requestAnimationFrame(() => {
-      cartDrawer.classList.add("misutech_product_open");
-      cartDrawer.setAttribute("aria-hidden", "false");
-    });
+    cartDrawer.classList.add("misutech_product_open");
+    cartDrawer.setAttribute("aria-hidden", "false");
     if (cartOverlay) cartOverlay.hidden = false;
     document.body.classList.add("misutech_product_no_scroll");
   }
@@ -414,11 +109,6 @@
     if (!document.querySelector(".misutech_product_modal:not([hidden])")) {
       document.body.classList.remove("misutech_product_no_scroll");
     }
-    window.setTimeout(() => {
-      if (cartDrawer && !cartDrawer.classList.contains("misutech_product_open")) {
-        cartDrawer.hidden = true;
-      }
-    }, 280);
   }
 
   function addToCart(quantity, title, price, imageSource, openAfterAdd) {
@@ -447,8 +137,6 @@
   // =========================================================================
 
   function renderModelData(data, targetUrl, pushState = true) {
-    if (!data) return;
-
     // 1. Update Title & Meta in Document Head
     if (data.meta_title) document.title = data.meta_title;
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -458,22 +146,22 @@
 
     // 2. Update Breadcrumb & Heading
     const breadcrumbCurrent = document.getElementById("misutech_breadcrumb_current");
-    if (breadcrumbCurrent && data.name) breadcrumbCurrent.textContent = data.name;
+    if (breadcrumbCurrent) breadcrumbCurrent.textContent = data.name;
 
     const productTitle = document.getElementById("misutech_product_title");
-    if (productTitle && data.name) productTitle.textContent = data.name;
+    if (productTitle) productTitle.textContent = data.name;
 
     // 3. Update Price Box
     const priceBox = document.getElementById("misutech_product_price_box");
     if (priceBox) {
       if (data.has_sale) {
         priceBox.innerHTML = `
-          <span class="misutech_product_price_sale">${data.sale_price_formatted || (Number(data.sale_price).toLocaleString('vi-VN') + 'đ')}</span>
-          <span class="misutech_product_price_original">${data.price_formatted || (Number(data.price).toLocaleString('vi-VN') + 'đ')}</span>
-          <span class="misutech_product_price_badge">-${data.discount_percent || 0}%</span>
+          <span class="misutech_product_price_sale">${data.sale_price_formatted}</span>
+          <span class="misutech_product_price_original">${data.price_formatted}</span>
+          <span class="misutech_product_price_badge">-${data.discount_percent}%</span>
         `;
       } else {
-        priceBox.innerHTML = `<span class="misutech_product_price_sale">${data.price_formatted || (Number(data.price).toLocaleString('vi-VN') + 'đ')}</span>`;
+        priceBox.innerHTML = `<span class="misutech_product_price_sale">${data.price_formatted}</span>`;
       }
     }
 
@@ -481,7 +169,6 @@
     const summaryEl = document.getElementById("misutech_product_summary");
     if (summaryEl) {
       summaryEl.innerHTML = data.short_description || "";
-      summaryEl.style.display = data.short_description ? "" : "none";
     }
 
     // 5. Update SKU
@@ -501,20 +188,14 @@
     }
 
     // 7. Update Button Product IDs
-    if (data.id) {
-      document.querySelectorAll("[data-product-id]").forEach((btn) => {
-        btn.dataset.productId = data.id;
-      });
-    }
+    document.querySelectorAll("[data-product-id]").forEach((btn) => {
+      btn.dataset.productId = data.id;
+    });
 
     // 8. Update Description Tab Content
     const descPanel = document.getElementById("misutech_tab_panel_description");
     if (descPanel) {
-      if (data.content && data.content.trim() !== "") {
-        descPanel.innerHTML = `<div class="misutech_product_content_body">${data.content}</div>`;
-      } else if (data.is_full_data) {
-        descPanel.innerHTML = '<p class="misutech_product_no_content">Chưa có mô tả chi tiết cho sản phẩm này.</p>';
-      }
+      descPanel.innerHTML = data.content || '<p class="misutech_product_no_content">Chưa có mô tả chi tiết cho sản phẩm này.</p>';
     }
 
     // 9. Update Documents Tab Content (Embedded PDF Viewers)
@@ -549,7 +230,7 @@
         });
         docsHtml += "</div>";
         docPanel.innerHTML = docsHtml;
-      } else if (data.is_full_data) {
+      } else {
         docPanel.innerHTML = '<p class="misutech_product_no_content">Chưa có tài liệu catalog cho sản phẩm này.</p>';
       }
     }
@@ -560,15 +241,15 @@
 
     if (mainImage) {
       mainImage.src = thumbUrl;
-      mainImage.alt = data.name || '';
+      mainImage.alt = data.name;
     }
     if (modalImage) {
       modalImage.src = thumbUrl;
-      modalImage.alt = data.name || '';
+      modalImage.alt = data.name;
     }
 
     const thumbWrapper = document.getElementById("misutech_product_thumbnails_wrapper");
-    if (thumbWrapper && (data.gallery || data.is_full_data)) {
+    if (thumbWrapper) {
       let thumbsHtml = `
         <button class="misutech_product_thumbnail misutech_product_active"
             type="button"
@@ -576,7 +257,7 @@
             aria-label="Ảnh chính">
             <img class="misutech_product_thumbnail_image"
                 src="${thumbUrl}"
-                alt="${data.name || ''}"
+                alt="${data.name}"
                 onerror="this.src='${fallbackImage}'">
         </button>
       `;
@@ -589,7 +270,7 @@
                 aria-label="Ảnh ${i + 2}">
                 <img class="misutech_product_thumbnail_image"
                     src="${img.url || fallbackImage}"
-                    alt="${img.alt || data.name || ''}"
+                    alt="${img.alt || data.name}"
                     onerror="this.src='${fallbackImage}'">
             </button>
           `;
@@ -597,46 +278,22 @@
       }
       thumbWrapper.innerHTML = thumbsHtml;
       rebindGalleryEvents();
-      syncLightboxThumbs();
     }
 
     // 11. Update URL via HTML5 History API (Preserves direct URL access & SEO)
-    const currentUrl = targetUrl || data.url || `/san-pham/${data.slug}`;
-    if (pushState && currentUrl) {
-      window.history.pushState({ slug: data.slug, name: data.name }, data.name || '', currentUrl);
+    if (pushState) {
+      const nextUrl = targetUrl || data.url || `/san-pham/${data.slug}`;
+      window.history.pushState({ slug: data.slug, name: data.name }, data.name, nextUrl);
     }
 
-    // 12. Update Canonical & OpenGraph tags
-    const canonicalLink = document.querySelector('link[rel="canonical"]');
-    if (canonicalLink && currentUrl) canonicalLink.setAttribute("href", currentUrl);
-
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle && data.meta_title) ogTitle.setAttribute("content", data.meta_title);
-
-    const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl && currentUrl) ogUrl.setAttribute("content", currentUrl);
-
-    const ogImg = document.querySelector('meta[property="og:image"]');
-    if (ogImg && thumbUrl) ogImg.setAttribute("content", thumbUrl);
-
-    // 13. Update Share Links
+    // 12. Update Share Modal input URL
     const shareInput = document.querySelector(".misutech_product_copy_input");
-    if (shareInput && currentUrl) {
+    if (shareInput) {
       shareInput.value = window.location.href;
-    }
-    const shareFb = document.querySelector(".misutech_product_share_fb");
-    if (shareFb && currentUrl) {
-      shareFb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-    }
-    const shareTw = document.querySelector(".misutech_product_share_twitter");
-    if (shareTw && currentUrl) {
-      shareTw.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(data.name || '')}`;
     }
   }
 
   async function switchProductModel(slug, targetUrl, pushState = true) {
-    if (!slug) return;
-
     // 1. Highlight nút active tức thì
     document.querySelectorAll(".misutech_product_model_btn").forEach((btn) => {
       const isTarget = btn.dataset.slug === slug;
@@ -648,29 +305,20 @@
       }
     });
 
-    const cachedData = localModelStore[slug];
-
-    // 2. Render ngay lập tức dữ liệu đã có trong bộ nhớ (Tiêu đề, SKU, Giá, Ảnh, Tình trạng) -> 0ms delay
-    if (cachedData) {
-      renderModelData(cachedData, targetUrl, pushState);
-    }
-
-    // 3. Nếu dữ liệu đã ĐẦY ĐỦ (đã có content / is_full_data === true), dừng lại ngay!
-    if (cachedData && cachedData.is_full_data) {
+    // 2. KIỂM TRA IN-MEMORY CACHE (0ms Latency - Không tốn tài nguyên Server)
+    if (localModelStore[slug]) {
+      renderModelData(localModelStore[slug], targetUrl, pushState);
       return;
     }
 
-    // 4. Nếu chưa có FULL DATA (chưa có nội dung mô tả chi tiết, catalog, gallery), fetch AJAX ngay lập tức
+    // 3. FALLBACK: Fetch AJAX nếu chưa có trong cache, kèm AbortController chống spam
     if (currentAbortController) {
-      currentAbortController.abort(); // Hủy request cũ nếu người dùng click liên tục
+      currentAbortController.abort(); // Hủy request cũ nếu người dùng spam click
     }
     currentAbortController = new AbortController();
 
-    // Hiển thị trạng thái tải nhẹ ở tab mô tả
-    const descPanel = document.getElementById("misutech_tab_panel_description");
-    if (descPanel && (!cachedData || !cachedData.content)) {
-      descPanel.innerHTML = '<div style="padding: 40px 20px; text-align: center; color: #64748b; font-size: 14px;"><i class="fa fa-spinner fa-spin mr-2" style="font-size: 18px; color: #003b70;"></i> Đang tải thông tin mô tả chi tiết...</div>';
-    }
+    const productGrid = document.querySelector(".misutech_product_product_grid");
+    if (productGrid) productGrid.style.opacity = "0.75";
 
     try {
       const response = await fetch(`/san-pham/${slug}?ajax=1`, {
@@ -685,14 +333,15 @@
       const data = await response.json();
 
       if (data && data.success) {
-        data.is_full_data = true;
-        localModelStore[slug] = Object.assign(localModelStore[slug] || {}, data);
-        renderModelData(localModelStore[slug], targetUrl, pushState);
+        localModelStore[slug] = data; // Cache lại ngay
+        renderModelData(data, targetUrl, pushState);
       }
     } catch (err) {
       if (err.name !== "AbortError") {
         console.error("Model fetch error:", err);
       }
+    } finally {
+      if (productGrid) productGrid.style.opacity = "1";
     }
   }
 
@@ -707,49 +356,6 @@
         switchProductModel(slug, targetUrl, true);
       });
     });
-
-    // Instant Live Quick Search Filter for Series Models
-    const modelSearchInput = document.getElementById("misutechModelSearchInput");
-    const modelSearchClear = document.getElementById("misutechModelSearchClear");
-    const modelBtns = Array.from(document.querySelectorAll("#misutechSeriesModelsContainer .misutech_product_model_btn"));
-    const modelEmptyMsg = document.getElementById("misutechSeriesSearchEmpty");
-    const modelBadge = document.getElementById("misutechSeriesBadge");
-    const totalModelCount = modelBtns.length;
-
-    if (modelSearchInput) {
-      modelSearchInput.addEventListener("input", () => {
-        const q = modelSearchInput.value.trim().toLowerCase();
-        if (modelSearchClear) {
-          modelSearchClear.hidden = (q === "");
-        }
-
-        let visibleCount = 0;
-        modelBtns.forEach((btn) => {
-          const searchVal = btn.dataset.search || btn.textContent.toLowerCase();
-          const isMatch = (q === "" || searchVal.includes(q));
-          btn.style.display = isMatch ? "flex" : "none";
-          if (isMatch) visibleCount++;
-        });
-
-        if (modelEmptyMsg) {
-          modelEmptyMsg.hidden = (visibleCount > 0);
-        }
-
-        if (modelBadge) {
-          if (q === "") {
-            modelBadge.textContent = `${totalModelCount} model`;
-          } else {
-            modelBadge.textContent = `${visibleCount}/${totalModelCount} model`;
-          }
-        }
-      });
-
-      modelSearchClear?.addEventListener("click", () => {
-        modelSearchInput.value = "";
-        modelSearchInput.dispatchEvent(new Event("input"));
-        modelSearchInput.focus();
-      });
-    }
 
     // Handle Browser Back / Forward buttons (popstate)
     window.addEventListener("popstate", function (e) {
@@ -810,22 +416,7 @@
     });
   });
 
-  // Mở Lightbox xem toàn bộ ảnh
-  document.querySelectorAll("[data-open-image], [data-open-modal='image'], .misutech_product_main_image_button, #misutech_main_img").forEach((el) => {
-    el.addEventListener("click", (e) => {
-      e.preventDefault();
-      openModal("image");
-    });
-  });
-
-  // Ủy quyền sự kiện (Event Delegation) cho nút mở ảnh
-  document.addEventListener("click", (e) => {
-    const trigger = e.target.closest("[data-open-image], [data-open-modal='image'], .misutech_product_main_image_button, .misutech_product_zoom_hint");
-    if (trigger) {
-      e.preventDefault();
-      openModal("image");
-    }
-  });
+  document.querySelector("[data-open-image]")?.addEventListener("click", () => openModal("image"));
 
   document.querySelectorAll("[data-quantity-change]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -1198,26 +789,8 @@
       document.querySelectorAll(".misutech_product_modal:not([hidden])").forEach(closeModal);
       closeCart();
     }
-    const isLbOpen = imageModal && !imageModal.hidden;
-    if (isLbOpen) {
-      if (event.key === "ArrowLeft") {
-        setMainImage(activeImageIndex - 1);
-        resetLbZoom();
-      } else if (event.key === "ArrowRight") {
-        setMainImage(activeImageIndex + 1);
-        resetLbZoom();
-      } else if (event.key === "+" || event.key === "=") {
-        setLbZoom(lbZoom + 0.5);
-      } else if (event.key === "-") {
-        setLbZoom(lbZoom - 0.5);
-      } else if (event.key === "0") {
-        resetLbZoom();
-      } else if (event.key === "r" || event.key === "R") {
-        rotateLbImage();
-      } else if (event.key === "f" || event.key === "F") {
-        document.getElementById("misutech_lb_fullscreen")?.click();
-      }
-    }
+    if (event.key === "ArrowLeft" && imageModal && !imageModal.hidden) setMainImage(activeImageIndex - 1);
+    if (event.key === "ArrowRight" && imageModal && !imageModal.hidden) setMainImage(activeImageIndex + 1);
   });
 
   // Tự động tối ưu bảng trong nội dung mô tả sản phẩm (30/70 cho 2 cột & cuộn ngang mượt cho >= 3 cột)
@@ -1244,6 +817,76 @@
     });
   }
 
+  // ─── Xử lý Sản phẩm đã xem qua localStorage (0ms server latency, siêu nhanh) ───
+  function initRecentProducts() {
+    try {
+      const STORAGE_KEY = "misutech_recent_products";
+      const MAX_ITEMS = 10;
+      const metaScript = document.getElementById("misutech_current_product_meta");
+      if (!metaScript) return;
+
+      let currentProd = null;
+      try {
+        currentProd = JSON.parse(metaScript.textContent);
+      } catch (e) {
+        return;
+      }
+      if (!currentProd || !currentProd.id) return;
+
+      let stored = [];
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        stored = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(stored)) stored = [];
+      } catch (e) {
+        stored = [];
+      }
+
+      // Lọc bỏ sản phẩm hiện tại để không lặp lại chính nó trong danh sách hiển thị
+      const others = stored.filter((item) => item && item.id && item.id !== currentProd.id);
+
+      const card = document.getElementById("misutechRecentProductsCard");
+      const list = document.getElementById("misutechRecentProductsList");
+
+      // Nếu có sản phẩm đã xem trước đó thì hiển thị tối đa 4-5 sản phẩm ở sidebar
+      if (others.length > 0 && card && list) {
+        const displayItems = others.slice(0, 5);
+        let html = "";
+        for (let i = 0; i < displayItems.length; i++) {
+          const item = displayItems[i];
+          const descHtml = item.meta_description
+            ? `<p class="misutech_product_side_pdesc">${item.meta_description}</p>`
+            : "";
+          const priceHtml = item.price
+            ? `<div class="misutech_product_side_pprice"><strong>${item.price}</strong></div>`
+            : "";
+
+          html += `
+            <a href="${item.url}" class="misutech_product_side_pitem" title="${item.name}">
+              <div class="misutech_product_side_pimg">
+                <img src="${item.image}" alt="${item.name}" loading="lazy" decoding="async">
+              </div>
+              <div class="misutech_product_side_pinfo">
+                <h4 class="misutech_product_side_pname">${item.name}</h4>
+                ${descHtml}
+                ${priceHtml}
+              </div>
+            </a>
+          `;
+        }
+        list.innerHTML = html;
+        card.style.display = "block";
+      }
+
+      // Cập nhật lại localStorage: đưa sản phẩm hiện tại lên đầu, lưu tối đa 10 items
+      const updated = [currentProd, ...others].slice(0, MAX_ITEMS);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch (err) {
+      console.warn("Could not handle recent products:", err);
+    }
+  }
+
   initProductContentTables();
   buildRelatedDots();
+  initRecentProducts();
 })();

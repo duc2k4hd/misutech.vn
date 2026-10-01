@@ -46,7 +46,7 @@
         $effectivePrice = (float) $product->price;
     }
 
-    // Breadcrumbs Schema: 1. Trang chủ -> 2. Danh mục gần sản phẩm nhất -> 3. Tên sản phẩm
+    // Breadcrumbs Schema
     $breadcrumbItems = [
         [
             '@type' => 'ListItem',
@@ -56,8 +56,16 @@
                 'name' => 'Trang chủ',
             ],
         ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'item' => [
+                '@id' => route('shop.index'),
+                'name' => 'Cửa hàng',
+            ],
+        ],
     ];
-    $pos = 2;
+    $pos = 3;
     if ($product->category) {
         $breadcrumbItems[] = [
             '@type' => 'ListItem',
@@ -68,12 +76,22 @@
             ],
         ];
     }
+    if ($product->series) {
+        $breadcrumbItems[] = [
+            '@type' => 'ListItem',
+            'position' => $pos++,
+            'item' => [
+                '@id' => route('series.show', $product->series->slug),
+                'name' => $product->series->name,
+            ],
+        ];
+    }
     $breadcrumbItems[] = [
         '@type' => 'ListItem',
         'position' => $pos,
         'item' => [
             '@id' => $productUrl,
-            'name' => $product->name,
+            'name' => $cleanProdTitle,
         ],
     ];
 
@@ -312,12 +330,12 @@
 
 @push('styles')
     <link rel="stylesheet"
-        href="{{ asset('clients/css/product.css') }}?v={{ file_exists(public_path('clients/css/product.css')) ? filemtime(public_path('clients/css/product.css')) : '1.0' }}">
+        href="{{ asset('clients/css/product.css') }}?v={{ file_exists(public_path('clients/css/product.css')) ? filemtime(public_path('clients/css/product.css')) : time() }}">
 @endpush
 
 @push('scripts')
     <script
-        src="{{ asset('clients/js/product.js') }}?v={{ file_exists(public_path('clients/js/product.js')) ? filemtime(public_path('clients/js/product.js')) : '1.0' }}" defer>
+        src="{{ asset('clients/js/product.js') }}?v={{ file_exists(public_path('clients/js/product.js')) ? filemtime(public_path('clients/js/product.js')) : time() }}">
     </script>
 @endpush
 
@@ -325,7 +343,7 @@
     <div class="misutech_home_container">
         {{-- Breadcrumb --}}
         <nav class="misutech_product_breadcrumb" aria-label="Breadcrumb">
-            <div class="misutech_product_breadcrumb_inner">
+            <div class="misutech_product_container misutech_product_breadcrumb_inner">
                 <a class="misutech_product_breadcrumb_link" href="{{ route('home.index') }}">
                     <svg class="misutech_breadcrumb_home_icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -347,7 +365,7 @@
 
         {{-- Thông tin sản phẩm chính --}}
         <section class="misutech_product_product" id="misutech_product_details">
-            <div class="misutech_product_product_grid">
+            <div class="misutech_product_container misutech_product_product_grid">
 
                 {{-- Thư viện ảnh --}}
                 <div class="misutech_product_gallery">
@@ -356,24 +374,24 @@
                         aria-label="Mở ảnh sản phẩm lớn">
                         <img class="misutech_product_main_image" id="misutech_main_img"
                             src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                            alt="{{ $product->name }}" width="500" height="500" fetchpriority="high" loading="eager" decoding="async">
+                            alt="{{ $product->name }}" fetchpriority="high" decoding="async">
                         <span class="misutech_product_zoom_hint">⌕</span>
                     </button>
 
-                    <div class="misutech_product_thumbnails" id="misutech_product_thumbnails_wrapper"
+                    <div class="misutech_product_thumbnails" id="misutech_product_thumbnails_wrapper" role="list"
                         aria-label="Ảnh sản phẩm">
                         <button class="misutech_product_thumbnail misutech_product_active" type="button"
                             data-image="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
                             aria-label="Ảnh chính">
                             <img class="misutech_product_thumbnail_image"
                                 src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                                alt="{{ $product->name }}" width="80" height="80" loading="lazy" decoding="async">
+                                alt="{{ $product->name }}" loading="lazy" decoding="async">
                         </button>
                         @foreach ($product->galleryMedia as $i => $img)
                             <button class="misutech_product_thumbnail" type="button" data-image="{{ $img->url }}"
                                 aria-label="Ảnh {{ $i + 2 }}">
                                 <img class="misutech_product_thumbnail_image" src="{{ $img->url }}"
-                                    alt="{{ $img->alt ?? $product->name }}" width="80" height="80" loading="lazy" decoding="async">
+                                    alt="{{ $img->alt ?? $product->name }}" loading="lazy" decoding="async">
                             </button>
                         @endforeach
                     </div>
@@ -381,8 +399,8 @@
                     <div class="misutech_product_direction" aria-label="Điều hướng sản phẩm">
                         <button class="misutech_product_direction_button" type="button" data-image-direction="-1"
                             aria-label="Ảnh trước">‹</button>
-                        <button class="misutech_product_direction_button" type="button" data-open-image
-                            aria-label="Tất cả ảnh" title="Xem toàn bộ ảnh">⊞</button>
+                        <button class="misutech_product_direction_button" type="button"
+                            aria-label="Tất cả ảnh">⊞</button>
                         <button class="misutech_product_direction_button" type="button" data-image-direction="1"
                             aria-label="Ảnh tiếp theo">›</button>
                     </div>
@@ -394,7 +412,7 @@
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
                                 target="_blank" rel="noopener noreferrer"
                                 class="misutech_product_share_btn misutech_product_share_fb" title="Chia sẻ lên Facebook"
-                                aria-label="Chia sẻ sản phẩm lên Facebook">
+                                aria-label="Facebook">
                                 <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
                                     <path
                                         d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -480,49 +498,29 @@
 
                     {{-- Khối chọn Model cùng Series (Nếu sản phẩm thuộc Series) --}}
                     @if ($product->series && $seriesProducts->count() > 0)
-                        <div class="misutech_product_series_box" id="misutechSeriesBox">
+                        <div class="misutech_product_series_box">
                             <div class="misutech_product_series_header">
                                 <span class="misutech_product_series_title">
                                     Dòng sản phẩm: <a href="{{ route('series.show', $product->series->slug) }}"
-                                        title="Xem toàn bộ dòng {{ $product->series->name }}">{{ $product->series->name }} ↗</a>
+                                        style="color: #003b70; text-decoration: none; font-weight: 700;"
+                                        title="Xem toàn bộ dòng {{ $product->series->name }}">{{ $product->series->name }}
+                                        ↗</a>
                                 </span>
-                                <span class="misutech_product_series_badge" id="misutechSeriesBadge">{{ $seriesProducts->count() }} model</span>
+                                <span class="misutech_product_series_badge">{{ $seriesProducts->count() }} model</span>
                             </div>
-
-                            {{-- Ô tìm kiếm nhanh Model / SKU --}}
-                            @if ($seriesProducts->count() >= 4)
-                                <div class="misutech_series_search_wrap">
-                                    <span class="misutech_series_search_icon">⌕</span>
-                                    <input type="text" id="misutechModelSearchInput" class="misutech_series_search_input"
-                                        placeholder="Tìm nhanh mã model / SKU..." autocomplete="off" spellcheck="false"
-                                        aria-label="Tìm kiếm model trong dòng sản phẩm">
-                                    <button type="button" id="misutechModelSearchClear" class="misutech_series_search_clear"
-                                        title="Xóa tìm kiếm" aria-label="Xóa tìm kiếm" hidden>✕</button>
-                                </div>
-                            @endif
-
-                            <div class="misutech_product_series_models" id="misutechSeriesModelsContainer" role="group"
+                            <div class="misutech_product_series_models" role="group"
                                 aria-label="Danh sách model thuộc dòng {{ $product->series->name }}">
                                 @foreach ($seriesProducts as $item)
                                     @php $isCurrent = ($item->id === $product->id); @endphp
                                     <a href="{{ route('product.show', $item->slug) }}"
                                         class="misutech_product_model_btn {{ $isCurrent ? 'misutech_product_model_active' : '' }}"
-                                        data-slug="{{ $item->slug }}"
-                                        data-name="{{ $item->name }}"
-                                        data-sku="{{ $item->sku }}"
-                                        data-search="{{ mb_strtolower(($item->sku ?: '') . ' ' . $item->name) }}"
+                                        data-slug="{{ $item->slug }}" data-name="{{ $item->name }}"
                                         @if ($isCurrent) aria-current="page" @endif
                                         title="{{ $item->name }} - {{ number_format($item->price, 0, ',', '.') }}đ">
                                         <span class="model_btn_label">{{ $item->sku ?: $item->name }}</span>
                                     </a>
                                 @endforeach
                             </div>
-
-                            {{-- Thông báo khi không tìm thấy model khớp --}}
-                            <div class="misutech_series_search_empty" id="misutechSeriesSearchEmpty" hidden>
-                                <span>Không tìm thấy model nào phù hợp</span>
-                            </div>
-
                             @if ($product->series->description)
                                 <p class="misutech_product_series_desc">{{ $product->series->description }}</p>
                             @endif
@@ -613,7 +611,7 @@
 
         {{-- Tab mô tả / chính sách & Cột Sidebar 70/30 --}}
         <section class="misutech_product_tabs_section">
-            <div class="misutech_product_tabs_layout">
+            <div class="misutech_product_container misutech_product_tabs_layout">
                 {{-- CỘT TRÁI (70%): Nội dung chi tiết các tab --}}
                 <div class="misutech_product_tabs_main">
                     <div class="misutech_product_tabs" role="tablist" aria-label="Thông tin sản phẩm">
@@ -772,39 +770,14 @@
                         </div>
                     </div>
 
-                    {{-- 2. Card Cam kết chất lượng Dịch vụ --}}
-                    <div class="misutech_product_side_card misutech_product_side_trust">
-                        <h3 class="misutech_product_side_heading">Cam kết từ MISUTECH</h3>
-                        <ul class="misutech_product_trust_list">
-                            <li>
-                                <span class="misutech_product_trust_check">✓</span>
-                                <div>
-                                    <strong>100% Chính hãng</strong>
-                                    <p>Đầy đủ CO, CQ và Catalog từ hãng</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="misutech_product_trust_check">✓</span>
-                                <div>
-                                    <strong>Bảo hành 12 tháng</strong>
-                                    <p>Hỗ trợ 1 đổi 1 trong 7 ngày</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="misutech_product_trust_check">✓</span>
-                                <div>
-                                    <strong>Kỹ sư hỗ trợ 24/7</strong>
-                                    <p>Tư vấn chọn mã &amp; sơ đồ đấu nối</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="misutech_product_trust_check">✓</span>
-                                <div>
-                                    <strong>Hóa đơn VAT điện tử</strong>
-                                    <p>Xuất hóa đơn hợp lệ theo quy định</p>
-                                </div>
-                            </li>
-                        </ul>
+                    {{-- 2. Card Sản phẩm đã xem (Tải trực tiếp từ localStorage siêu tốc, 0ms latency) --}}
+                    <div class="misutech_product_side_card misutech_product_side_recent" id="misutechRecentProductsCard" style="display: none;">
+                        <div class="misutech_product_side_card_header">
+                            <h3 class="misutech_product_side_heading">Sản phẩm đã xem</h3>
+                        </div>
+                        <div class="misutech_product_side_products" id="misutechRecentProductsList">
+                            {{-- Được render siêu tốc từ localStorage --}}
+                        </div>
                     </div>
 
                     {{-- 3. Card Sản phẩm cùng dòng / Gợi ý nổi bật (Tăng thời gian On-Site) --}}
@@ -828,7 +801,7 @@
                                     @endphp
                                     <a href="{{ route('product.show', $sp->slug) }}" class="misutech_product_side_pitem">
                                         <div class="misutech_product_side_pimg">
-                                            <img src="{{ $spThumb }}" alt="{{ $sp->name }}" width="70" height="70" loading="lazy"
+                                            <img src="{{ $spThumb }}" alt="{{ $sp->name }}" loading="lazy"
                                                 decoding="async">
                                         </div>
                                         <div class="misutech_product_side_pinfo">
@@ -852,7 +825,7 @@
 
         {{-- Lợi ích mua hàng --}}
         <section class="misutech_product_benefits" aria-label="Lợi ích mua hàng">
-            <div class="misutech_product_benefit_grid">
+            <div class="misutech_product_container misutech_product_benefit_grid">
                 <article class="misutech_product_benefit">
                     <div class="misutech_product_benefit_icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -897,7 +870,7 @@
         {{-- Sản phẩm liên quan (5 trên + 5 dưới = 10 sản phẩm) --}}
         @if ($relatedProducts->isNotEmpty())
             <section class="misutech_product_related" id="misutech_product_related">
-                <div class="">
+                <div class="misutech_product_container">
                     <h2 class="misutech_product_section_title">Sản phẩm liên quan</h2>
                     <div class="misutech_product_related_grid">
                         @foreach ($relatedProducts as $related)
@@ -909,7 +882,7 @@
                                     <div class="misutech_product_related_media">
                                         <img class="misutech_product_related_image"
                                             src="{{ $related->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                                            alt="{{ $related->name }}" width="220" height="220" loading="lazy" decoding="async">
+                                            alt="{{ $related->name }}" loading="lazy" decoding="async">
                                         <div class="misutech_product_card_actions">
                                             <button class="misutech_product_card_action" type="button" data-cart
                                                 data-related-cart data-product-id="{{ $related->id }}"
@@ -946,7 +919,7 @@
 
         {{-- Đánh giá sản phẩm --}}
         <section class="misutech_product_reviews" id="misutech_product_reviews">
-            <div class="">
+            <div class="misutech_product_container">
                 <div class="misutech_reviews_section_header">
                     <h2 class="misutech_product_section_title">Khách hàng đánh giá</h2>
                     <p class="misutech_reviews_section_subtitle">Đánh giá và nhận xét chân thực từ người dùng đã trải
@@ -991,7 +964,7 @@
                         </div>
 
                         <div class="misutech_product_review_prompt">
-                            <h3 class="prompt_title">Bạn đã dùng sản phẩm này?</h3>
+                            <h4 class="prompt_title">Bạn đã dùng sản phẩm này?</h4>
                             <p class="prompt_desc">Hãy để lại đánh giá để giúp khách hàng khác có thêm thông tin</p>
                             <button type="button" class="misutech_btn_open_review_form" id="misutech_btn_open_review">
                                 ✍ Viết đánh giá ngay
@@ -1111,7 +1084,7 @@
         </section>
     </div>
 
-    <aside class="misutech_product_cart_drawer" aria-hidden="true" hidden>
+    <aside class="misutech_product_cart_drawer" aria-hidden="true">
         <div class="misutech_product_cart_drawer_header">
             <h2 class="misutech_product_cart_drawer_title">Giỏ hàng</h2><button class="misutech_product_cart_close"
                 type="button" aria-label="Close cart">×</button>
@@ -1124,74 +1097,13 @@
     </aside>
     <div class="misutech_product_drawer_overlay" hidden></div>
 
-    {{-- Full-featured Luxury Product Gallery Lightbox --}}
-    <div class="misutech_product_modal misutech_gallery_lightbox" data-modal="image" hidden>
-        <div class="misutech_lightbox_backdrop" data-close-modal></div>
-        <div class="misutech_lightbox_container" role="dialog" aria-modal="true" aria-label="Xem toàn bộ ảnh sản phẩm">
-            
-            {{-- Top Bar --}}
-            <div class="misutech_lightbox_topbar">
-                <div class="misutech_lightbox_title_wrap">
-                    <span class="misutech_lightbox_pname">{{ $product->name }}</span>
-                    <span class="misutech_lightbox_counter">
-                        <strong id="misutech_lb_current">1</strong> / <span id="misutech_lb_total">{{ max(1, 1 + $product->galleryMedia->count()) }}</span>
-                    </span>
-                </div>
-                <div class="misutech_lightbox_actions">
-                    <button class="misutech_lb_btn" id="misutech_lb_zoom_out" type="button" title="Thu nhỏ (-)" aria-label="Thu nhỏ">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="misutech_lb_btn" id="misutech_lb_zoom_in" type="button" title="Phóng to (+)" aria-label="Phóng to">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="misutech_lb_btn" id="misutech_lb_zoom_reset" type="button" title="Xoay ảnh 90° (R)" aria-label="Xoay ảnh 90°">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                    </button>
-                    <button class="misutech_lb_btn" id="misutech_lb_fullscreen" type="button" title="Toàn màn hình" aria-label="Toàn màn hình">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                    </button>
-                    <button class="misutech_lb_btn misutech_lb_btn_close" type="button" data-close-modal title="Đóng (Esc)" aria-label="Đóng">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                </div>
-            </div>
-
-            {{-- Main Stage & Navigation --}}
-            <div class="misutech_lightbox_stage" id="misutech_lightbox_stage">
-                <button class="misutech_lb_nav misutech_lb_nav_prev" id="misutech_lb_prev" type="button" aria-label="Ảnh trước">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
-
-                <div class="misutech_lightbox_image_wrapper" id="misutech_lb_wrapper">
-                    <img class="misutech_product_modal_image misutech_lb_img" id="misutech_lb_main_img"
-                        src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                        alt="{{ $product->name }}" width="800" height="800" decoding="async" draggable="false">
-                </div>
-
-                <button class="misutech_lb_nav misutech_lb_nav_next" id="misutech_lb_next" type="button" aria-label="Ảnh tiếp theo">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                </button>
-            </div>
-
-            {{-- Bottom Thumbnail Strip --}}
-            <div class="misutech_lightbox_thumbs_bar" id="misutech_lb_thumbs_bar">
-                <div class="misutech_lightbox_thumbs_track" id="misutech_lb_thumbs_track">
-                    <button class="misutech_lb_thumb_item misutech_lb_active" type="button"
-                        data-index="0" data-src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                        aria-label="Ảnh 1">
-                        <img src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                            alt="{{ $product->name }}" width="60" height="60" loading="lazy" decoding="async" draggable="false">
-                    </button>
-                    @foreach ($product->galleryMedia as $i => $img)
-                        <button class="misutech_lb_thumb_item" type="button"
-                            data-index="{{ $i + 1 }}" data-src="{{ $img->url }}"
-                            aria-label="Ảnh {{ $i + 2 }}">
-                            <img src="{{ $img->url }}" alt="{{ $img->alt ?? $product->name }}" width="60" height="60" loading="lazy" decoding="async" draggable="false">
-                        </button>
-                    @endforeach
-                </div>
-            </div>
-
+    <div class="misutech_product_modal" data-modal="image" hidden>
+        <div class="misutech_product_modal_dialog misutech_product_image_dialog" role="dialog" aria-modal="true"
+            aria-label="Ảnh sản phẩm">
+            <button class="misutech_product_modal_close" type="button" data-close-modal aria-label="Đóng">×</button>
+            <img class="misutech_product_modal_image"
+                src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
+                alt="{{ $product->name }}">
         </div>
     </div>
 
@@ -1212,7 +1124,7 @@
 
             <div class="misutech_modal_product_preview">
                 <img src="{{ $product->thumbnailMedia->first()?->url ?? asset('storage/clients/imgs/products/no-image.png') }}"
-                    alt="{{ $product->name }}" width="60" height="60" loading="lazy" decoding="async">
+                    alt="{{ $product->name }}">
                 <div class="misutech_modal_product_meta">
                     <h4 class="misutech_modal_pname">{{ $product->name }}</h4>
                     <p class="misutech_modal_psku">
@@ -1337,9 +1249,23 @@
         </div>
     </div>
 
+    <div class="misutech_product_toast" role="status" aria-live="polite" hidden></div>
+
     @if (!empty($embeddedSeriesModels))
         <script id="misutech_embedded_models" type="application/json">
             {!! json_encode($embeddedSeriesModels, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
         </script>
     @endif
+
+    {{-- Dữ liệu sản phẩm hiện tại để lưu lịch sử đã xem vào localStorage --}}
+    <script id="misutech_current_product_meta" type="application/json">
+        {!! json_encode([
+            'id' => (int)$product->id,
+            'name' => $product->name,
+            'url' => route('product.show', $product->slug),
+            'image' => $mainImage,
+            'meta_description' => Str::limit(strip_tags(!empty($product->meta_description) ? $product->meta_description : ($product->short_description ?: '')), 95),
+            'price' => ($product->sale_price ?? $product->price) > 0 ? number_format($product->sale_price ?? $product->price, 0, ',', '.') . 'đ' : ''
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
 @endsection
