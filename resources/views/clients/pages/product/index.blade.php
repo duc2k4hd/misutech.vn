@@ -285,7 +285,7 @@
     <link rel="preload" as="image" href="{{ $mainImage }}" fetchpriority="high">
 
     {{-- Standard SEO Meta Tags --}}
-    <meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+    <meta name="robots" content="{{ !empty(request()->query()) ? 'noindex, follow' : 'follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large' }}">
     <meta name="description" content="{{ $metaDescription }}">
     <meta name="keywords" content="{{ $keywordsStr }}">
     <meta name="author" content="{{ $companyName }}">

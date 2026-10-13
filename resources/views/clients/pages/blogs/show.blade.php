@@ -70,7 +70,7 @@
     {{-- SEO Meta Tags --}}
     <meta name="description" content="{{ $pageDesc }}">
     <meta name="keywords" content="{{ $postKeywords }}">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+    <meta name="robots" content="{{ !empty(request()->query()) ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large' }}">
 
     {{-- Canonical & Language Alternates --}}
     <link rel="canonical" href="{{ $postUrl }}">

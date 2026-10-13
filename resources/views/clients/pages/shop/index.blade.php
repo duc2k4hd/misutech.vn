@@ -175,7 +175,7 @@
     {{-- SEO Meta Tags --}}
     <meta name="keywords" content="{{ $shopKeywords }}">
     <meta name="description" content="{{ $shopDesc }}">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+    <meta name="robots" content="{{ !empty(request()->query()) ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large' }}">
 
     {{-- OpenGraph Tags --}}
     <meta property="og:title" content="{{ $shopTitle }}">

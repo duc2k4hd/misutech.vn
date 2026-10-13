@@ -130,7 +130,7 @@
     {{-- SEO Meta Tags --}}
     <meta name="keywords" content="{{ $brandsKeywords }}">
     <meta name="description" content="{{ $brandsDesc }}">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+    <meta name="robots" content="{{ !empty(request()->query()) ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large' }}">
 
     {{-- OpenGraph Tags --}}
     <meta property="og:title" content="{{ $brandsTitle }}">

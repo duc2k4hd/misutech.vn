@@ -40,7 +40,7 @@
     <link rel="alternate" hreflang="x-default" href="{{ $siteUrl }}">
 
     {{-- SEO Meta Tags --}}
-    <meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+    <meta name="robots" content="{{ !empty(request()->query()) ? 'noindex, follow' : 'follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large' }}">
     <meta name="description" content="{{ $siteDesc }}">
     <meta name="keywords" content="{{ $siteKeywords }}">
 
