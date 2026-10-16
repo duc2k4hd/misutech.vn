@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['name', 'slug', 'parent_id', 'type', 'icon', 'banner', 'position', 'status', 'content'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'type', 'icon', 'banner', 'position', 'status', 'content', 'meta_title', 'meta_description'];
 
     public function parent() { return $this->belongsTo(Category::class, 'parent_id'); }
     public function children() { return $this->hasMany(Category::class, 'parent_id'); }

@@ -1,14 +1,22 @@
 @extends('clients.layouts.master')
+@php
+    $companyName = $settings->company ?? ($settings->name ?? 'Công ty cổ phần Misutech');
+    $finalCatTitle = !empty($category->meta_title) 
+        ? $category->meta_title 
+        : (($category->name ?? 'Danh mục') . ' - ' . $companyName);
+@endphp
 
-@section('title', ($category->name ?? 'Danh mục') . ' - ' . ($settings->company ?? ($settings->name ?? 'Công ty cổ phần Misutech')))
+@section('title', $finalCatTitle)
 
 @push('meta')
     @php
-        $catTitle = ($category->name ?? 'Danh mục') . ' - ' . ($settings->company ?? ($settings->name ?? 'Công ty cổ phần Misutech'));
+        $catTitle = $finalCatTitle;
         $catUrl = route('categories.show', $category->slug);
-        $catDesc = !empty($category->content) 
-            ? Str::limit(strip_tags($category->content), 160) 
-            : 'Khám phá các sản phẩm ' . $category->name . ' chính hãng, chất lượng cao, giá tốt và bảo hành uy tín tại ' . ($settings->company ?? 'MISUTECH') . '.';
+        $catDesc = !empty($category->meta_description)
+            ? $category->meta_description
+            : (!empty($category->content) 
+                ? Str::limit(strip_tags($category->content), 160) 
+                : 'Khám phá các sản phẩm ' . $category->name . ' chính hãng, chất lượng cao, giá tốt và bảo hành uy tín tại ' . ($settings->company ?? 'MISUTECH') . '.');
         $catKeywords = $category->name . ', thiết bị ' . $category->name . ', ' . $category->name . ' chính hãng, tự động hóa, ' . ($settings->name ?? 'MISUTECH');
         $catImage = !empty($category->icon) 
             ? asset('storage/clients/imgs/categories/' . $category->icon) 

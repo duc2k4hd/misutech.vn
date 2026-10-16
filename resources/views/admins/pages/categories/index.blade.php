@@ -518,6 +518,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="font-weight-bold text-dark">Tiêu đề SEO (Meta Title)</label>
+                                    <input type="text" class="form-control" id="meta_title" name="meta_title" placeholder="Mặc định lấy theo tên danh mục nếu để trống">
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold text-dark">Mô tả SEO (Meta Description)</label>
+                                    <textarea id="meta_description" name="meta_description" class="form-control" rows="2" placeholder="Tóm tắt ngắn gọn danh mục phục vụ Google Search"></textarea>
+                                </div>
+                                <div class="form-group">
                                     <label class="font-weight-bold text-dark">Nội dung giới thiệu chi tiết danh mục</label>
                                     <textarea id="content" name="content" class="form-control" rows="5"></textarea>
                                 </div>
@@ -650,6 +658,8 @@
             { key: 'type', label: 'Loại danh mục (product / post)', required: false },
             { key: 'position', label: 'Vị trí thứ tự (Số nguyên)', required: false },
             { key: 'status', label: 'Trạng thái (active / draft)', required: false },
+            { key: 'meta_title', label: 'Tiêu đề SEO (Meta Title)', required: false },
+            { key: 'meta_description', label: 'Mô tả SEO (Meta Description)', required: false },
             { key: 'content', label: 'Nội dung giới thiệu chi tiết (HTML)', required: false }
         ];
 
@@ -1252,6 +1262,8 @@
                     if (ssParent) ssParent.setSelected(data.parent_id ? String(data.parent_id) : '');
                     $('#position').val(data.position || 0);
                     if (ssStatus) ssStatus.setSelected(data.status || 'active');
+                    $('#meta_title').val(data.meta_title || '');
+                    $('#meta_description').val(data.meta_description || '');
 
                     // Banner preview
                     if (data.banner) {
@@ -1418,13 +1430,13 @@
 
         function downloadSampleCsv() {
             const sampleData = [
-                ['name', 'slug', 'parent', 'type', 'position', 'status', 'content'],
-                ['Biến tần', 'bien-tan', '', 'product', '1', 'active', 'Giới thiệu về dòng biến tần chính hãng'],
-                ['Biến tần 1 pha', 'bien-tan-1-pha', 'Biến tần', 'product', '2', 'active', 'Biến tần 1 pha chất lượng cao'],
-                ['Biến tần 1 pha 220V', 'bien-tan-1-pha-220v', 'Biến tần > Biến tần 1 pha', 'product', '3', 'active', 'Biến tần 1 pha 220V siêu bền'],
-                ['Cảm biến', 'cam-bien', '', 'product', '4', 'active', 'Các dòng cảm biến công nghiệp'],
-                ['Cảm biến quang', 'cam-bien-quang', 'Cảm biến', 'product', '5', 'active', 'Cảm biến quang điện thu phát'],
-                ['Tin tức công nghệ', 'tin-tuc-cong-nghe', '', 'post', '6', 'active', 'Tin tức tự động hóa']
+                ['name', 'slug', 'parent', 'type', 'position', 'status', 'meta_title', 'meta_description', 'content'],
+                ['Biến tần', 'bien-tan', '', 'product', '1', 'active', 'Biến tần chính hãng giá tốt', 'Chuyên cung cấp các loại biến tần công nghiệp chính hãng bảo hành uy tín', 'Giới thiệu về dòng biến tần chính hãng'],
+                ['Biến tần 1 pha', 'bien-tan-1-pha', 'Biến tần', 'product', '2', 'active', 'Biến tần 1 pha chất lượng cao', 'Biến tần 1 pha chuyên dụng cho động cơ nhỏ và vừa', 'Biến tần 1 pha chất lượng cao'],
+                ['Biến tần 1 pha 220V', 'bien-tan-1-pha-220v', 'Biến tần > Biến tần 1 pha', 'product', '3', 'active', 'Biến tần 1 pha 220V', 'Biến tần 1 pha 220V siêu bền giá tốt tại Misutech', 'Biến tần 1 pha 220V siêu bền'],
+                ['Cảm biến', 'cam-bien', '', 'product', '4', 'active', 'Cảm biến công nghiệp chính hãng', 'Tổng hợp các dòng cảm biến công nghiệp Omron, Autonics chính hãng', 'Các dòng cảm biến công nghiệp'],
+                ['Cảm biến quang', 'cam-bien-quang', 'Cảm biến', 'product', '5', 'active', 'Cảm biến quang điện', 'Cảm biến quang điện thu phát phản xạ khuếch tán giá đại lý', 'Cảm biến quang điện thu phát'],
+                ['Tin tức công nghệ', 'tin-tuc-cong-nghe', '', 'post', '6', 'active', 'Tin tức tự động hóa', 'Cập nhật tin tức và kiến thức tự động hóa công nghiệp mới nhất', 'Tin tức tự động hóa']
             ];
 
             let csvContent = '\uFEFF'; // BOM UTF-8

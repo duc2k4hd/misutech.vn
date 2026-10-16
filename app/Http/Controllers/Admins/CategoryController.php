@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Http\JsonResponse;
 
@@ -20,6 +21,8 @@ class CategoryController extends Controller
         'type',
         'position',
         'status',
+        'meta_title',
+        'meta_description',
         'content'
     ];
 
@@ -79,6 +82,8 @@ class CategoryController extends Controller
             'type' => $request->type,
             'position' => $request->position ?: 0,
             'status' => $request->status,
+            'meta_title' => $request->meta_title ?: null,
+            'meta_description' => $request->meta_description ?: null,
             'content' => $request->content,
         ];
 
@@ -164,8 +169,16 @@ class CategoryController extends Controller
     public function apiExport(Request $request): StreamedResponse
     {
         $type = $request->input('type'); // 'all', 'product', 'post'
+        $filename = 'categories_export_' . date('Y_m_d_His') . '.csv';
 
-        $response = new StreamedResponse(function () use ($type) {
+        $hasMetaTitle = Schema::hasColumn('categories', 'meta_title');
+        $hasMetaDesc = Schema::hasColumn('categories', 'meta_description');
+
+        $selectColumns = ['id', 'name', 'slug', 'parent_id', 'type', 'position', 'status', 'content'];
+        if ($hasMetaTitle) $selectColumns[] = 'meta_title';
+        if ($hasMetaDesc) $selectColumns[] = 'meta_description';
+
+        return response()->streamDownload(function () use ($type, $selectColumns, $hasMetaTitle, $hasMetaDesc) {
             $handle = fopen('php://output', 'w');
 
             // Ghi BOM UTF-8 để mở tiếng Việt có dấu chuẩn đẹp trên Microsoft Excel
@@ -175,7 +188,7 @@ class CategoryController extends Controller
             fputcsv($handle, self::CSV_COLUMNS);
 
             // Nạp toàn bộ danh mục vào bộ nhớ để tra cứu path phân cấp siêu tốc
-            $allCats = Category::select(['id', 'name', 'slug', 'parent_id', 'type', 'position', 'status', 'content'])->get();
+            $allCats = Category::select($selectColumns)->get();
             $catMap = $allCats->keyBy('id');
 
             $query = Category::query();
@@ -184,7 +197,7 @@ class CategoryController extends Controller
             }
             $query->orderBy('position', 'asc')->orderBy('name', 'asc');
 
-            $query->chunk(1000, function ($categories) use ($handle, $catMap) {
+            $query->chunk(1000, function ($categories) use ($handle, $catMap, $hasMetaTitle, $hasMetaDesc) {
                 foreach ($categories as $cat) {
                     // Xây dựng đường dẫn danh mục cha
                     $parentPath = '';
@@ -206,6 +219,8 @@ class CategoryController extends Controller
                         $cat->type ?? 'product',
                         $cat->position ?? 0,
                         $cat->status ?? 'active',
+                        $hasMetaTitle ? ($cat->meta_title ?? '') : '',
+                        $hasMetaDesc ? ($cat->meta_description ?? '') : '',
                         $cat->content ?? '',
                     ];
 
@@ -214,13 +229,12 @@ class CategoryController extends Controller
             });
 
             fclose($handle);
-        });
-
-        $filename = 'categories_export_' . date('Y_m_d_His') . '.csv';
-        $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        $response->headers->set('Content-Disposition', "attachment; filename=\"{$filename}\"");
-
-        return $response;
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
     }
 
     /**
@@ -268,6 +282,8 @@ class CategoryController extends Controller
                 $status = (isset($row['status']) && in_array($row['status'], ['active', 'draft'])) ? $row['status'] : 'active';
                 $position = isset($row['position']) && is_numeric($row['position']) ? (int)$row['position'] : 0;
                 $content = $row['content'] ?? null;
+                $metaTitle = isset($row['meta_title']) ? (trim((string)$row['meta_title']) ?: null) : null;
+                $metaDescription = isset($row['meta_description']) ? (trim((string)$row['meta_description']) ?: null) : null;
                 
                 $slug = !empty($row['slug']) ? Str::slug($row['slug']) : Str::slug($name);
 
@@ -329,7 +345,7 @@ class CategoryController extends Controller
                     }
 
                     // Cập nhật
-                    $existing->update([
+                    $updateFields = [
                         'name' => $name,
                         'slug' => $slug,
                         'parent_id' => $parentId,
@@ -337,7 +353,15 @@ class CategoryController extends Controller
                         'position' => $position,
                         'status' => $status,
                         'content' => $content,
-                    ]);
+                    ];
+                    if (array_key_exists('meta_title', $row)) {
+                        $updateFields['meta_title'] = $metaTitle;
+                    }
+                    if (array_key_exists('meta_description', $row)) {
+                        $updateFields['meta_description'] = $metaDescription;
+                    }
+
+                    $existing->update($updateFields);
 
                     $stats['updated']++;
                     $catBySlug[$slug] = $existing;
@@ -361,6 +385,8 @@ class CategoryController extends Controller
                         'type' => $type,
                         'position' => $position,
                         'status' => $status,
+                        'meta_title' => $metaTitle,
+                        'meta_description' => $metaDescription,
                         'content' => $content,
                     ]);
 
