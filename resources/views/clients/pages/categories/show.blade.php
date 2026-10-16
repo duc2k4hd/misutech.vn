@@ -2,8 +2,8 @@
 @php
     $companyName = $settings->company ?? ($settings->name ?? 'Công ty cổ phần Misutech');
     $finalCatTitle = !empty($category->meta_title) 
-        ? $category->meta_title 
-        : (($category->name ?? 'Danh mục') . ' - ' . $companyName);
+        ? $category->meta_title. ' | '. $companyName 
+        : (($category->name ?? 'Danh mục') . ' | ' . $companyName);
 @endphp
 
 @section('title', $finalCatTitle)
@@ -194,10 +194,9 @@
     <link rel="alternate" hreflang="vi" href="{{ $catUrl }}">
     <link rel="alternate" hreflang="x-default" href="{{ $catUrl }}">
 
-    {{-- SEO Meta Tags --}}
     <meta name="keywords" content="{{ $catKeywords }}">
     <meta name="description" content="{{ $catDesc }}">
-    <meta name="robots" content="{{ !empty(request()->query()) ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large' }}">
+    <meta name="robots" content="{{ !empty(request()->getQueryString()) ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large' }}">
 
     {{-- OpenGraph Tags --}}
     <meta property="og:title" content="{{ $catTitle }}">
